@@ -16,3 +16,12 @@ services:
         ports:
             - "3306:3306"
         restart: unless-stopped
+    swagger:
+        container_name: webfilm_swagger
+        image: swaggerapi/swagger-ui:v3.51.2
+        environment:
+            SWAGGER_JSON: /tmp/v1.0.0.yaml
+        volumes:
+            -   ./docs/static:/tmp
+        ports:
+            -   "8080:8080"
