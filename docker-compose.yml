@@ -1,0 +1,18 @@
+version: '3.9'
+services:
+    db:
+        container_name: webfilm_db
+        image: mariadb:10.6.3-focal
+        environment:
+            MARIADB_ROOT_PASSWORD: NHY^7ujm
+            MARIADB_DATABASE: webfilm
+            MARIADB_USER: webfilm
+            MARIADB_PASSWORD: nhy6&UJM
+            MARIADB_CHARACTER_SET: utf8mb4
+            MARIADB_COLLATE: utf8mb4_unicode_ci
+            TZ: Europe/Warsaw
+        volumes:
+            - ./data/db:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        restart: unless-stopped
