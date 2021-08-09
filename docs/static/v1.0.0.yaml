@@ -1,0 +1,21 @@
+---
+openapi: 3.0.0
+info:
+  title: WebFilm API
+  description: |
+    This is a documentation api Webfilm server.
+  contact:
+    email: marek.baranowski@student.po.edu.pl
+  license:
+    name: MIT
+  version: 1.0.0
+servers:
+- url: http://localhost/api
+  description: API WebFilm Server
+  variables:
+    port:
+      default: "8000"
+      enum:
+      - "8000"
+paths: {}
+components: {}
