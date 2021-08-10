@@ -13,6 +13,9 @@ Projekt jest stworzony w technologiach:
 * [Django 3.2.6](https://www.djangoproject.com)
 * [Django REST framework 3.12.4](https://www.django-rest-framework.org)
 * [MariaDB 10.6.3](https://mariadb.com)
+* [Node.js v16.6.1](https://nodejs.org)
+* [React 17.0.16](https://reactjs.org)
+* [TypeScript 4.3.5](https://www.typescriptlang.org)
 
 ## Uruchamianie
 Najpierw należy zainstalować [Git](https://git-scm.com) i [Python](https://www.python.org/).
@@ -33,7 +36,17 @@ Najpierw należy zainstalować [Git](https://git-scm.com) i [Python](https://www
     ```shell script
     docker-compose up -d
     ```
-4. Uruchomienie serwra
+4. Zainstalowanie zależności node (z katalogu głównego)
+   ```shell script
+   cd frontend
+   npm install
+   ```
+5. Zbudowanie frontendu aplikacji (z katalogu głównego)
+   ```shell script
+   cd frontend
+   npm run build
+   ```
+6. Uruchomienie serwra
     ```shell script
     python3 manage.py runserver
     ```
