@@ -400,3 +400,6 @@ tags
 
 # Database
 data/
+
+# React build
+frontend/static/
