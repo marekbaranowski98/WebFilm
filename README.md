@@ -1,5 +1,5 @@
 # WebFilm [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-Projekt związany z pracą dyplomową pisaną w 2021 roku "Projekt i realizacja serwisu rekomendującego produkcje filmowe.
+Projekt związany z pracą dyplomową pisaną w 2021 roku "Projekt i realizacja serwisu rekomendującego produkcje filmowe".
 
 ## Spis treści
 * [Technologie](#technologie)
