@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf static && ./node_modules/.bin/webpack"
+    "build": "rm -rf static && ./node_modules/.bin/webpack",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "keywords": [
     "film",
