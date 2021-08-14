@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -r static && ./node_modules/.bin/webpack"
+    "build": "rm -rf static && ./node_modules/.bin/webpack"
   },
   "keywords": [
     "film",

@@ -6,7 +6,7 @@ module.exports = {
   mode: "development",
   output: {
     filename: "main.js",
-    path: resolve(__dirname, "static")
+    path: resolve(__dirname, "static"),
   },
   module: {
     rules: [
@@ -14,8 +14,11 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: "ts-loader",
-        }
+          loader: "babel-loader",
+          options: {
+            presets: ['@babel/preset-typescript'],
+          },
+        },
       },
       {
         test: /\.css$/,
@@ -23,16 +26,16 @@ module.exports = {
       },
       {
         test: /\.(png|jp(e*)g|svg|gif)$/,
-        loader: 'file-loader'
-      }
-    ]
+        loader: 'file-loader',
+      },
+    ],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
       new MiniCssExtractPlugin({
-        filename: "style.css"
-      })
-  ]
+        filename: "style.css",
+      }),
+  ],
 };
