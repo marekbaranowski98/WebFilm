@@ -51,7 +51,7 @@ Najpierw należy zainstalować [Git](https://git-scm.com) i [Python](https://www
     python3 manage.py runserver
     ```
 ## Licencja
-WebFilm jest napisany na [licencji MIT](LICENSE).
+WebFilm jest napisany na [licencji MIT](LICENSE). Grafiki użyte na stronie pochodzą ze strony [SVGREPO](https://www.svgrepo.com).
 
 ### Autor
 > GitHub [@marekbaranowski98](https://github.com/marekbaranowski98)
