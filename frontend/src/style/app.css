@@ -1,0 +1,17 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    font-size: 16px;
+}
+
+body {
+    background-color: #1f2730;
+    color: #FFFFFF;
+    font-family: 'Lato', sans-serif;
+}
+
+h1 {
+    font-size: 2.5rem;
+}

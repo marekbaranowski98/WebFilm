@@ -1,7 +1,7 @@
-import React from 'react'
-import {HelmetProvider, Helmet} from 'react-helmet-async'
+import React from 'react';
+import {HelmetProvider, Helmet} from 'react-helmet-async';
 
-import icon from '../../images/logo.svg'
+import icon from '../../images/logo.svg';
 
 const SEO = React.memo(() => {
     return (
