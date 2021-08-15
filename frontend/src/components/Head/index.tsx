@@ -6,8 +6,8 @@ import logo from '../../images/logo.svg';
 
 const Index = () => {
     return (
-        <header className="mainHeader">
-            <div className="contentHeader">
+        <header className="main-header">
+            <div className="content-header">
                 <img className="menu" src={menu} alt="Guzik menu" />
                 <img className="logo" src={logo} alt="Logo serwisu" />
                 <h1>WebFilm</h1>
