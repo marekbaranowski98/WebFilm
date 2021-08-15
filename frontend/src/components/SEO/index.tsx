@@ -3,7 +3,7 @@ import {HelmetProvider, Helmet} from 'react-helmet-async';
 
 import icon from '../../images/logo.svg';
 
-const SEO = React.memo(() => {
+const SEO = () => {
     return (
         <HelmetProvider>
             <Helmet>
@@ -36,6 +36,6 @@ const SEO = React.memo(() => {
             </Helmet>
         </HelmetProvider>
     )
-});
+};
 
 export default SEO;

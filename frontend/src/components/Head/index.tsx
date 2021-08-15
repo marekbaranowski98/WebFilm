@@ -4,7 +4,7 @@ import './style.css';
 import menu from '../../images/menu.svg';
 import logo from '../../images/logo.svg';
 
-const Index = () => {
+const Head = React.memo(() => {
     return (
         <header className="main-header">
             <div className="content-header">
@@ -14,6 +14,6 @@ const Index = () => {
             </div>
         </header>
     );
-};
+});
 
-export default Index;
+export default Head;
