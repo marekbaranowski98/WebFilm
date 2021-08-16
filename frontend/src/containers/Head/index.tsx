@@ -4,6 +4,7 @@ import './style.css';
 import menu from '../../images/menu.svg';
 import logo from '../../images/logo.svg';
 import Search from '../../components/Search';
+import UserMenu from '../../components/UserMenu';
 
 const Head = React.memo(() => {
     return (
@@ -13,6 +14,7 @@ const Head = React.memo(() => {
                 <img className="logo" src={logo} alt="Logo serwisu" />
                 <h1>WebFilm</h1>
                 <Search />
+                <UserMenu />
             </div>
         </header>
     );

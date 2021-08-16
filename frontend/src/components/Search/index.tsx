@@ -11,7 +11,7 @@ const Search = () => {
                 className="search-input"
                 placeholder="Szukaj"
             />
-            <div className="search-button">
+            <div className="button search-button">
                 <img className="zoom" src={zoom} alt="Guzik szukaj film" />
             </div>
         </div>

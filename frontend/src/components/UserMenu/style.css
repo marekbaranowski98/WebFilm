@@ -1,0 +1,9 @@
+.container-user-menu {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+}
+
+.container-user-menu > .button {
+    margin: 0 0.5rem;
+}
