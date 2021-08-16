@@ -17,11 +17,6 @@ header.main-header {
     margin: 0 0.5rem;
 }
 
-.menu {
-    width: 1.5rem;
-    cursor: pointer;
-}
-
 .logo {
     width: 4rem;
     cursor: pointer;
