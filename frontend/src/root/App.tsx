@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../style/app.css';
 import SEO from '../components/SEO';
-import Head from '../components/Head';
+import Head from '../containers/Head';
 
 const App = () => {
     return (
