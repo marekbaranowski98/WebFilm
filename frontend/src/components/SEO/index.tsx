@@ -35,7 +35,7 @@ const SEO = () => {
                 />
             </Helmet>
         </HelmetProvider>
-    )
+    );
 };
 
 export default SEO;
