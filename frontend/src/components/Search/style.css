@@ -16,7 +16,7 @@
     vertical-align: top;
     height: 2rem;
     width: 2rem;
-    background-color: #57a3fa;
+    background-color: var(--color-secondary);
     border-radius: 0 1rem 1rem 0;
     -webkit-border-radius: 0 1rem 1rem 0;
     -moz-border-radius: 0 1rem 1rem 0;
