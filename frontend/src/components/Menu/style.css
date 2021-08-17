@@ -1,6 +1,19 @@
 .menu {
     width: 1.5rem;
+    position: relative;
     cursor: pointer;
+}
+
+.show-menu {
+    display: none;
+}
+
+.show-menu:checked ~ .menu-banner {
+    will-change: transform;
+    -webkit-transform: translate(100%, 0);
+    -ms-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+    transition: transform 0.5s ease-in-out;
 }
 
 .menu-banner {
@@ -8,9 +21,15 @@
     height: 100%;
     position: absolute;
     top: 0;
-    left: 0;
+    left: -15rem;
     background-color: var(--cololr-background-secondary);
     z-index: 3;
+    transform-origin: 0 0;
+    will-change: transform;
+    -webkit-transform: translate(-100%, 0);
+    -ms-transform: translate(-100%, 0);
+    transform: translate(-100%, 0);
+    transition: transform 0.5s ease-in-out;
 }
 
 .menu-background {
@@ -22,4 +41,41 @@
     height: 100%;
     background-color: var(--color-background);
     opacity: 0.8;
+}
+
+.menu-content {
+    padding: 1rem;
+}
+
+.close-menu-button {
+    padding: 0.5rem;
+    width: 3rem;
+    margin-left: auto;
+}
+
+.cross {
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+    transform: rotate(45deg);
+}
+
+.cross:before, .cross:after {
+    content: "";
+    position: absolute;
+    background: var(--color-text);
+}
+
+.cross:before {
+    left: 50%;
+    width: 20%;
+    margin-left: -10%;
+    height: 100%;
+}
+
+.cross:after {
+    top: 50%;
+    height: 20%;
+    margin-top: -10%;
+    width: 100%;
 }

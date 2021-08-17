@@ -10,7 +10,7 @@ interface App {
 
 const App: React.FC<App> = () => {
     return (
-        <div className="mainContainer">
+        <div className="main-container">
             <SEO />
             <Head />
         </div>

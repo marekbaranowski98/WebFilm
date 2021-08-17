@@ -12,17 +12,19 @@ const Menu: React.FC<MenuProps> = () => {
 
     return (
         <div className="container-menu">
-            <img className="menu" src={menu} alt="Guzik menu" onClick={() => setIsMenuOpen(true)} />
-            {isMenuOpen ?
-                <div className="visibility-menu">
-                    <div className="menu-banner">
-                        <nav>
-                        </nav>
-                    </div>
-                    <div className="menu-background" />
-                </div> :
-                ''
-            }
+            <img src={menu} className="menu" alt="Guzik menu" onClick={() => setIsMenuOpen(true)}/>
+            <div className="visibility-menu">
+                <input type="checkbox" className="show-menu" checked={isMenuOpen}/>
+                <div className="menu-banner">
+                    <nav>
+                        <div className="menu-content">
+                            <div className="button close-menu-button" onClick={() => setIsMenuOpen(false)}>
+                                <div className="cross"/>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
         </div>
     );
 };
