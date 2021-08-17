@@ -1,7 +1,6 @@
 import React from 'react';
 
 import './style.css';
-import zoom from '../../images/zoom.svg';
 
 interface Search {
 
@@ -16,7 +15,7 @@ const Search: React.FC<Search> = () => {
                 placeholder="Szukaj"
             />
             <div className="button search-button">
-                <img className="zoom" src={zoom} alt="Guzik szukaj film" />
+                <div className="magnifying-glass" />
             </div>
         </div>
     );

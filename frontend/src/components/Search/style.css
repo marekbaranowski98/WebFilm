@@ -19,6 +19,25 @@
     padding: 0.5rem;
 }
 
-.zoom {
-    width: 1.5rem;
+.magnifying-glass {
+    font-size: 2rem;
+    transform: rotate(90deg);
+    width: 0.4em;
+    box-sizing: content-box;
+    height: 0.4em;
+    border: 0.1em solid var(--color-text);
+    position: relative;
+    border-radius: 0.35em;
+}
+
+.magnifying-glass:before {
+    content: "";
+    position: absolute;
+    right: -0.25em;
+    bottom: -0.1em;
+    border-width: 0;
+    background: var(--color-text);
+    width: 0.35em;
+    height: 0.08em;
+    transform: rotate(45deg);
 }
