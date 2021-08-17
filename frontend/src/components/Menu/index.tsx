@@ -1,13 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import './style.css';
 import menu from '../../images/menu.svg';
 
-const Menu = () => {
+interface MenuProps {
+
+}
+
+const Menu: React.FC<MenuProps> = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
     return (
         <div className="container-menu">
             <img className="menu" src={menu} alt="Guzik menu" />
-            <div>
+            <div className="visibility-menu">
+
                 <div className="menu-banner">
                     <nav>
 

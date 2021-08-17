@@ -6,7 +6,11 @@ import Menu from '../../components/Menu';
 import Search from '../../components/Search';
 import UserMenu from '../../components/UserMenu';
 
-const Head = React.memo(() => {
+interface HeadProps {
+
+}
+
+const Head: React.FC<HeadProps> = React.memo(() => {
     return (
         <header className="main-header">
             <div className="content-header">

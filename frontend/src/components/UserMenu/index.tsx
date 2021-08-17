@@ -2,7 +2,11 @@ import React from 'react';
 
 import './style.css';
 
-const UserMenu = () => {
+interface UserMenu {
+
+}
+
+const UserMenu: React.FC<UserMenu> = () => {
     return (
       <div className="container-user-menu">
           <div className="button">Zaloguj się</div>

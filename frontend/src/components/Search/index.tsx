@@ -3,7 +3,11 @@ import React from 'react';
 import './style.css';
 import zoom from '../../images/zoom.svg';
 
-const Search = () => {
+interface Search {
+
+}
+
+const Search: React.FC<Search> = () => {
     return (
         <div className="container-search">
             <input
