@@ -12,16 +12,17 @@ const Menu: React.FC<MenuProps> = () => {
 
     return (
         <div className="container-menu">
-            <img className="menu" src={menu} alt="Guzik menu" />
-            <div className="visibility-menu">
-
-                <div className="menu-banner">
-                    <nav>
-
-                    </nav>
-                </div>
-                <div className="menu-background"></div>
-            </div>
+            <img className="menu" src={menu} alt="Guzik menu" onClick={() => setIsMenuOpen(true)} />
+            {isMenuOpen ?
+                <div className="visibility-menu">
+                    <div className="menu-banner">
+                        <nav>
+                        </nav>
+                    </div>
+                    <div className="menu-background" />
+                </div> :
+                ''
+            }
         </div>
     );
 };
