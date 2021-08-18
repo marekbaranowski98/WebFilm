@@ -2,7 +2,7 @@ import React from 'react';
 
 import './style.css';
 import logo from '../../images/logo.svg';
-import Menu from '../../components/Menu';
+import Menu from '../Menu';
 import Search from '../../components/Search';
 import UserMenu from '../../components/UserMenu';
 

@@ -4,11 +4,11 @@
     cursor: pointer;
 }
 
-.show-menu {
+.hidden-checkbox {
     display: none;
 }
 
-.show-menu:checked ~ .menu-banner {
+.hidden-checkbox:checked ~ .menu-banner {
     will-change: transform;
     -webkit-transform: translate(100%, 0);
     -ms-transform: translate(100%, 0);
@@ -17,11 +17,11 @@
 }
 
 .menu-banner {
-    width: 15rem;
+    width: 20rem;
     height: 100%;
     position: absolute;
     top: 0;
-    left: -15rem;
+    left: -20rem;
     background-color: var(--cololr-background-secondary);
     z-index: 3;
     transform-origin: 0 0;
