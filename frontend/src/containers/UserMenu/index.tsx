@@ -15,7 +15,7 @@ const UserMenu: React.FC<UserMenuProps> = () => {
     return (
         <div>
             {userIsLogged ?
-                <MenuUserContent />
+                <MenuUserContent setUserIsLogged={setUserIsLogged} />
                 :
                 <LoginUserButton setUserIsLogged={setUserIsLogged}/>
             }

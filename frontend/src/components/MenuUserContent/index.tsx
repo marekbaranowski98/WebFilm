@@ -5,17 +5,25 @@ import userAvatar from '../../images/user.svg';
 import AutoHideOutsideClick from '../../helpers/AutoHideOutsideClick';
 
 interface MenuUserContentProps {
+    setUserIsLogged: (userIsLogged: boolean) => void,
 }
 
-const MenuUserContent: React.FC<MenuUserContentProps> = () => {
+const MenuUserContent: React.FC<MenuUserContentProps> = ({setUserIsLogged}) => {
+    const emptyMethod = () => {
+
+    };
+
+    const logoutUser = () => {
+        setUserIsLogged(false);
+    };
     const wrapperUserMenuRef = useRef<HTMLDivElement>(null);
     const [showSubMenu, setShowSubMenu] = useState<boolean>(false);
-    const subMenuUser: {id: number, element: string}[] = [
-        { id: 1, element: 'Profil', },
-        { id: 2, element: 'Rekomendacje filmowe', },
-        { id: 3, element: 'Do obejrzenia', },
-        { id: 4, element: 'Ocenione filmy', },
-        { id: 5, element: 'Wyloguj się', },
+    const subMenuUser: {id: number, element: string, handlerClick(): void }[] = [
+        { id: 1, element: 'Profil', handlerClick: emptyMethod, },
+        { id: 2, element: 'Rekomendacje filmowe', handlerClick: emptyMethod, },
+        { id: 3, element: 'Do obejrzenia', handlerClick: emptyMethod, },
+        { id: 4, element: 'Ocenione filmy', handlerClick: emptyMethod, },
+        { id: 5, element: 'Wyloguj się', handlerClick: logoutUser, },
     ];
 
     AutoHideOutsideClick(wrapperUserMenuRef, showSubMenu, setShowSubMenu);
@@ -34,7 +42,7 @@ const MenuUserContent: React.FC<MenuUserContentProps> = () => {
             {showSubMenu ?
                 <div className="container-submenu">
                     <ul className="submenu">
-                        {subMenuUser.map(x => <li key={x.id}>{x.element}</li>)}
+                        {subMenuUser.map(x => <li key={x.id} onClick={x.handlerClick}>{x.element}</li>)}
                     </ul>
                 </div>
                 : ''
