@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
 import './style.css';
 
@@ -8,7 +8,7 @@ interface LoginUserButton {
 
 const LoginUserButton: React.FC<LoginUserButton> = ({setUserIsLogged}) => {
     const loginUser = (): void => {
-        setUserIsLogged(true)
+        setUserIsLogged(true);
     };
 
     return (

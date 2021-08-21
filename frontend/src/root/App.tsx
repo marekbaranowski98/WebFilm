@@ -12,7 +12,7 @@ interface App {
 
 const App: React.FC<App> = () => {
     return (
-        <div className="main-container">
+        <div>
             <SEO />
             <Head />
             <MainContent />

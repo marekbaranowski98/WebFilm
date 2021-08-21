@@ -5,21 +5,35 @@ import './style.css';
 import menu from '../../images/menu.svg';
 import AutoHideOutsideClick from '../../helpers/AutoHideOutsideClick';
 import MenuHeader from '../../components/MenuHeader';
+import MenuUserContent from '../../components/MenuUserContent';
+import useWindowsDimensions from '../../hooks/useWindowsDimensions';
 
 interface MenuProps {
 
 }
 
 const Menu: React.FC<MenuProps> = () => {
+    const checkIsUserLogin = (): boolean => {
+        return true;
+    };
+
+    const checkUserIsAdmin = (): boolean => {
+        return true;
+    };
+
     const wrapperMenuRef = useRef<HTMLDivElement>(null);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-    const menuName: {id: number, title: string, children: {id: number, element: string}[]}[] = [
-        { id: 1, title: "Najnowsze filmy", children: [], },
-        { id: 2, title: "Przeglądaj filmy", children: [], },
-        { id: 3, title: "Ranking filmów", children: [], },
+    const { height, width } = useWindowsDimensions();
+    const menuName: {id: number, title: string, visibility: boolean, children: {id: number, element: string}[]}[] = [
+        { id: 1, title: "Zaloguj się", visibility: checkIsUserLogin(),  children: []},
+        { id: 2, title: "Zarejestruj się", visibility: checkIsUserLogin(), children: [], },
+        { id: 3, title: "Najnowsze filmy", visibility: true, children: [], },
+        { id: 4, title: "Przeglądaj filmy", visibility: true, children: [], },
+        { id: 5, title: "Ranking filmów", visibility: true, children: [], },
         {
-            id: 4,
+            id: 6,
             title: "Zarządzaj",
+            visibility: checkUserIsAdmin(),
             children: [
                 { id: 1, element: "Zarządzaj filmami", },
                 { id: 2, element: "Zarządzaj gatunkami", },
@@ -32,8 +46,9 @@ const Menu: React.FC<MenuProps> = () => {
             ],
         },
         {
-            id: 5,
+            id: 7,
             title: "Dodaj",
+            visibility: checkUserIsAdmin(),
             children: [
                 { id: 1, element: "Dodaj film", },
                 { id: 2, element: "Dodaj gatunek", },
@@ -61,11 +76,16 @@ const Menu: React.FC<MenuProps> = () => {
                                 <div className="cross"/>
                             </div>
                             <ul>
-                                {menuName.map(x =>
+                                {width < 1024 ?
+                                    <li key="9"><MenuUserContent setUserIsLogged={setIsMenuOpen} /></li>
+                                    :
+                                    ''
+                                }
+                                {menuName.map(x => x.visibility ?
                                     <li key={x.id}>
                                         <MenuHeader headerTitle={x.title} subMenuChildren={x.children} />
-                                    </li>)
-                                }
+                                    </li> : ''
+                                )}
                             </ul>
                         </div>
                     </nav>

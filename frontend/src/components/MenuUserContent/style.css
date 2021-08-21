@@ -1,3 +1,9 @@
+.container-user-menu {
+    display: flex;
+    align-items: center;
+    margin: 0 0.5rem;
+}
+
 .container-user-menu img {
     height: 3rem;
 }
@@ -28,4 +34,14 @@
     background-color: var(--color-background-secondary);
     width: 100%;
     padding: 0 1rem 1rem 1rem;
+}
+
+@media screen and (max-width: 1024px){
+    .container-user-menu-submenu .container-submenu {
+        position: static;
+    }
+
+    .container-user-menu .expend-button {
+        margin-left: auto;
+    }
 }

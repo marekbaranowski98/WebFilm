@@ -5,12 +5,14 @@ import logo from '../../images/logo.svg';
 import Menu from '../Menu';
 import Search from '../../components/Search';
 import UserMenu from '../UserMenu';
+import useWindowsDimensions from '../../hooks/useWindowsDimensions';
 
 interface HeadProps {
 
 }
 
 const Head: React.FC<HeadProps> = React.memo(() => {
+    const { height, width } = useWindowsDimensions();
     return (
         <header className="main-header">
             <div className="content-header">
@@ -18,7 +20,11 @@ const Head: React.FC<HeadProps> = React.memo(() => {
                 <img className="logo" src={logo} alt="Logo serwisu" />
                 <h1>WebFilm</h1>
                 <Search />
-                <UserMenu />
+                {width >= 1024 ?
+                    <UserMenu />
+                    :
+                    ''
+                }
             </div>
         </header>
     );
