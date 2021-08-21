@@ -9,11 +9,11 @@ interface MenuUserContentProps {
 }
 
 const MenuUserContent: React.FC<MenuUserContentProps> = ({setUserIsLogged}) => {
-    const emptyMethod = () => {
+    const emptyMethod = (): void => {
 
     };
 
-    const logoutUser = () => {
+    const logoutUser = (): void => {
         setUserIsLogged(false);
     };
     const wrapperUserMenuRef = useRef<HTMLDivElement>(null);
