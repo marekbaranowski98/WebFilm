@@ -1,0 +1,31 @@
+.container-user-menu img {
+    height: 3rem;
+}
+
+.info-user-menu {
+    margin: 0.375rem 0.5rem;
+}
+
+.info-user-name {
+    font-size: 1.25rem;
+    max-width: 15rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.container-user-menu .expend-button {
+    margin-left: 0.5rem;
+}
+
+.container-user-menu-submenu {
+    position: relative;
+}
+
+.container-user-menu-submenu .container-submenu {
+    position: absolute;
+    z-index: 3;
+    background-color: var(--color-background-secondary);
+    width: 100%;
+    padding: 0 1rem 1rem 1rem;
+}

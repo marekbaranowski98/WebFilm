@@ -4,7 +4,7 @@ import './style.css';
 import logo from '../../images/logo.svg';
 import Menu from '../Menu';
 import Search from '../../components/Search';
-import UserMenu from '../../components/UserMenu';
+import UserMenu from '../UserMenu';
 
 interface HeadProps {
 

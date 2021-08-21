@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 
 import './style.css';
+import AutoHideOutsideClick from "../../helpers/AutoHideOutsideClick";
 
 interface MenuHeaderProps {
     headerTitle: string,
@@ -8,11 +9,14 @@ interface MenuHeaderProps {
 }
 
 const MenuHeader: React.FC<MenuHeaderProps> = ({headerTitle, subMenuChildren}) => {
-    const [showSubMenu, setShowSubMenu] = useState(false);
+    const wrapperMenuOptionRef = useRef<HTMLDivElement>(null);
+    const [showSubMenu, setShowSubMenu] = useState<boolean>(false);
+
+    AutoHideOutsideClick(wrapperMenuOptionRef, showSubMenu, setShowSubMenu);
 
     return (
-        <div onClick={() => setShowSubMenu(!showSubMenu)}>
-            <div className="menu-option-header">
+        <div onClick={() => setShowSubMenu(!showSubMenu)} ref={wrapperMenuOptionRef}>
+            <div className="menu-option-header expend-container">
                 <div>{headerTitle}</div>
                 {subMenuChildren.length > 0 ?
                     <>

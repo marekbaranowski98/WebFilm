@@ -1,5 +1,5 @@
 .container-search {
-    width: calc(100% - 1.5rem - 4rem - 14rem - 18rem);
+    width: 100%;
     display: flex;
 }
 
