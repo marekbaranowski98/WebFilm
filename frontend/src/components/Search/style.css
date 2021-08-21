@@ -41,3 +41,11 @@
     height: 0.08em;
     transform: rotate(45deg);
 }
+
+@media screen and (max-width: 600px) {
+    .container-search {
+        width: 90%;
+        display: flex;
+        margin: 1rem auto;
+    }
+}

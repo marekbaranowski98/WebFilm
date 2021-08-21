@@ -19,7 +19,11 @@ const Head: React.FC<HeadProps> = React.memo(() => {
                 <Menu />
                 <img className="logo" src={logo} alt="Logo serwisu" />
                 <h1>WebFilm</h1>
-                <Search />
+                {width >= 600 ?
+                    <Search/>
+                    :
+                    ''
+                }
                 {width >= 1024 ?
                     <UserMenu />
                     :
