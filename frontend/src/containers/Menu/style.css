@@ -17,11 +17,11 @@
 }
 
 .menu-banner {
-    width: 20rem;
+    width: 18rem;
     position: fixed;
     top: 0;
     bottom: 0;
-    left: -20rem;
+    left: -18rem;
     background-color: var(--color-background-secondary);
     z-index: 3;
     transform-origin: 0 0;
