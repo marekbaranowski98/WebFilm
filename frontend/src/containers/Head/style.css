@@ -1,0 +1,28 @@
+header.main-header {
+    width: 100%;
+    height: 6rem;
+    background-color: var(--color-background-secondary);
+}
+
+.content-header {
+    width: 80%;
+    height: 100%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-header > * {
+    margin: 0 0.5rem;
+}
+
+.logo {
+    width: 4rem;
+    cursor: pointer;
+}
+
+.content-header > h1 {
+    display: inline-block;
+    font-weight: 900;
+}

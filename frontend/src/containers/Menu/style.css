@@ -1,0 +1,71 @@
+.menu {
+    width: 1.5rem;
+    position: relative;
+    cursor: pointer;
+}
+
+.hidden-checkbox {
+    display: none;
+}
+
+.hidden-checkbox:checked ~ .menu-banner {
+    will-change: transform;
+    -webkit-transform: translate(100%, 0);
+    -ms-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+    transition: transform 0.5s ease-in-out;
+}
+
+.menu-banner {
+    width: 18rem;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: -18rem;
+    background-color: var(--color-background-secondary);
+    z-index: 3;
+    transform-origin: 0 0;
+    will-change: transform;
+    -webkit-transform: translate(-100%, 0);
+    -ms-transform: translate(-100%, 0);
+    transform: translate(-100%, 0);
+    transition: transform 0.5s ease-in-out;
+    overflow: scroll;
+}
+
+.menu-content {
+    padding: 1rem;
+}
+
+.close-menu-button {
+    padding: 0.5rem;
+    width: 3rem;
+    margin: 0.5rem 0 0.5rem auto;
+}
+
+.cross {
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+    transform: rotate(45deg);
+}
+
+.cross:before, .cross:after {
+    content: "";
+    position: absolute;
+    background: var(--color-text);
+}
+
+.cross:before {
+    left: 50%;
+    width: 20%;
+    margin-left: -10%;
+    height: 100%;
+}
+
+.cross:after {
+    top: 50%;
+    height: 20%;
+    margin-top: -10%;
+    width: 100%;
+}

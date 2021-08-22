@@ -1,0 +1,22 @@
+.arrow-up {
+  transform: rotate(225deg);
+}
+
+.arrow-down {
+  transform: rotate(45deg);
+}
+
+.arrow {
+  width: 1rem;
+  height: 1rem;
+  border: 0.2rem solid var(--color-main);
+  border-left: 0;
+  border-top: 0;
+  cursor: pointer;
+}
+
+.arrow:hover {
+  border: 0.2rem solid var(--color-secondary);
+  border-left: 0;
+  border-top: 0;
+}

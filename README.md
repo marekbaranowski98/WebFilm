@@ -1,5 +1,5 @@
 # WebFilm [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-Projekt związany z pracą dyplomową pisaną w 2021 roku "Projekt i realizacja serwisu rekomendującego produkcje filmowe.
+Projekt związany z pracą dyplomową pisaną w 2021 roku "Projekt i realizacja serwisu rekomendującego produkcje filmowe".
 
 ## Spis treści
 * [Technologie](#technologie)
@@ -51,7 +51,7 @@ Najpierw należy zainstalować [Git](https://git-scm.com) i [Python](https://www
     python3 manage.py runserver
     ```
 ## Licencja
-WebFilm jest napisany na [licencji MIT](LICENSE).
+WebFilm jest napisany na [licencji MIT](LICENSE). Grafiki użyte na stronie pochodzą ze strony [SVGREPO](https://www.svgrepo.com).
 
 ### Autor
 > GitHub [@marekbaranowski98](https://github.com/marekbaranowski98)

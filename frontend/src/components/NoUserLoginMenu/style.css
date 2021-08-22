@@ -1,0 +1,10 @@
+.container-login-button {
+    display: flex;
+    align-items: center;
+    margin: 0 0.5rem;
+    width: 17rem;
+}
+
+.container-login-button .button {
+    margin: 0 0.5rem;
+}

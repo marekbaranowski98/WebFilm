@@ -1,0 +1,48 @@
+.menu-option-header {
+    padding: 0.5rem 0;
+    display: flex;
+
+    align-items: flex-end;
+    justify-content: space-between;
+    font-size: 1.5rem;
+}
+
+.menu-option-header:hover {
+    background-color: var(--color-background-secondary-hover);
+}
+
+.expend-container {
+    cursor: pointer;
+}
+
+.expend-container:hover .expend-button {
+    border: 0.2rem solid var(--color-secondary);
+    border-left: 0;
+    border-top: 0;
+}
+
+.submenu li {
+    margin-left: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.submenu li:hover {
+    background-color: var(--color-background-secondary-hover);
+}
+
+.hidden-checkbox:checked ~ .expend-button {
+    will-change: transform;
+    -webkit-transform: rotate(225deg);
+    -ms-transform: rotate(225deg);
+    transform: rotate(225deg);
+    transition: transform 0.2s ease-in-out;
+}
+
+.expend-button {
+    will-change: transform;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease-in-out;
+}
