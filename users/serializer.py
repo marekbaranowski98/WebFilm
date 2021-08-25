@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from rest_framework import serializers
 
 from .models import User
@@ -29,3 +30,14 @@ class RegisterSerializer(serializers.ModelSerializer):
             validated_data['gender'],
         )
         return user
+
+
+class LoginUserSerializer(serializers.Serializer):
+    email = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, data):
+        user = authenticate(**data)
+        if user and user.is_active:
+            return user
+        raise serializers.ValidationError("Invalid Details.")
