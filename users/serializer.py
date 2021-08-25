@@ -40,10 +40,11 @@ class RegisterSerializer(serializers.ModelSerializer):
             except Exception as e:
                 raise ValidationError({'password': str.split(str(e)[2:-2], "', '")})
 
-                # self.add_error('password1', error)
         confirm_password = data.pop('repeat_password')
         if password != confirm_password:
             raise ValidationError({'password': 'Hasła muszą być identyczne'})
+        return data
+
 
 class LoginUserSerializer(serializers.Serializer):
     email = serializers.CharField()
@@ -51,6 +52,6 @@ class LoginUserSerializer(serializers.Serializer):
 
     def validate(self, data):
         user = authenticate(**data)
-        if user and user.is_active:
-            return user
-        raise serializers.ValidationError("Invalid Details.")
+        if not user:
+            raise serializers.ValidationError("Błędny login lub hasło")
+        return user

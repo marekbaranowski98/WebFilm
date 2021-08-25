@@ -1,9 +1,12 @@
+import logging
 from rest_framework.authtoken.models import Token
 from rest_framework import generics, permissions
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 
 from .serializer import RegisterSerializer, LoginUserSerializer, UserSerializer
+
+loggerUser = logging.getLogger(__name__)
 
 
 class RegisterAPI(generics.GenericAPIView):
@@ -13,9 +16,10 @@ class RegisterAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-
+            data = UserSerializer(user, context=self.get_serializer_context()).data
+            loggerUser.info(f'User {data} register')
             response = Response({
-                'user': UserSerializer(user, context=self.get_serializer_context()).data,
+                'user': data,
             })
             response.status_code = 201
             return response
@@ -32,10 +36,11 @@ class LoginAPI(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, context={'request': request})
+
         if serializer.is_valid():
             user = serializer.validated_data
+            loggerUser.info(f"User {r'{'}'id': '{user.id}' 'email': '{user}'{r'}'} logged")
             token, created = Token.objects.get_or_create(user=user)
-
             response = Response({
                 'token': token.key,
                 'user_id': user.pk,
@@ -44,6 +49,7 @@ class LoginAPI(ObtainAuthToken):
             response.status_code = 200
             return response
         else:
+            loggerUser.info(f'Attempting to log in to the user  email {request.data["email"]}')
             response = Response({
                 'errors': serializer.errors
             })

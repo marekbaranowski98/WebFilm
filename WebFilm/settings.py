@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import os
 import environ
 from pathlib import Path
 
@@ -151,3 +152,34 @@ REST_FRAMEWORK = {
 
 CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_HTTPONLY = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+        'userAction': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'user.log',
+            'formatter': 'verbose',
+        }
+    },
+    'loggers': {
+        'users': {
+            'handlers': ['userAction'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
