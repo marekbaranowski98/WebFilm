@@ -1,7 +1,14 @@
-from django.contrib.auth import authenticate
 from rest_framework import serializers
 
 from .models import User
+
+
+class UserSerializer(serializers.ModelSerializer):
+    gen = serializers.CharField(source='get_gender_display')
+
+    class Meta:
+        model = User
+        fields = ('id', 'login', 'email', 'name', 'surname', 'avatar')
 
 
 class RegisterSerializer(serializers.ModelSerializer):
