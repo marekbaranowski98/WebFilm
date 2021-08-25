@@ -1,9 +1,8 @@
-from django.contrib.auth import login
-from knox.models import AuthToken
+from rest_framework.authtoken.models import Token
 from rest_framework import generics, permissions
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 
-from WebFilm import settings
 from .serializer import RegisterSerializer, LoginUserSerializer, UserSerializer
 
 
@@ -12,34 +11,44 @@ class RegisterAPI(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
+        if serializer.is_valid():
+            user = serializer.save()
 
-        token = AuthToken.objects.create(user)[1]
-        response = Response({
-            "user": UserSerializer(user, context=self.get_serializer_context()).data,
-        })
-        response.set_cookie('token', token, httponly=settings.SESSION_COOKIE_HTTPONLY)
-        return response
+            response = Response({
+                'user': UserSerializer(user, context=self.get_serializer_context()).data,
+            })
+            response.status_code = 201
+            return response
+        else:
+            response = Response({
+                'errors': serializer.errors,
+            })
+            response.status_code = 403
+            return response
 
 
-class LoginAPI(generics.GenericAPIView):
+class LoginAPI(ObtainAuthToken):
     serializer_class = LoginUserSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data
-        login(request, user)
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            user = serializer.validated_data
+            token, created = Token.objects.get_or_create(user=user)
 
-        token = AuthToken.objects.create(user)[1]
-
-        response = Response({
-                "user": UserSerializer(user, context=self.get_serializer_context()).data,
-                "token": token
-        })
-        response.set_cookie('token', token, httponly=settings.SESSION_COOKIE_HTTPONLY)
-        return response
+            response = Response({
+                'token': token.key,
+                'user_id': user.pk,
+                'email': user.email
+            })
+            response.status_code = 200
+            return response
+        else:
+            response = Response({
+                'errors': serializer.errors
+            })
+            response.status_code = 404
+            return response
 
 
 class UserAPI(generics.RetrieveAPIView):

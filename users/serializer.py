@@ -1,5 +1,6 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, password_validation
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from .models import User
 
@@ -9,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'login', 'email', 'name', 'surname', 'avatar')
+        fields = ('id', 'login', 'email', 'name', 'surname', 'gen', 'avatar')
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -31,6 +32,18 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
         return user
 
+    def validate(self, data):
+        password = data.get('password')
+        if password:
+            try:
+                password_validation.validate_password(password, self.instance)
+            except Exception as e:
+                raise ValidationError({'password': str.split(str(e)[2:-2], "', '")})
+
+                # self.add_error('password1', error)
+        confirm_password = data.pop('repeat_password')
+        if password != confirm_password:
+            raise ValidationError({'password': 'Hasła muszą być identyczne'})
 
 class LoginUserSerializer(serializers.Serializer):
     email = serializers.CharField()

@@ -6,8 +6,12 @@ class UserManager(BaseUserManager):
         """
         Create and save a User with the given email and password.
         """
+        if not login:
+            raise ValueError('Musisz podaćlogin')
         if not email:
-            raise ValueError('The Email must be set')
+            raise ValueError('Musisz podać email')
+        if not password:
+            raise ValueError('Musisz podać hasło')
         email = self.normalize_email(email)
         user = self.model(
             login=login,

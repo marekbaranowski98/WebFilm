@@ -1,21 +1,158 @@
----
 openapi: 3.0.0
 info:
-  title: WebFilm API
   description: |
     This is a documentation api Webfilm server.
+  version: "1.0.0"
+  title: WebFilm API
   contact:
     email: marek.baranowski@student.po.edu.pl
   license:
     name: MIT
-  version: 1.0.0
+    url: 'https://github.com/marekbaranowski98/WebFilm/blob/main/LICENSE'
 servers:
-- url: http://localhost/api
-  description: API WebFilm Server
-  variables:
-    port:
-      default: "8000"
-      enum:
-      - "8000"
-paths: {}
-components: {}
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/baranowski.marek/WebFilm/1.0.0
+  - description: API WebFilm Server
+    url: http://localhost:8000/api
+    variables:
+      port:
+        enum:
+          - '8000'
+        default: '8000'
+paths:
+  /users/:
+    post:
+      tags:
+        - user
+      summary: Register user
+      operationId: registerUser
+      requestBody:
+        description: User data required for registration
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+        required: true
+      responses:
+        201:
+          description: Created
+          content: {}
+        403:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+  /users/login/:
+    post:
+      tags:
+        - user
+      summary: Login user
+      operationId: loginUser
+      requestBody:
+        description: User data required for logged
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+        required: true
+      responses:
+        201:
+          description: Created
+          content: {}
+        403:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    UserRegister:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int32
+        login:
+          type: string
+          pattern: '^[\w.-]+$'
+          minLength: 6
+          maxLength: 30
+        password:
+          type: string
+          format: password
+          pattern: '^[A-Za-z0-9$%^&]{8,32}$'
+          minLength: 8
+          maxLength: 32
+        repeat_password:
+          type: string
+          format: password
+          pattern: '^[A-Za-z0-9$%^&]{8,32}$'
+          minLength: 8
+          maxLength: 32
+        email:
+          type: string
+          format: email
+          minLength: 8
+          maxLength: 254
+        name:
+          type: string
+          maxLength: 150
+        surname:
+          type: string
+          maxLength: 150
+        gender:
+          type: integer
+          description: Gender
+          enum:
+          - 0
+          - 1
+          - 2
+        birth_date:
+          type: string
+          format: date
+        avatar:
+          type: string
+          pattern: '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
+      required:
+        - login
+        - email
+        - password
+        - repeat_password
+    UserLogin:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 8
+          maxLength: 254
+        password:
+          type: string
+          format: password
+          pattern: '^[A-Za-z0-9$%^&]{8,32}$'
+          minLength: 8
+          maxLength: 32
+      required:
+        - email
+        - password
+    Error:
+      type: object
+      properties:
+        field:
+          type: array
+          items:
+            type: string
+      required:
+        - field
+        - message
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
