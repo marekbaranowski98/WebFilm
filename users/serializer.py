@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from django.contrib.auth import authenticate, password_validation
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -19,20 +20,20 @@ class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'login', 'email', 'password', 'repeat_password', 'name', 'surname', 'gender', 'birth_date')
-        extra_kwargs = {'password': {'write_only': True}}
+        extra_kwargs = {'password': {'write_only': True}, 'login': {'required': True},}
 
-    def create(self, validated_data):
+    def create(self, validated_data: dict):
         user = User.objects.create_user(
-            validated_data['login'],
-            validated_data['email'],
-            validated_data['password'],
-            validated_data['name'],
-            validated_data['surname'],
-            validated_data['gender'],
+            validated_data.get('login'),
+            validated_data.get('email'),
+            validated_data.get('password'),
+            validated_data.get('name', ''),
+            validated_data.get('surname', ''),
+            validated_data.get('gender', 0),
         )
         return user
 
-    def validate(self, data):
+    def validate(self, data: OrderedDict):
         password = data.get('password')
         if password:
             try:
@@ -46,9 +47,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         return data
 
 
-class LoginUserSerializer(serializers.Serializer):
+class LoginUserSerializer(serializers.ModelSerializer):
     email = serializers.CharField()
     password = serializers.CharField()
+
+    class Meta:
+        model = User
+        fields = ('email', 'password')
 
     def validate(self, data):
         user = authenticate(**data)

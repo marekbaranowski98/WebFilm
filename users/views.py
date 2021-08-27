@@ -2,9 +2,11 @@ import logging
 from rest_framework.authtoken.models import Token
 from rest_framework import generics, permissions
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.request import Request
 from rest_framework.response import Response
 
 from .serializer import RegisterSerializer, LoginUserSerializer, UserSerializer
+from .models import User
 
 loggerUser = logging.getLogger(__name__)
 
@@ -12,7 +14,7 @@ loggerUser = logging.getLogger(__name__)
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: Request, *args, **kwargs) -> Response:
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
@@ -34,7 +36,7 @@ class RegisterAPI(generics.GenericAPIView):
 class LoginAPI(ObtainAuthToken):
     serializer_class = LoginUserSerializer
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: Request, *args, **kwargs) -> Response:
         serializer = self.serializer_class(data=request.data, context={'request': request})
 
         if serializer.is_valid():
@@ -46,6 +48,7 @@ class LoginAPI(ObtainAuthToken):
                 'user_id': user.pk,
                 'email': user.email
             })
+            response.set_cookie('token', token.key, httponly=True, secure=True, path='/', domain='127.0.0.1', samesite='strict')
             response.status_code = 200
             return response
         else:
@@ -61,5 +64,5 @@ class UserAPI(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = UserSerializer
 
-    def get_object(self):
+    def get_object(self) -> User:
         return self.request.user
