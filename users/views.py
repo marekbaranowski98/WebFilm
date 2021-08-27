@@ -15,6 +15,14 @@ class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
 
     def post(self, request: Request, *args, **kwargs) -> Response:
+        """
+        Return api register
+
+        :param request Request
+        :param args:
+        :param kwargs:
+        :return: Response
+        """
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
@@ -37,6 +45,14 @@ class LoginAPI(ObtainAuthToken):
     serializer_class = LoginUserSerializer
 
     def post(self, request: Request, *args, **kwargs) -> Response:
+        """
+        Return api login
+
+        :param request Request
+        :param args:
+        :param kwargs:
+        :return Response
+        """
         serializer = self.serializer_class(data=request.data, context={'request': request})
 
         if serializer.is_valid():
@@ -65,4 +81,9 @@ class UserAPI(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
     def get_object(self) -> User:
+        """
+        Return user object
+
+        :return User
+        """
         return self.request.user
