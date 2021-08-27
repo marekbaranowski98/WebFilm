@@ -37,7 +37,15 @@ class RegisterSerializer(serializers.ModelSerializer):
         password = data.get('password')
         if password:
             try:
-                password_validation.validate_password(password, self.instance)
+                password_validation.validate_password(
+                    password,
+                    user=User(
+                        login=data.get('login'),
+                        email=data.get('email'),
+                        name=data.get('name'),
+                        surname=data.get('surname')
+                    )
+                )
             except Exception as e:
                 raise ValidationError({'password': str.split(str(e)[2:-2], "', '")})
 
