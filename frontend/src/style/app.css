@@ -35,3 +35,7 @@ h1 {
 .button:hover {
     background-color: var(--color-secondary);
 }
+
+.main-container {
+    min-height: calc(100vh - 6rem - 3rem);
+}

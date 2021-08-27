@@ -7,11 +7,11 @@ import Search from '../../components/Search';
 import UserMenu from '../UserMenu';
 import useWindowsDimensions from '../../hooks/useWindowsDimensions';
 
-interface HeadProps {
+interface HeaderProps {
 
 }
 
-const Head: React.FC<HeadProps> = React.memo(() => {
+const Header: React.FC<HeaderProps> = React.memo(() => {
     const { height, width } = useWindowsDimensions();
     return (
         <header className="main-header">
@@ -34,4 +34,4 @@ const Head: React.FC<HeadProps> = React.memo(() => {
     );
 });
 
-export default Head;
+export default Header;
