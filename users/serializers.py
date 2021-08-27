@@ -52,11 +52,11 @@ class RegisterSerializer(serializers.ModelSerializer):
                     )
                 )
             except Exception as e:
-                raise ValidationError({'password': str.split(str(e)[2:-2], "', '")})
+                raise ValidationError({'password': str.split(str(e)[2:-2], "', '")}, code='error-password')
 
         confirm_password = data.pop('repeat_password')
         if password != confirm_password:
-            raise ValidationError({'password': 'Hasła muszą być identyczne'})
+            raise ValidationError({'password': 'Hasła muszą być identyczne'}, code='different-password')
         return data
 
 
@@ -78,7 +78,7 @@ class LoginUserSerializer(serializers.ModelSerializer):
         """
         user = authenticate(**data)
         if not user:
-            raise serializers.ValidationError("Błędny login lub hasło")
+            raise serializers.ValidationError("Błędny login lub hasło", code='error-login')
         return user
 
 
