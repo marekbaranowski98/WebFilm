@@ -5,7 +5,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from .serializer import RegisterSerializer, LoginUserSerializer, UserSerializer
+from .serializers import RegisterSerializer, LoginUserSerializer, UserSerializer
 from .models import User
 
 loggerUser = logging.getLogger(__name__)
