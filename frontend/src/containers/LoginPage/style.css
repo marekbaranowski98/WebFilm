@@ -1,0 +1,15 @@
+.container-login-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: solid 1px var(--color-text);
+    width: fit-content;
+    padding: 1rem;
+    border-radius: 3rem;
+    -webkit-border-radius: 3rem;
+    -moz-border-radius: 3rem;
+}
+
+.container-login-menu h2 {
+    margin: 1rem;
+}

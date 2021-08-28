@@ -28,8 +28,8 @@ const Menu: React.FC<MenuProps> = () => {
     const wrapperMenuRef = useRef<HTMLDivElement>(null);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const { height, width } = useWindowsDimensions();
-    const menuName: {id: number, title: string, visibility: boolean, link: string,
-            children: {id: number, element: string}[]}[] = [
+    const menuName: { id: number, title: string, visibility: boolean, link: string,
+            children: { id: number, element: string }[] }[] = [
         {
             id: 1,
             title: "Zaloguj się",

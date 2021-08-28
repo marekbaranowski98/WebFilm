@@ -1,0 +1,40 @@
+.social-login-menu {
+}
+
+.social-login-button {
+    width: 18rem;
+    margin: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.social-login-icon {
+    background-color: var(--color-text);
+    width: 2.5rem;
+    margin: 0 1rem;
+    padding: 0.25rem;
+    border-radius: 2rem;
+    -webkit-border-radius: 2rem;
+    -moz-border-radius: 2rem;
+}
+
+.name-option-login {
+    width: 100%;
+    text-align: center;
+}
+
+.login-google {
+    background-color: #4285F4;
+}
+
+.login-google:hover {
+    background-color: #5396F5;
+}
+
+.login-facebook {
+    background-color: #4267B2;
+}
+
+.login-facebook:hover {
+    background-color: #5378C3;
+}
