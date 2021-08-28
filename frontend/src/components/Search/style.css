@@ -1,11 +1,12 @@
 .container-search {
     width: 100%;
+    height: 2.5rem;
     display: flex;
 }
 
 .search-input {
     width: calc(100% - 2rem);
-    height: 2.5rem;
+    height: 100%;
     padding: 0.25rem 0.75rem;
     border-radius: 2rem 0 0 2rem;
     -webkit-border-radius: 2rem 0 0 2rem;
@@ -13,6 +14,7 @@
 }
 
 .search-button {
+    height: 100%;
     border-radius: 0 2rem 2rem 0;
     -webkit-border-radius: 0 2rem 2rem 0;
     -moz-border-radius: 0 2rem 2rem 0;

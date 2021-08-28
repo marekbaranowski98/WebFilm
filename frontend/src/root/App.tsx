@@ -5,6 +5,7 @@ import '../style/app.css';
 import SEO from '../components/SEO';
 import Header from '../containers/Header';
 import MainContent from '../containers/MainContent';
+import LoginPage from '../containers/LoginPage';
 import Footer from '../components/Footer';
 
 interface App {
@@ -15,14 +16,16 @@ const App: React.FC<App> = () => {
     return (
         <div>
             <SEO />
-            <Header />
-            <div className="main-container">
-                <BrowserRouter>
+            <BrowserRouter>
+                <Header />
+                <div className="main-container">
+
                     <Switch>
                         <Route exact path="/" component={MainContent}/>
+                        <Route exact path="/login" component={LoginPage}/>
                     </Switch>
-                </BrowserRouter>
-            </div>
+                </div>
+            </BrowserRouter>
             <Footer />
         </div>
     );

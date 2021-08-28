@@ -21,19 +21,31 @@ const Menu: React.FC<MenuProps> = () => {
         return true;
     };
 
+    const checkIsSmallScreen = (): boolean => {
+        return width < 1024;
+    }
+
     const wrapperMenuRef = useRef<HTMLDivElement>(null);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const { height, width } = useWindowsDimensions();
-    const menuName: {id: number, title: string, visibility: boolean, children: {id: number, element: string}[]}[] = [
-        { id: 1, title: "Zaloguj się", visibility: checkIsUserLogin(),  children: []},
-        { id: 2, title: "Zarejestruj się", visibility: checkIsUserLogin(), children: [], },
-        { id: 3, title: "Najnowsze filmy", visibility: true, children: [], },
-        { id: 4, title: "Przeglądaj filmy", visibility: true, children: [], },
-        { id: 5, title: "Ranking filmów", visibility: true, children: [], },
+    const menuName: {id: number, title: string, visibility: boolean, link: string,
+            children: {id: number, element: string}[]}[] = [
+        {
+            id: 1,
+            title: "Zaloguj się",
+            visibility: checkIsUserLogin() && checkIsSmallScreen(),
+            link: "/login",
+            children: [],
+        },
+        { id: 2, title: "Zarejestruj się", visibility: checkIsUserLogin() && checkIsSmallScreen(), link: "#", children: [], },
+        { id: 3, title: "Najnowsze filmy", visibility: true, link: "#", children: [], },
+        { id: 4, title: "Przeglądaj filmy", visibility: true, link: "#", children: [], },
+        { id: 5, title: "Ranking filmów", visibility: true, link: "#", children: [], },
         {
             id: 6,
             title: "Zarządzaj",
             visibility: checkUserIsAdmin(),
+            link: "#",
             children: [
                 { id: 1, element: "Zarządzaj filmami", },
                 { id: 2, element: "Zarządzaj gatunkami", },
@@ -49,6 +61,7 @@ const Menu: React.FC<MenuProps> = () => {
             id: 7,
             title: "Dodaj",
             visibility: checkUserIsAdmin(),
+            link: "#",
             children: [
                 { id: 1, element: "Dodaj film", },
                 { id: 2, element: "Dodaj gatunek", },
@@ -76,14 +89,14 @@ const Menu: React.FC<MenuProps> = () => {
                                 <div className="cross"/>
                             </div>
                             <ul>
-                                {width < 1024 ?
+                                {checkIsSmallScreen() ?
                                     <li key="9"><MenuUserContent setUserIsLogged={setIsMenuOpen} /></li>
                                     :
                                     ''
                                 }
                                 {menuName.map(x => x.visibility ?
                                     <li key={x.id}>
-                                        <MenuHeader headerTitle={x.title} subMenuChildren={x.children} />
+                                        <MenuHeader headerTitle={x.title} link={x.link} subMenuChildren={x.children} />
                                     </li> : ''
                                 )}
                             </ul>

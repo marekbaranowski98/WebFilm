@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import MenuUserContent from '../../components/MenuUserContent';
-import NoUserLoginMenu from '../../components/NoUserLoginMenu';
+import NoUserLoginMenu from '../../components/LoginUserButton';
 
 interface UserMenuProps {
 
@@ -15,7 +15,7 @@ const UserMenu: React.FC<UserMenuProps> = () => {
             {userIsLogged ?
                 <MenuUserContent setUserIsLogged={setUserIsLogged} />
                 :
-                <NoUserLoginMenu setUserIsLogged={setUserIsLogged} />
+                <NoUserLoginMenu />
             }
         </div>
     );

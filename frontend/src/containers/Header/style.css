@@ -15,14 +15,20 @@ header.main-header {
 
 .content-header > * {
     margin: 0 0.5rem;
+    align-items: center;
+}
+
+.content-header a {
+    display: flex;
 }
 
 .logo {
     width: 4rem;
+    margin-right: 1rem;
     cursor: pointer;
 }
 
-.content-header > h1 {
+.name-page {
     display: inline-block;
     font-weight: 900;
 }
