@@ -5,7 +5,7 @@ import './style.css';
 interface SignInPerksProps {
 }
 
-const SignInPerks: React.FC<SignInPerksProps> = () => {
+const SignInPerks: React.FC<SignInPerksProps> = ({}) => {
     const perks: { id: number, title: string, description: string, }[] = [
         { id: 1, title: "Oceniaj filmy", description: "Będziemy ci podpowiadać kolejne filmy!", },
         { id: 2, title: "Do obejrzenia", description: "Zapisuj co chcesz obejrzeć", },

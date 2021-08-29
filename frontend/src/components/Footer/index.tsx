@@ -6,7 +6,7 @@ interface FooterProps {
 
 }
 
-const Footer: React.FC<FooterProps> = React.memo(() => {
+const Footer: React.FC<FooterProps> = React.memo(({}) => {
     return (
         <div className="footer-container">
             <footer>

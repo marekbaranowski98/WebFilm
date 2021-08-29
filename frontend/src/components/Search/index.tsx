@@ -2,11 +2,10 @@ import React from 'react';
 
 import './style.css';
 
-interface Search {
-
+interface SearchProps {
 }
 
-const Search: React.FC<Search> = () => {
+const Search: React.FC<SearchProps> = ({}) => {
     return (
         <div className="container-search">
             <input

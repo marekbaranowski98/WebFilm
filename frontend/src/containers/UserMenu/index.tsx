@@ -7,7 +7,7 @@ interface UserMenuProps {
 
 }
 
-const UserMenu: React.FC<UserMenuProps> = () => {
+const UserMenu: React.FC<UserMenuProps> = ({}) => {
     const [userIsLogged, setUserIsLogged] = useState<boolean>(false);
 
     return (

@@ -8,7 +8,7 @@ interface MainContentProps {
 
 }
 
-const MainContent: React.FC<MainContentProps> = () => {
+const MainContent: React.FC<MainContentProps> = ({}) => {
     const {height, width} = useWindowsDimensions();
 
     return (

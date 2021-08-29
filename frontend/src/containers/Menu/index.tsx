@@ -12,7 +12,7 @@ interface MenuProps {
 
 }
 
-const Menu: React.FC<MenuProps> = () => {
+const Menu: React.FC<MenuProps> = ({}) => {
     const checkIsUserLogin = (): boolean => {
         return true;
     };

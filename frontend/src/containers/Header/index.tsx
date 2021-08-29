@@ -12,7 +12,7 @@ interface HeaderProps {
 
 }
 
-const Header: React.FC<HeaderProps> = React.memo(() => {
+const Header: React.FC<HeaderProps> = React.memo(({}) => {
     const { height, width } = useWindowsDimensions();
     return (
         <header className="main-header">

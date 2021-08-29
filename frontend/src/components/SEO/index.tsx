@@ -3,11 +3,10 @@ import {HelmetProvider, Helmet} from 'react-helmet-async';
 
 import icon from '../../images/logo.svg';
 
-interface SEO {
-
+interface SEOProps {
 }
 
-const SEO: React.FC<SEO> = () => {
+const SEO: React.FC<SEOProps> = ({}) => {
     return (
         <HelmetProvider>
             <Helmet>

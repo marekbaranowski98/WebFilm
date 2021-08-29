@@ -7,7 +7,7 @@ interface LoginUserButton {
 
 }
 
-const LoginUserButton: React.FC<LoginUserButton> = () => {
+const LoginUserButton: React.FC<LoginUserButton> = ({}) => {
     return (
         <div className="container-login-button">
             <Link className="button" to={'/login/'}>Zaloguj się</Link>
