@@ -4,10 +4,8 @@
     display: flex;
 }
 
-.search-input {
+.search-input[type=text] {
     width: calc(100% - 2rem);
-    height: 100%;
-    padding: 0.25rem 0.75rem;
     border-radius: 2rem 0 0 2rem;
     -webkit-border-radius: 2rem 0 0 2rem;
     -moz-border-radius: 2rem 0 0 2rem;

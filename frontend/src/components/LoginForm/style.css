@@ -1,0 +1,20 @@
+.input-field {
+    width: 17rem;
+    margin: 0 1rem 1rem;
+}
+
+.input-field input {
+    height: 2rem;
+}
+
+.submit-button {
+    width: fit-content;
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem;
+}
+
+.link-request-reset-password {
+    width: fit-content;
+    margin: 1rem auto 0;
+    cursor: pointer;
+}

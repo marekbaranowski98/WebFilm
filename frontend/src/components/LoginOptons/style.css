@@ -27,7 +27,7 @@
     background-color: #4285F4;
 }
 
-.login-google:hover {
+.login-google:hover, .login-google:focus {
     background-color: #5396F5;
 }
 
@@ -35,6 +35,6 @@
     background-color: #4267B2;
 }
 
-.login-facebook:hover {
+.login-facebook:hover, .login-facebook:focus {
     background-color: #5378C3;
 }

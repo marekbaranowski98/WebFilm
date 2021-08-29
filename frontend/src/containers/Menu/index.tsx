@@ -1,6 +1,5 @@
 import React, {useRef, useState} from 'react';
 
-import '../../style/shape.css';
 import './style.css';
 import menu from '../../images/menu.svg';
 import AutoHideOutsideClick from '../../helpers/AutoHideOutsideClick';
@@ -79,7 +78,7 @@ const Menu: React.FC<MenuProps> = ({}) => {
 
     return (
         <div className="container-menu">
-            <img src={menu} className="menu" alt="Guzik menu" onClick={() => setIsMenuOpen(true)}/>
+            <img src={menu} className="menu" alt="Guzik menu" onClick={() => setIsMenuOpen(true)} />
             <div className="visibility-menu">
                 <input type="checkbox" className="hidden-checkbox" checked={isMenuOpen} readOnly={true}/>
                 <div className="menu-banner" ref={wrapperMenuRef}>

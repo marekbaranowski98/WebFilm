@@ -2,6 +2,8 @@ import React from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import '../style/app.css';
+import '../style/shape.css';
+import '../style/input.css';
 import SEO from '../components/SEO';
 import Header from '../containers/Header';
 import MainContent from '../containers/MainContent';

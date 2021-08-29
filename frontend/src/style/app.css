@@ -47,7 +47,7 @@ a, a:hover, a:focus, a:active {
     white-space: nowrap;
 }
 
-.button:hover {
+.button:hover, .button:focus {
     background-color: var(--color-secondary);
 }
 
