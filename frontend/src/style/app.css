@@ -28,6 +28,10 @@ h2 {
    font-size: 2rem;
 }
 
+h3 {
+    font-size: 1.75rem;
+}
+
 a, a:hover, a:focus, a:active {
     text-decoration: none;
     color: inherit;
@@ -48,5 +52,5 @@ a, a:hover, a:focus, a:active {
 }
 
 .main-container {
-    min-height: calc(100vh - 6rem - 3rem);
+    min-height: calc(100vh - 8rem - 3rem);
 }
