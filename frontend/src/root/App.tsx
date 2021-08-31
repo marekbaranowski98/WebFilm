@@ -21,7 +21,6 @@ const App: React.FC<App> = () => {
             <BrowserRouter>
                 <Header />
                 <div className="main-container">
-
                     <Switch>
                         <Route exact path="/" component={MainContent}/>
                         <Route exact path="/login" component={LoginPage}/>
