@@ -1,7 +1,6 @@
 const {resolve} = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
 module.exports = {
     entry: './src/index.tsx',
@@ -31,7 +30,14 @@ module.exports = {
             },
             {
                 test: /\.(png|jp(e*)g|svg|gif)$/,
-                loader: 'file-loader',
+                use: [
+                    {
+                        loader: 'file-loader',
+                    },
+                    {
+                        loader: 'svgo-loader',
+                    },
+                ],
             },
         ],
     },
@@ -45,36 +51,6 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'style.css',
-        }),
-        new ImageMinimizerPlugin({
-            minimizerOptions: {
-                plugins: [
-                    ['gifsicle', {interlaced: true,},],
-                    ['jpegtran', {progressive: true,},],
-                    ['optipng', {optimizationLevel: 5,},],
-                    [
-                        'svgo',
-                        {
-                            name: 'preset-default',
-                            params: {
-                                overrides: {
-                                    builtinPluginName: {
-                                        optionName: 'optionValue',
-                                    },
-                                    anotherBuiltinPlugin: false,
-                                },
-                            },
-                        },
-                        'moreBuiltinPlugin',
-                        {
-                            name: 'manyBuiltInPlugin',
-                            params: {
-                                optionName: 'value',
-                            },
-                        },
-                    ],
-                ],
-            },
         }),
     ],
     optimization: {
