@@ -13,11 +13,7 @@ const MainContent: React.FC<MainContentProps> = ({}) => {
 
     return (
         <>
-            {width < 600 ?
-                <Search />
-                :
-                ''
-            }
+            {width < 600 && <Search />}
         </>
     );
 };

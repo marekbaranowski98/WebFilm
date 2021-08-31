@@ -20,19 +20,17 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({headerTitle, link, subMenuChildr
         <div onClick={() => setShowSubMenu(!showSubMenu)} ref={wrapperMenuOptionRef}>
             <div className="menu-option-header expend-container">
                 <Link to={link}>{headerTitle}</Link>
-                {subMenuChildren.length > 0 ?
+                {subMenuChildren.length > 0 &&
                     <>
                         <input type="checkbox" className="hidden-checkbox" defaultChecked={showSubMenu}/>
                         <div className="arrow arrow-down expend-button"/>
                     </>
-                    : ''
                 }
             </div>
-            {showSubMenu &&  subMenuChildren.length > 0 ?
+            {showSubMenu &&  subMenuChildren.length > 0 &&
                 <ul className="submenu">
                     {subMenuChildren.map(x => <li key={x.id}>{x.element}</li>)}
                 </ul>
-                : ''
             }
         </div>
     );

@@ -39,13 +39,12 @@ const MenuUserContent: React.FC<MenuUserContentProps> = ({setUserIsLogged}) => {
                 <input type="checkbox" className="hidden-checkbox" defaultChecked={showSubMenu} />
                 <div className="arrow arrow-down expend-button" onClick={() => setShowSubMenu(!showSubMenu)}/>
             </div>
-            {showSubMenu ?
+            {showSubMenu &&
                 <div className="container-submenu">
                     <ul className="submenu">
                         {subMenuUser.map(x => <li key={x.id} onClick={x.handlerClick}>{x.element}</li>)}
                     </ul>
                 </div>
-                : ''
             }
         </div>
     );

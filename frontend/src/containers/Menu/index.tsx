@@ -88,15 +88,13 @@ const Menu: React.FC<MenuProps> = ({}) => {
                                 <div className="cross"/>
                             </div>
                             <ul>
-                                {checkIsSmallScreen() ?
+                                {checkIsSmallScreen() &&
                                     <li key="9"><MenuUserContent setUserIsLogged={setIsMenuOpen} /></li>
-                                    :
-                                    ''
                                 }
-                                {menuName.map(x => x.visibility ?
+                                {menuName.map(x => x.visibility &&
                                     <li key={x.id}>
                                         <MenuHeader headerTitle={x.title} link={x.link} subMenuChildren={x.children} />
-                                    </li> : ''
+                                    </li>
                                 )}
                             </ul>
                         </div>

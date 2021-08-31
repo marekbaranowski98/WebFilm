@@ -22,16 +22,8 @@ const Header: React.FC<HeaderProps> = React.memo(({}) => {
                     <img className="logo" src={logo} alt="Logo serwisu" />
                     <h1 className="name-page">WebFilm</h1>
                 </Link>
-                {width >= 600 ?
-                    <Search/>
-                    :
-                    ''
-                }
-                {width >= 1024 ?
-                    <UserMenu />
-                    :
-                    ''
-                }
+                {width >= 600 && <Search/>}
+                {width >= 1024 && <UserMenu />}
             </div>
         </header>
     );

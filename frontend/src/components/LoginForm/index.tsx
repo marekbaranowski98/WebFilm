@@ -4,9 +4,8 @@ import './style.css';
 import {UserLoginForm} from '../../types/UserType';
 import {UserLoginError} from '../../types/UserType';
 import {validateEmail} from '../../helpers/validators';
-import {loginUser} from '../../helpers/api/user';
+import {loginUser, getLoggedUser} from '../../helpers/api/user';
 import ErrorMessage from '../ErrorMessage';
-import CsrfToken from '../CsrfToken';
 
 interface LoginFormProps {
 }
@@ -63,15 +62,10 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
 
     return (
         <form>
-            <CsrfToken />
             <div className="input-field">
                 <div className="required-field">Email</div>
                 <input type="email" name="email" onChange={updateField} required />
-                {errors.email ?
-                    <ErrorMessage message={errors.email} />
-                    :
-                    ''
-                }
+                {errors.email && <ErrorMessage message={errors.email} />}
             </div>
             <div className="input-field">
                 <div className="required-field">Hasło</div>
@@ -80,11 +74,7 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
             <div className="button submit-button" tabIndex={0} onClick={handlerSubmit}>
                 Zaloguj się
             </div>
-            {errors.non_field_errors ?
-                <ErrorMessage message={errors.non_field_errors} />
-                :
-                ''
-            }
+            {errors.non_field_errors && <ErrorMessage message={errors.non_field_errors} />}
             <div className="link-request-reset-password">Nie pamiętam hasłą</div>
         </form>
     );
