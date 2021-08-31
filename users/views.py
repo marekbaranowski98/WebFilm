@@ -60,9 +60,9 @@ class LoginAPI(ObtainAuthToken):
             loggerUser.info(f"User {r'{'}'id': '{user.id}' 'email': '{user}'{r'}'} logged")
             token, created = Token.objects.get_or_create(user=user)
             response = Response({
-                'token': token.key,
-                'user_id': user.pk,
-                'email': user.email
+                'name': user.name,
+                'login': user.login,
+                'avatar': user.avatar
             })
             response.set_cookie('token', token.key, httponly=True, secure=True, path='/', domain='127.0.0.1', samesite='strict')
             response.status_code = 200

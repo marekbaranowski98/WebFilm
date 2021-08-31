@@ -3,7 +3,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.tsx',
+    entry: [
+        './src/index.tsx',
+    ],
     mode: 'development',
     output: {
         filename: 'main.js',

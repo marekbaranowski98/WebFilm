@@ -8,5 +8,5 @@ from .views import index
 
 urlpatterns = [
     path('', index),
-    url(r'^.*$', index),
+    url(r'^(?!api).*$', index),
 ]

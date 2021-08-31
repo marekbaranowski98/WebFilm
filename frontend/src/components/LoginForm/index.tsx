@@ -1,25 +1,21 @@
 import React, {useState} from 'react';
 
 import './style.css';
+import {UserLoginForm} from '../../types/UserType';
+import {UserLoginError} from '../../types/UserType';
 import {validateEmail} from '../../helpers/validators';
+import {loginUser} from '../../helpers/api/user';
 import ErrorMessage from '../ErrorMessage';
+import CsrfToken from '../CsrfToken';
 
 interface LoginFormProps {
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({}) => {
-    interface UserLoginForm {
-        email: string,
-        password: string,
-    }
     const [form, setForm] = useState<UserLoginForm>({
         email: '',
         password: '',
     });
-
-    interface UserLoginError extends Partial<UserLoginForm> {
-        non_field_errors?: string,
-    }
 
     const [errors, setErrors] = useState<UserLoginError>({});
 
@@ -31,7 +27,21 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
     }
 
     const handlerSubmit = () => {
-        validateFormLogin(form);
+        if(validateFormLogin(form)) {
+            loginUser(form).then((resolve) => {
+                let res = (resolve as Response);
+                res.json().then(x => console.log(x));
+                if (res.status !== 200) {
+                    // console.log(res);
+                } else {
+
+                }
+            }, (e) => {
+                setErrors({
+                    non_field_errors: e.message
+                })
+            });
+        }
     };
     
     const validateFormLogin = ({email}: UserLoginForm): boolean => {
@@ -53,6 +63,7 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
 
     return (
         <form>
+            <CsrfToken />
             <div className="input-field">
                 <div className="required-field">Email</div>
                 <input type="email" name="email" onChange={updateField} required />
@@ -69,6 +80,11 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
             <div className="button submit-button" tabIndex={0} onClick={handlerSubmit}>
                 Zaloguj się
             </div>
+            {errors.non_field_errors ?
+                <ErrorMessage message={errors.non_field_errors} />
+                :
+                ''
+            }
             <div className="link-request-reset-password">Nie pamiętam hasłą</div>
         </form>
     );
