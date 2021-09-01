@@ -68,7 +68,8 @@ class LoginAPI(ObtainAuthToken):
             response.status_code = 200
             return response
         else:
-            loggerUser.info(f'Attempting to log in to the user  email {request.data["email"]}')
+            if request.POST.get('email'):
+                loggerUser.info(f'Attempting to log in to the user  email {request.data["email"]}')
             response = Response({
                 'errors': serializer.errors
             })
