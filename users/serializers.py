@@ -60,7 +60,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         return data
 
 
-class LoginUserSerializer(serializers.ModelSerializer):
+class LoginFormUserSerializer(serializers.ModelSerializer):
     email = serializers.CharField()
     password = serializers.CharField()
 
@@ -82,9 +82,8 @@ class LoginUserSerializer(serializers.ModelSerializer):
         return user
 
 
-class UserSerializer(serializers.ModelSerializer):
-    gen = serializers.CharField(source='get_gender_display')
-
+class LoginUserDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'login', 'email', 'name', 'surname', 'gen', 'avatar')
+        fields = ('id', 'login', 'name', 'avatar')
+

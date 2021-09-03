@@ -144,12 +144,34 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'users.User'
 
+# CORS Configuration
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:8000",
-    "http://0.0.0.0:8080",
+    "http://127.0.0.1:8080",
 ]
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+CORS_URLS_REGEX = r"^/api/.*$"
+
+
+# Authentication user
+AUTH_USER_MODEL = 'users.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -157,9 +179,12 @@ REST_FRAMEWORK = {
     ),
 }
 
+
 CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_HTTPONLY = True
 
+
+# Logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

@@ -4,7 +4,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 @ensure_csrf_cookie
-def index(request: HttpRequest) -> HttpResponse:
+def index(request: HttpRequest, *args) -> HttpResponse:
     """
     Return view with react app
 

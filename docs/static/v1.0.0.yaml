@@ -10,11 +10,8 @@ info:
     name: MIT
     url: 'https://github.com/marekbaranowski98/WebFilm/blob/main/LICENSE'
 servers:
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/baranowski.marek/WebFilm/1.0.0
   - description: API WebFilm Server
-    url: http://localhost:8000/api
+    url: http://127.0.0.1:8000/api
     variables:
       port:
         enum:
@@ -37,33 +34,25 @@ paths:
       responses:
         201:
           description: Created
-          content: {}
-        403:
-          description: Created
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
-  /users/user/:
-    get:
-      tags:
-        - user
-      summary: Login user
-      operationId: getUser
-      responses:
-        201:
-          description: Created
-          content: {}
+                type: object
+                properties:
+                  info:
+                    type: string
+                    example: Użytkownik został pomyślne zarejestrowany.
         403:
-          description: Created
+          description: Forbidden
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Error'
   /users/login/:
     post:
       tags:
@@ -78,16 +67,51 @@ paths:
               $ref: '#/components/schemas/UserLogin'
         required: true
       responses:
-        201:
-          description: Created
-          content: {}
+        200:
+          description: Get token
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
         403:
-          description: Created
+          description: Forbidden
           content:
             application/json:
               schema:
                 type: array
                 items:
+                  $ref: '#/components/schemas/Error'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+  /users/me/:
+    get:
+      tags:
+        - user
+      summary: Check is user logged
+      operationId: authUser
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoggedUser'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
                   $ref: '#/components/schemas/Error'
 components:
   schemas:
@@ -143,6 +167,23 @@ components:
         - email
         - password
         - repeat_password
+    LoggedUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int32
+        login:
+          type: string
+          pattern: '^[\w.-]+$'
+          minLength: 6
+          maxLength: 30
+        name:
+          type: string
+          maxLength: 150
+        avatar:
+          type: string
+          pattern: '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
     UserLogin:
       type: object
       properties:
@@ -174,3 +215,4 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
+      bearerFormat: JWT

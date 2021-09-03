@@ -7,7 +7,7 @@ class FormatValidator(object):
         self.__regax = regax
 
     def validate(self, password, user=None):
-        if re.search(password, self.__regax) is None:
+        if re.search(self.__regax, password) is None:
             raise ValidationError(
                 'Hasło powino się składać z min 1 małej i dużej litery, cyfry oraz symbolu specjalnego @$!%*?&',
                 code='format-password'

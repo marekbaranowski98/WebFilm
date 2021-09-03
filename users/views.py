@@ -5,7 +5,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from .serializers import RegisterSerializer, LoginUserSerializer, UserSerializer
+from .serializers import RegisterSerializer, LoginFormUserSerializer, LoginUserDataSerializer
 from .models import User
 
 loggerUser = logging.getLogger(__name__)
@@ -26,10 +26,11 @@ class RegisterAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            data = UserSerializer(user, context=self.get_serializer_context()).data
+
+            data = RegisterSerializer(user).data
             loggerUser.info(f'User {data} register')
             response = Response({
-                'user': data,
+                'info': 'Użytkownik został pomyślne zarejestrowany.',
             })
             response.status_code = 201
             return response
@@ -42,7 +43,7 @@ class RegisterAPI(generics.GenericAPIView):
 
 
 class LoginAPI(ObtainAuthToken):
-    serializer_class = LoginUserSerializer
+    serializer_class = LoginFormUserSerializer
 
     def post(self, request: Request, *args, **kwargs) -> Response:
         """
@@ -57,14 +58,12 @@ class LoginAPI(ObtainAuthToken):
 
         if serializer.is_valid():
             user = serializer.validated_data
-            loggerUser.info(f"User {r'{'}'id': '{user.id}' 'email': '{user}'{r'}'} logged")
+            loggerUser.info(f"User {r'{'}'id': '{user.id}', 'email': '{user}'{r'}'} logged")
             token, created = Token.objects.get_or_create(user=user)
             response = Response({
-                'name': user.name,
-                'login': user.login,
-                'avatar': user.avatar
+                'token': token.key,
             })
-            response.set_cookie('token', token.key, httponly=True, secure=True, path='/', domain='127.0.0.1', samesite='strict')
+            response.set_cookie('token', token.key, samesite='strict', path='/')
             response.status_code = 200
             return response
         else:
@@ -77,9 +76,9 @@ class LoginAPI(ObtainAuthToken):
             return response
 
 
-class UserAPI(generics.RetrieveAPIView):
+class CheckLoginUserAPI(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
-    serializer_class = UserSerializer
+    serializer_class = LoginUserDataSerializer
 
     def get_object(self) -> User:
         """
@@ -87,4 +86,5 @@ class UserAPI(generics.RetrieveAPIView):
 
         :return User
         """
+        loggerUser.info(f"User {r'{'}'id': '{self.request.user.id}', 'email': '{self.request.user}'{r'}'} connect")
         return self.request.user
