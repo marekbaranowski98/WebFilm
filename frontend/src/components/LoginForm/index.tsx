@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 
 import './style.css';
 import {UserLoginForm} from '../../types/UserType';
-import {UserLoginError} from '../../types/UserType';
+import {ErrorsType} from '../../types/ErrorType';
 import {validateEmail} from '../../helpers/validators';
-import {loginUser, getLoggedUser} from '../../helpers/api/user';
+import {loginUser} from '../../helpers/api/user';
 import ErrorMessage from '../ErrorMessage';
 
 interface LoginFormProps {
@@ -16,7 +16,7 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
         password: '',
     });
 
-    const [errors, setErrors] = useState<UserLoginError>({});
+    const [errors, setErrors] = useState<ErrorsType>({});
 
     const updateField = (event: React.FormEvent<HTMLInputElement>) => {
         setForm({
@@ -27,15 +27,19 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
 
     const handlerSubmit = () => {
         if(validateFormLogin(form)) {
-            loginUser(form).then((resolve) => {
-                let res = (resolve as Response);
-                res.json().then(x => console.log(x));
-                if (res.status !== 200) {
-                    // console.log(res);
-                } else {
-
-                }
-            }, (e) => {
+             loginUser(form).then((resolve) => {
+                 let res = (resolve as Response);
+                 if (res.status !== 200) {
+                     res.json().then(allErrors => {
+                         let e: ErrorsType = {};
+                         for(let oneError in allErrors['errors']) {
+                             e[oneError] = allErrors['errors'][oneError][0];
+                         }
+                         setErrors(e);
+                    });
+                }else {
+                    // user is successful
+                } }, (e) => {
                 setErrors({
                     non_field_errors: e.message
                 })
@@ -52,7 +56,7 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
         }catch (e: unknown) {
             setErrors({
                 ...errors,
-                email: (e as Error).message,
+                email: (e as ErrorsType).message,
             });
             checkFormIsOk = false;
         }

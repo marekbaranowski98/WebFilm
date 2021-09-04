@@ -1,25 +1,30 @@
-const apiCall = async (url: string, method: string, body: Record<string, string>,  resolve: any, reject: any) => {
-    return fetch(url,
-        {
-            method: method,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json; charset=utf-8',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify(body)
-        },
-    ).then((response) => {
+const apiCall = async (url: string, method: string, body: Record<string, string> | null,
+                       resolve: any, reject: any, userAuth: boolean) => {
+    let header: Record<string, string> = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json; charset=utf-8',
+        'X-CSRFToken': getCookie('csrftoken'),
+    };
+    if(userAuth) {
+        header['Authorization'] = 'Bearer '+ getCookie('token');
+    }
+
+    return fetch(url, {
+        method: method,
+        credentials: 'include',
+        headers: header,
+        body: JSON.stringify(body),
+    }).then((response) => {
         resolve(response);
     }, (error) => {
         reject(new Error('Serwis niedostępny'));
     });
 };
 
-export const post = async (url: string, body: Record<string, string>) => {
+export const post = async (url: string, body: Record<string, string>, userAuth: boolean = false) => {
     return new Promise(
         (resolve, reject) => {
-            apiCall(url, 'POST', body, resolve, reject);
+            apiCall(url, 'POST', body, resolve, reject, userAuth);
         }
     );
 };
