@@ -1,6 +1,7 @@
 const {resolve} = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
     entry: [
@@ -54,6 +55,7 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: 'style.css',
         }),
+        new ForkTsCheckerWebpackPlugin(),
     ],
     optimization: {
         minimizer: [
