@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Redirect} from 'react-router-dom';
 
 import './style.css';
 import {UserLoginForm} from '../../types/UserType';
@@ -17,6 +18,7 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
     });
 
     const [errors, setErrors] = useState<ErrorsType>({});
+    const [redirect, setRedirect] = useState<boolean>(false);
 
     const updateField = (event: React.FormEvent<HTMLInputElement>) => {
         setForm({
@@ -36,10 +38,11 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
                              e[oneError] = allErrors['errors'][oneError][0];
                          }
                          setErrors(e);
-                    });
-                }else {
-                    // user is successful
-                } }, (e) => {
+                     });
+                 } else {
+                    setRedirect(true);
+                 }
+             }, (e) => {
                 setErrors({
                     non_field_errors: e.message
                 })
@@ -80,6 +83,9 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
             </div>
             {errors.non_field_errors && <ErrorMessage message={errors.non_field_errors} />}
             <div className="link-request-reset-password">Nie pamiętam hasłą</div>
+            {redirect && <Redirect to={{
+                pathname: '/'
+            }}/>}
         </form>
     );
 };
