@@ -4,6 +4,7 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import '../style/app.css';
 import '../style/shape.css';
 import '../style/input.css';
+import {CurrentUserProvider} from '../context/CurrentUserContext';
 import SEO from '../components/SEO';
 import Header from '../containers/Header';
 import MainContent from '../containers/MainContent';
@@ -14,9 +15,9 @@ interface App {
 
 }
 
-const App: React.FC<App> = () => {
+const App: React.FC<App> = ({}) => {
     return (
-        <div>
+        <CurrentUserProvider>
             <SEO />
             <BrowserRouter>
                 <Header />
@@ -28,7 +29,7 @@ const App: React.FC<App> = () => {
                 </div>
             </BrowserRouter>
             <Footer />
-        </div>
+        </CurrentUserProvider>
     );
 };
 

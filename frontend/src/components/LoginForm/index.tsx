@@ -7,6 +7,7 @@ import {ErrorsType} from '../../types/ErrorType';
 import {validateEmail} from '../../helpers/validators';
 import {loginUser} from '../../helpers/api/user';
 import ErrorMessage from '../ErrorMessage';
+import {CurrentUserContext} from '../../context/CurrentUserContext';
 
 interface LoginFormProps {
 }
@@ -19,6 +20,7 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
 
     const [errors, setErrors] = useState<ErrorsType>({});
     const [redirect, setRedirect] = useState<boolean>(false);
+    const userContext = React.useContext(CurrentUserContext);
 
     const updateField = (event: React.FormEvent<HTMLInputElement>) => {
         setForm({
@@ -40,7 +42,8 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
                          setErrors(e);
                      });
                  } else {
-                    setRedirect(true);
+                     userContext?.checkIsUserLogged().then((e) => {}, (r) => {});
+                     setRedirect(true);
                  }
              }, (e) => {
                 setErrors({

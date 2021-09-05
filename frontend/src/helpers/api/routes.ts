@@ -6,4 +6,8 @@ export const userURL = () => {
 
 export const loginURL = () => {
     return `${userURL()}login/`;
-}
+};
+
+export const loggedUserURL = () => {
+    return `${userURL()}me/`
+};

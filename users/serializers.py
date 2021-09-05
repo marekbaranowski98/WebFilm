@@ -87,3 +87,10 @@ class LoginUserDataSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'login', 'name', 'avatar')
 
+
+class UserSerializer(serializers.ModelSerializer):
+    gen = serializers.CharField(source='get_gender_display')
+
+    class Meta:
+        model = User
+        fields = ('id', 'login', 'email', 'name', 'surname', 'gen', 'avatar')

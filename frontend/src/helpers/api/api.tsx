@@ -29,7 +29,34 @@ export const post = async (url: string, body: Record<string, string>, userAuth: 
     );
 };
 
-export const getCookie = (name: string): string => {
+export const get = async (url: string, userAuth: boolean = false) => {
+    let header: Record<string, string> = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json; charset=utf-8',
+        'X-CSRFToken': getCookie('csrftoken'),
+    };
+    if(userAuth) {
+        header['Authorization'] = 'Bearer '+ getCookie('token');
+    }
+
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'GET',
+            credentials: 'include',
+            headers: header,
+        }).then((response) => {
+            resolve(response);
+        }, (error) => {
+            reject(new Error('Serwis niedostępny'));
+        });
+    });
+};
+
+export const checkExistCookie = (name: string): boolean => {
+    return !(getCookie(name) == '');
+}
+
+const getCookie = (name: string): string => {
     let cookieValue = '';
     if (document.cookie && document.cookie !== '') {
         let cookies = document.cookie.split(';');

@@ -3,6 +3,9 @@ export interface UserLoginForm {
     password: string,
 }
 
-export interface UserLoginError extends Partial<UserLoginForm> {
-    non_field_errors?: string,
+export interface UserObject {
+    user_id: number,
+    login: string,
+    name: string,
+    avatar: string,
 }
