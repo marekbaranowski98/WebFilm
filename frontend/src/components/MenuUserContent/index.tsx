@@ -3,12 +3,14 @@ import React, {useRef, useState} from 'react';
 import './style.css';
 import userAvatar from '../../images/user.svg';
 import AutoHideOutsideClick from '../../helpers/AutoHideOutsideClick';
+import {UserObject} from "../../types/UserType";
 
 interface MenuUserContentProps {
     setUserIsLogged: (userIsLogged: boolean) => void,
+    currentUser?: UserObject | null,
 }
 
-const MenuUserContent: React.FC<MenuUserContentProps> = ({setUserIsLogged}) => {
+const MenuUserContent: React.FC<MenuUserContentProps> = ({setUserIsLogged, currentUser}) => {
     const emptyMethod = (): void => {
 
     };
@@ -33,8 +35,8 @@ const MenuUserContent: React.FC<MenuUserContentProps> = ({setUserIsLogged}) => {
             <div className="container-user-menu expend-container">
                 <img src={userAvatar} alt="Avatar użytkownika"/>
                 <div className="info-user-menu">
-                    <div className="info-user-name">Imię</div>
-                    <div className="info-user-login">@Login</div>
+                    <div className="info-user-name">{currentUser?.name}</div>
+                    <div className="info-user-login">@{currentUser?.login}</div>
                 </div>
                 <input type="checkbox" className="hidden-checkbox" defaultChecked={showSubMenu} />
                 <div className="arrow arrow-down expend-button" onClick={() => setShowSubMenu(!showSubMenu)}/>

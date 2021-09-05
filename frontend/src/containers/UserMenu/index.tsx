@@ -20,7 +20,7 @@ const UserMenu: React.FC<UserMenuProps> = ({}) => {
     return (
         <div>
             {userIsLogged ?
-                <MenuUserContent setUserIsLogged={setUserIsLogged}/>
+                <MenuUserContent setUserIsLogged={setUserIsLogged} currentUser={userContext?.user}/>
                 :
                 <NoUserLoginMenu/>
             }
