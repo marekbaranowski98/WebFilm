@@ -29,7 +29,9 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({headerTitle, link, subMenuChildr
             </div>
             {showSubMenu &&  subMenuChildren.length > 0 &&
                 <ul className="submenu">
-                    {subMenuChildren.map(x => <li key={x.id}>{x.element}</li>)}
+                    {subMenuChildren.map(x =>
+                        <li key={x.id}><Link className="submenu-option" to={'#'}>{x.element}</Link></li>
+                    )}
                 </ul>
             }
         </div>

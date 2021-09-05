@@ -1,6 +1,6 @@
 import logging
 from rest_framework.authtoken.models import Token
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, viewsets
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -42,8 +42,23 @@ class RegisterAPI(generics.GenericAPIView):
             return response
 
 
-class LoginAPI(ObtainAuthToken):
+class LoginAPI(ObtainAuthToken, viewsets.ViewSet):
     serializer_class = LoginFormUserSerializer
+
+    def get(self, request: Request, *args, **kwargs) -> Response:
+        """
+        LogoutPage user
+
+        :param request Request
+        :param args:
+        :param kwargs:
+        :return Response
+        """
+        Token.objects.get(user=request.user).delete()
+        response = Response({})
+        response.delete_cookie('token')
+        response.status_code = 204
+        return response
 
     def post(self, request: Request, *args, **kwargs) -> Response:
         """

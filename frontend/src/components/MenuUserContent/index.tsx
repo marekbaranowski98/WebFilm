@@ -1,9 +1,10 @@
 import React, {useRef, useState} from 'react';
+import {Link} from 'react-router-dom';
 
 import './style.css';
 import userAvatar from '../../images/user.svg';
 import AutoHideOutsideClick from '../../helpers/AutoHideOutsideClick';
-import {UserObject} from "../../types/UserType";
+import {UserObject} from '../../types/UserType';
 
 interface MenuUserContentProps {
     setUserIsLogged: (userIsLogged: boolean) => void,
@@ -20,12 +21,12 @@ const MenuUserContent: React.FC<MenuUserContentProps> = ({setUserIsLogged, curre
     };
     const wrapperUserMenuRef = useRef<HTMLDivElement>(null);
     const [showSubMenu, setShowSubMenu] = useState<boolean>(false);
-    const subMenuUser: {id: number, element: string, handlerClick(): void }[] = [
-        { id: 1, element: 'Profil', handlerClick: emptyMethod, },
-        { id: 2, element: 'Rekomendacje filmowe', handlerClick: emptyMethod, },
-        { id: 3, element: 'Do obejrzenia', handlerClick: emptyMethod, },
-        { id: 4, element: 'Ocenione filmy', handlerClick: emptyMethod, },
-        { id: 5, element: 'Wyloguj się', handlerClick: logoutUser, },
+    const subMenuUser: {id: number, element: string, link: string, }[] = [
+        { id: 1, element: 'Profil', link: '#', },
+        { id: 2, element: 'Rekomendacje filmowe', link: '#', },
+        { id: 3, element: 'Do obejrzenia', link: '#', },
+        { id: 4, element: 'Ocenione filmy', link: '#',},
+        { id: 5, element: 'Wyloguj się', link: '/logout/', },
     ];
 
     AutoHideOutsideClick(wrapperUserMenuRef, showSubMenu, setShowSubMenu);
@@ -44,7 +45,11 @@ const MenuUserContent: React.FC<MenuUserContentProps> = ({setUserIsLogged, curre
             {showSubMenu &&
                 <div className="container-submenu">
                     <ul className="submenu">
-                        {subMenuUser.map(x => <li key={x.id} onClick={x.handlerClick}>{x.element}</li>)}
+                        {subMenuUser.map(x =>
+                            <li key={x.id}>
+                                <Link className="submenu-option" to={x.link}>{x.element}</Link>
+                            </li>
+                        )}
                     </ul>
                 </div>
             }

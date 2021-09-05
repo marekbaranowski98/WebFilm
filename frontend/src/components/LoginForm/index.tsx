@@ -81,13 +81,13 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
                 <div className="required-field">Hasło</div>
                 <input type="password" name="password" onChange={updateField} required />
             </div>
-            <div className="button submit-button" tabIndex={0} onClick={handlerSubmit}>
+            <div className="button short-button" tabIndex={0} onClick={handlerSubmit}>
                 Zaloguj się
             </div>
             {errors.non_field_errors && <ErrorMessage message={errors.non_field_errors} />}
             <div className="link-request-reset-password">Nie pamiętam hasłą</div>
             {redirect && <Redirect to={{
-                pathname: '/'
+                pathname: '/',
             }}/>}
         </form>
     );

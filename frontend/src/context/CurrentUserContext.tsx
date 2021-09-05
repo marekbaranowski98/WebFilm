@@ -6,6 +6,7 @@ import {checkExistCookie} from "../helpers/api/api";
 interface CurrentUserContextProps {
     user: UserObject | null,
     checkIsUserLogged: () => Promise<boolean>,
+    logoutUser: () => void,
 }
 export const CurrentUserContext = React.createContext<CurrentUserContextProps | null>(null);
 
@@ -40,10 +41,14 @@ export const CurrentUserProvider: React.FC<CurrentUserProviderProps> = ({childre
         });
     }
 
+    const logoutUser = (): void => {
+        setUser(null);
+    }
     return (
         <CurrentUserContext.Provider value={{
             user: user,
-            checkIsUserLogged: checkIsUserLogged
+            checkIsUserLogged: checkIsUserLogged,
+            logoutUser: logoutUser,
         }}>
             {children}
         </CurrentUserContext.Provider>

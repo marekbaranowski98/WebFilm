@@ -10,7 +10,6 @@ interface UserMenuProps {
 
 const UserMenu: React.FC<UserMenuProps> = ({}) => {
     const [userIsLogged, setUserIsLogged] = useState<boolean>(false);
-
     const userContext = React.useContext(CurrentUserContext);
 
     useEffect(() => {

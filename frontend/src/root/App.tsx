@@ -9,6 +9,7 @@ import SEO from '../components/SEO';
 import Header from '../containers/Header';
 import MainContent from '../containers/MainContent';
 import LoginPage from '../pages/LoginPage';
+import LogoutPage from '../pages/LogoutPage';
 import Footer from '../components/Footer';
 
 interface App {
@@ -25,6 +26,7 @@ const App: React.FC<App> = ({}) => {
                     <Switch>
                         <Route exact path="/" component={MainContent}/>
                         <Route exact path="/login" component={LoginPage}/>
+                        <Route exact path="/logout" component={LogoutPage}/>
                     </Switch>
                 </div>
             </BrowserRouter>

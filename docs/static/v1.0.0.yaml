@@ -113,6 +113,24 @@ paths:
             application/json:
               schema:
                   $ref: '#/components/schemas/Error'
+  /users/me/logout/:
+    get:
+      tags:
+        - user
+      summary: Logout user
+      operationId: logoutUser
+      security:
+        - bearerAuth: []
+      responses:
+        204:
+          description: Not content
+          content: {}
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Error'
 components:
   schemas:
     UserRegister:

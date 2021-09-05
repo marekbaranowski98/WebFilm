@@ -9,5 +9,9 @@ export const loginURL = () => {
 };
 
 export const loggedUserURL = () => {
-    return `${userURL()}me/`
+    return `${userURL()}me/`;
+};
+
+export const logoutUserURL = () => {
+    return `${userURL()}me/logout/`;
 };

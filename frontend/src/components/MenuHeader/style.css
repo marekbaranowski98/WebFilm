@@ -21,13 +21,13 @@
     border-top: 0;
 }
 
-.submenu li {
+a.submenu-option {
     margin-left: 0.5rem;
     cursor: pointer;
     padding: 0.5rem;
 }
 
-.submenu li:hover {
+a.submenu-option:hover {
     background-color: var(--color-background-secondary-hover);
 }
 
