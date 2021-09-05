@@ -8,7 +8,7 @@ import {CurrentUserProvider} from '../context/CurrentUserContext';
 import SEO from '../components/SEO';
 import Header from '../containers/Header';
 import MainContent from '../containers/MainContent';
-import LoginPage from '../containers/LoginPage';
+import LoginPage from '../pages/LoginPage';
 import Footer from '../components/Footer';
 
 interface App {
