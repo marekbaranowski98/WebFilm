@@ -7,18 +7,10 @@ import AutoHideOutsideClick from '../../helpers/AutoHideOutsideClick';
 import {UserObject} from '../../types/UserType';
 
 interface MenuUserContentProps {
-    setUserIsLogged: (userIsLogged: boolean) => void,
-    currentUser?: UserObject | null,
+    currentUser: UserObject,
 }
 
-const MenuUserContent: React.FC<MenuUserContentProps> = ({setUserIsLogged, currentUser}) => {
-    const emptyMethod = (): void => {
-
-    };
-
-    const logoutUser = (): void => {
-        setUserIsLogged(false);
-    };
+const MenuUserContent: React.FC<MenuUserContentProps> = ({currentUser}) => {
     const wrapperUserMenuRef = useRef<HTMLDivElement>(null);
     const [showSubMenu, setShowSubMenu] = useState<boolean>(false);
     const subMenuUser: {id: number, element: string, link: string, }[] = [
@@ -36,8 +28,8 @@ const MenuUserContent: React.FC<MenuUserContentProps> = ({setUserIsLogged, curre
             <div className="container-user-menu expend-container">
                 <img src={userAvatar} alt="Avatar użytkownika"/>
                 <div className="info-user-menu">
-                    <div className="info-user-name">{currentUser?.name}</div>
-                    <div className="info-user-login">@{currentUser?.login}</div>
+                    <div className="info-user-name">{currentUser.name}</div>
+                    <div className="info-user-login">@{currentUser.login}</div>
                 </div>
                 <input type="checkbox" className="hidden-checkbox" defaultChecked={showSubMenu} />
                 <div className="arrow arrow-down expend-button" onClick={() => setShowSubMenu(!showSubMenu)}/>

@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import './style.css';
 import menu from '../../images/menu.svg';
@@ -6,6 +6,7 @@ import AutoHideOutsideClick from '../../helpers/AutoHideOutsideClick';
 import MenuHeader from '../../components/MenuHeader';
 import MenuUserContent from '../../components/MenuUserContent';
 import useWindowsDimensions from '../../hooks/useWindowsDimensions';
+import {CurrentUserContext} from '../../context/CurrentUserContext';
 
 interface MenuProps {
 
@@ -13,7 +14,7 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({}) => {
     const checkIsUserLogin = (): boolean => {
-        return true;
+        return userIsLogged;
     };
 
     const checkUserIsAdmin = (): boolean => {
@@ -26,17 +27,25 @@ const Menu: React.FC<MenuProps> = ({}) => {
 
     const wrapperMenuRef = useRef<HTMLDivElement>(null);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+    const [userIsLogged, setUserIsLogged] = useState<boolean>(false);
     const { height, width } = useWindowsDimensions();
+    const userContext = React.useContext(CurrentUserContext);
     const menuName: { id: number, title: string, visibility: boolean, link: string,
             children: { id: number, element: string, link: string, }[] }[] = [
         {
             id: 1,
             title: 'Zaloguj się',
-            visibility: checkIsUserLogin() && checkIsSmallScreen(),
+            visibility: !checkIsUserLogin() && checkIsSmallScreen(),
             link: '/login',
             children: [],
         },
-        { id: 2, title: 'Zarejestruj się', visibility: checkIsUserLogin() && checkIsSmallScreen(), link: '#', children: [], },
+        {
+            id: 2,
+            title: 'Zarejestruj się',
+            visibility: !checkIsUserLogin() && checkIsSmallScreen(),
+            link: '#',
+            children: [],
+        },
         { id: 3, title: 'Najnowsze filmy', visibility: true, link: '#', children: [], },
         { id: 4, title: 'Przeglądaj filmy', visibility: true, link: '#', children: [], },
         { id: 5, title: 'Ranking filmów', visibility: true, link: '#', children: [], },
@@ -74,6 +83,10 @@ const Menu: React.FC<MenuProps> = ({}) => {
         },
     ];
 
+    useEffect(() => {
+        userContext?.checkIsUserLogged().then(r => setUserIsLogged(r), e => setUserIsLogged(e));
+    }, [userContext?.user]);
+
     AutoHideOutsideClick(wrapperMenuRef, isMenuOpen, setIsMenuOpen);
 
     return (
@@ -88,8 +101,8 @@ const Menu: React.FC<MenuProps> = ({}) => {
                                 <div className="cross"/>
                             </div>
                             <ul>
-                                {checkIsSmallScreen() &&
-                                    <li key="9"><MenuUserContent setUserIsLogged={setIsMenuOpen} /></li>
+                                {(checkIsSmallScreen() && userIsLogged && userContext?.user) &&
+                                    <li><MenuUserContent currentUser={userContext.user}/></li>
                                 }
                                 {menuName.map(x => x.visibility &&
                                     <li key={x.id}>

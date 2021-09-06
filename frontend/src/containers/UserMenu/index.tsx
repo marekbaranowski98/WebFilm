@@ -5,7 +5,6 @@ import MenuUserContent from '../../components/MenuUserContent';
 import NoUserLoginMenu from '../../components/LoginUserButton';
 
 interface UserMenuProps {
-
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({}) => {
@@ -18,8 +17,8 @@ const UserMenu: React.FC<UserMenuProps> = ({}) => {
 
     return (
         <div>
-            {userIsLogged ?
-                <MenuUserContent setUserIsLogged={setUserIsLogged} currentUser={userContext?.user}/>
+            {userIsLogged && userContext?.user ?
+                <MenuUserContent currentUser={userContext.user}/>
                 :
                 <NoUserLoginMenu/>
             }
