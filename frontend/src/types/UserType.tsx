@@ -1,6 +1,7 @@
 export interface UserLoginForm {
     email: string,
     password: string,
+    remember_me?: boolean,
 }
 
 export interface UserObject {

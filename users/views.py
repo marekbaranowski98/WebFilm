@@ -1,3 +1,4 @@
+import datetime
 import logging
 from rest_framework.authtoken.models import Token
 from rest_framework import generics, permissions, viewsets
@@ -78,7 +79,12 @@ class LoginAPI(ObtainAuthToken, viewsets.ViewSet):
             response = Response({
                 'token': token.key,
             })
-            response.set_cookie('token', token.key, samesite='strict', path='/')
+
+            expires_password = None
+            if request.data.get('remember_me'):
+                expires_password = datetime.datetime.now() + datetime.timedelta(days=30)
+
+            response.set_cookie('token', token.key, samesite='strict', path='/', expires=expires_password)
             response.status_code = 200
             return response
         else:

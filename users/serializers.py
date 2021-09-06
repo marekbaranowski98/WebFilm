@@ -48,7 +48,7 @@ class RegisterSerializer(serializers.ModelSerializer):
                         login=data.get('login'),
                         email=data.get('email'),
                         name=data.get('name'),
-                        surname=data.get('surname')
+                        surname=data.get('surname'),
                     )
                 )
             except Exception as e:
@@ -63,10 +63,11 @@ class RegisterSerializer(serializers.ModelSerializer):
 class LoginFormUserSerializer(serializers.ModelSerializer):
     email = serializers.CharField()
     password = serializers.CharField()
+    remember_me = serializers.BooleanField(required=False, default=False)
 
     class Meta:
         model = User
-        fields = ('email', 'password')
+        fields = ('email', 'password', 'remember_me',)
 
     def validate(self, data: OrderedDict):
         """

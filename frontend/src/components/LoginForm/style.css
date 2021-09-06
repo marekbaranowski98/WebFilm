@@ -7,6 +7,16 @@
     height: 2rem;
 }
 
+.remember-password {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.remember-password div {
+    margin: 0 0.5rem;
+}
+
 .short-button {
     width: fit-content;
     margin: 0 auto;

@@ -81,6 +81,10 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
                 <div className="required-field">Hasło</div>
                 <input type="password" name="password" onChange={updateField} required />
             </div>
+            <label className="input-field remember-password">
+                <input type="checkbox" name="remember_me" onChange={updateField} />
+                <div>Zapamiętaj mnie</div>
+            </label>
             <div className="button short-button" tabIndex={0} onClick={handlerSubmit}>
                 Zaloguj się
             </div>

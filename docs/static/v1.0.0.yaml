@@ -216,6 +216,9 @@ components:
           pattern: '^[A-Za-z0-9$%^&]{8,32}$'
           minLength: 8
           maxLength: 32
+        remember_me:
+          type: boolean
+          example: false
       required:
         - email
         - password
