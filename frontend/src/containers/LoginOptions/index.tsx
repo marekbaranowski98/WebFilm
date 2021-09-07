@@ -11,7 +11,7 @@ interface LoginOptionsProps {
     setChooseLoginEmail: (x: boolean) => void,
 }
 
-const LoginOptons: React.FC<LoginOptionsProps> = ({setChooseLoginEmail}) => {
+const LoginOptions: React.FC<LoginOptionsProps> = ({setChooseLoginEmail}) => {
     const [redirectLoginURL, setRedirectLoginURL] = useState<string>('');
 
     const handlerSetChooseLoginEmail = (url: string): void => {
@@ -80,4 +80,4 @@ const LoginOptons: React.FC<LoginOptionsProps> = ({setChooseLoginEmail}) => {
     );
 };
 
-export default LoginOptons;
+export default LoginOptions;

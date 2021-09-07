@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 
-import './style.css';
 import LoginForm from '../../containers/LoginForm';
-import LoginOptons from '../../containers/LoginOptons';
+import LoginOptions from '../../containers/LoginOptions';
 import SignInPerks from '../../components/SignInPerks';
 
 interface LoginPageProps {
@@ -13,13 +12,13 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
     const [chooseLoginEmail, setChooseLoginEmail] = useState<boolean>(false);
 
     return (
-      <div className="wrapper-login-page">
-          <div className="container-login-menu">
+      <div className="wrapper-form">
+          <div className="container-form">
               <h2>Zaloguj się</h2>
               {chooseLoginEmail ?
                   <LoginForm/>
                   :
-                  <LoginOptons setChooseLoginEmail={setChooseLoginEmail} />
+                  <LoginOptions setChooseLoginEmail={setChooseLoginEmail} />
               }
           </div>
           <SignInPerks />

@@ -1,4 +1,4 @@
-.wrapper-login-page {
+.wrapper-form {
     margin: 1rem;
     display: flex;
     flex-wrap: wrap;
@@ -6,7 +6,7 @@
     align-items: center;
 }
 
-.container-login-menu {
+.container-form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,6 +20,6 @@
     -moz-border-radius: 3rem;
 }
 
-.container-login-menu h2 {
+.container-form h2 {
     margin: 1rem;
 }
