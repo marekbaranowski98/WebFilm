@@ -10,6 +10,7 @@ import Header from '../containers/Header';
 import MainContent from '../containers/MainContent';
 import LoginPage from '../pages/LoginPage';
 import LogoutPage from '../pages/LogoutPage';
+import RegisterPage from '../pages/RegisterPage';
 import Footer from '../components/Footer';
 
 interface App {
@@ -27,6 +28,7 @@ const App: React.FC<App> = ({}) => {
                         <Route exact path="/" component={MainContent}/>
                         <Route exact path="/login" component={LoginPage}/>
                         <Route exact path="/logout" component={LogoutPage}/>
+                        <Route exact path="/register" component={RegisterPage}/>
                     </Switch>
                 </div>
             </BrowserRouter>

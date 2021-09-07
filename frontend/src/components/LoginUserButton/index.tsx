@@ -11,7 +11,7 @@ const LoginUserButton: React.FC<LoginUserButton> = ({}) => {
     return (
         <div className="container-login-button">
             <Link className="button" to={'/login/'}>Zaloguj się</Link>
-            <div className="button">Zarejestruj się</div>
+            <Link className="button" to={'register'}>Zarejestruj się</Link>
         </div>
     );
 };
