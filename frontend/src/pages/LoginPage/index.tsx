@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 
 import './style.css';
-import LoginForm from '../../components/LoginForm';
-import LoginOptons from '../../components/LoginOptons';
+import LoginForm from '../../containers/LoginForm';
+import LoginOptons from '../../containers/LoginOptons';
 import SignInPerks from '../../components/SignInPerks';
 
 interface LoginPageProps {

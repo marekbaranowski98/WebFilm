@@ -6,7 +6,7 @@ import {UserLoginForm} from '../../types/UserType';
 import {ErrorsType} from '../../types/ErrorType';
 import {validateEmail} from '../../helpers/validators';
 import {loginUser} from '../../helpers/api/user';
-import ErrorMessage from '../ErrorMessage';
+import ErrorMessage from '../../components/ErrorMessage';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
 
 interface LoginFormProps {
