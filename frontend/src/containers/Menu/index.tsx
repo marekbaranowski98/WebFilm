@@ -101,8 +101,8 @@ const Menu: React.FC<MenuProps> = ({}) => {
                                 <div className="cross"/>
                             </div>
                             <ul>
-                                {(checkIsSmallScreen() && userIsLogged && userContext?.user) &&
-                                    <li><MenuUserContent currentUser={userContext.user}/></li>
+                                {(checkIsSmallScreen() && userIsLogged) &&
+                                    <li><MenuUserContent/></li>
                                 }
                                 {menuName.map(x => x.visibility &&
                                     <li key={x.id}>
