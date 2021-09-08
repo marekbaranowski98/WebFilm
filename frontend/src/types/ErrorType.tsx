@@ -1,3 +1,3 @@
-export interface ErrorsType {
+export interface ErrorType {
     [key: string]: string
 }
