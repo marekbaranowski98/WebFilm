@@ -1,7 +1,7 @@
 .logout-container {
     text-align: center;
     width: fit-content;
-    margin: 1rem auto;
+    margin: 0 auto;
 }
 
 .logout-container > p {

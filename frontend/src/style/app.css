@@ -52,5 +52,6 @@ a, a:hover, a:focus, a:active {
 }
 
 .main-container {
-    min-height: calc(100vh - 8rem - 3rem);
+    min-height: calc(100vh - 6rem - 3rem);
+    padding: 1rem;
 }
