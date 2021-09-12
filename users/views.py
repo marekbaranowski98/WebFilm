@@ -109,3 +109,23 @@ class CheckLoginUserAPI(generics.RetrieveAPIView):
         """
         loggerUser.info(f"User {r'{'}'id': '{self.request.user.id}', 'email': '{self.request.user}'{r'}'} connect")
         return self.request.user
+
+
+class ValidationUserDataAPI(generics.CreateAPIView):
+    def post(self, request: Request, *args, **kwargs) -> Response:
+        """
+        Return response information validate user data
+
+        :param request Request
+        :param args:
+        :param kwargs:
+        :return Response
+        """
+        print(request.data)
+        if not ('value' in request.data or 'key' in request.data) or \
+                len(User.objects.in_bulk([request.data['value']], field_name=request.data['key'])) == 0:
+            return Response(status=204)
+        else:
+            return Response({
+                request.data['key']: f"Istnieje użytkownik z takim {request.data['key']}.",
+            }, status=422)
