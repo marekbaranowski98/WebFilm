@@ -1,5 +1,5 @@
 import {post, get} from './api';
-import {loginURL, loggedUserURL, logoutUserURL} from './routes';
+import {loginURL, loggedUserURL, logoutUserURL, validateDataUserURL} from './routes';
 import {UserLoginForm} from '../../types/UserType';
 
 export const loginUser = async (data: UserLoginForm) => {
@@ -14,3 +14,7 @@ export const getLoggedUser = async () => {
 export const getLogoutUser = async () => {
     return get(logoutUserURL(), true);
 }
+
+export const checkDataUser = async (body: Record<string, string>) => {
+    return post(validateDataUserURL(), body);
+};

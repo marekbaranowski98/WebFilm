@@ -43,7 +43,7 @@ const Menu: React.FC<MenuProps> = ({}) => {
             id: 2,
             title: 'Zarejestruj się',
             visibility: !checkIsUserLogin() && checkIsSmallScreen(),
-            link: '#',
+            link: '/register',
             children: [],
         },
         { id: 3, title: 'Najnowsze filmy', visibility: true, link: '#', children: [], },

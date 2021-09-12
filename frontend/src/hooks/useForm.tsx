@@ -4,40 +4,51 @@ import {ErrorType} from '../types/ErrorType';
 
 interface useFormProps<T> {
     initialObject: T,
-    validateObject: (object: T, nameValidateField: string) => boolean,
+    validateObject: (object: T, nameValidateField: string) => Promise<boolean>,
     sendRequestToAPI: (object: T, setErrors: (errors: ErrorType) => void) => void,
 }
 
 const useForm = <T extends {}>({initialObject, validateObject, sendRequestToAPI,}: useFormProps<T>) => {
     const [errors, setErrors] = useState<ErrorType>({});
-
+    const [init, setInit] = useState<boolean>(true);
     const validate = (state:  T, action: {field: string, value: any}): T  => {
-        let errorsTMP: ErrorType = {}
-        let tmpState: T = {
-            ...state,
-            [action.field]: action.value,
-        };
+        if(init) {
+            setInit(false);
+            return state;
+        }else {
+            let errorsTMP: ErrorType = errors;
+            let tmpState: T;
+            delete errorsTMP[action.field];
 
-        try {
-            validateObject(tmpState, action.field);
-        }catch(e: unknown) {
-            errorsTMP = {
-                ...errorsTMP,
-                [(e as Error).name]: (e as Error).message
+            tmpState = {
+                ...state,
+                [action.field]: action.value,
             };
+            validateObject(tmpState, action.field).catch((e) => {
+                errorsTMP = {
+                    ...errorsTMP,
+                    [(e as Error).name]: (e as Error).message
+                };
+                setErrors(errorsTMP);
+            });
+            return tmpState;
         }
-        setErrors(errorsTMP);
-        return tmpState;
     };
 
     const [values, dispatch] = useReducer(validate, initialObject);
 
-    const updateValue = (e: React.ChangeEvent<HTMLInputElement>): void  => {
+    const updateValue = (e: React.ChangeEvent<HTMLInputElement |  HTMLSelectElement>): void  => {
+        let tmpValue: any = e.target.value;
+        if (e.target instanceof HTMLInputElement && e.target.type === 'checkbox') {
+            tmpValue = e.target.checked;
+        }
+
         dispatch({
             field: e.target.name,
-            value: e.target.type === 'checkbox' ? e.target.checked : e.target.value
+            value: tmpValue,
         });
     };
+
     const submitHandler = (e: React.FormEvent): void => {
         e.preventDefault();
 

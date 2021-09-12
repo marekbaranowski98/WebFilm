@@ -2,6 +2,7 @@
     color: #FF0000;
     display: flex;
     align-items: center;
+    margin-top: 0.25rem;
 }
 
 .error img {

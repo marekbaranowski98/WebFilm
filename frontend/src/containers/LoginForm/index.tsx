@@ -38,14 +38,13 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
             })
         });
     };
-    const validateFormLogin = (
+    const validateFormLogin = async (
         {email}: UserLoginForm,
-        nameValidate: string,
-    ): boolean => {
+        nameValidate?: string,
+    ): Promise<boolean> => {
         switch (nameValidate) {
             case 'email':
                 return validateEmail(email);
-                break;
             default:
                 return true;
         }
@@ -70,9 +69,9 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
                 <div className="required-field">Hasło</div>
                 <input type="password" name="password" onBlur={updateValue} required/>
             </div>
-            <label className="input-field remember-password">
+            <label className="input-field label-checkbox">
                 <input type="checkbox" name="remember_me" onChange={updateValue}/>
-                <div>Zapamiętaj mnie</div>
+                <div className="label-info">Zapamiętaj mnie</div>
             </label>
             <button type="submit" className="button short-button" tabIndex={0} disabled={Object.keys(errors).length > 0}>
                 Zaloguj się

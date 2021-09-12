@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {UserObject} from '../types/UserType';
 import {getLoggedUser} from '../helpers/api/user';
-import {checkExistCookie} from "../helpers/api/api";
+import {checkExistCookie} from '../helpers/api/api';
 
 interface CurrentUserContextProps {
     user: UserObject | null,
