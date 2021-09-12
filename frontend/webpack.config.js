@@ -12,6 +12,7 @@ module.exports = {
         filename: 'main.js',
         path: resolve(__dirname, 'static'),
     },
+    devtool: "source-map",
     module: {
         rules: [
             {
