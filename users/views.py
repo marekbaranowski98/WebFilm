@@ -1,5 +1,7 @@
 import datetime
 import logging
+
+from django.utils import timezone
 from rest_framework.authtoken.models import Token
 from rest_framework import generics, permissions, viewsets
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -73,7 +75,7 @@ class LoginAPI(ObtainAuthToken, viewsets.ViewSet):
 
         if serializer.is_valid():
             user = serializer.validated_data
-            loggerUser.info(f"User {r'{'}'id': '{user.id}', 'email': '{user}'{r'}'} logged")
+            loggerUser.info(f"User {r'{'}'id': '{user.id}', 'email': '{user.email}'{r'}'} logged")
             token, created = Token.objects.get_or_create(user=user)
             response = Response({
                 'token': token.key,
@@ -106,7 +108,11 @@ class CheckLoginUserAPI(generics.RetrieveAPIView):
 
         :return User
         """
-        loggerUser.info(f"User {r'{'}'id': '{self.request.user.id}', 'email': '{self.request.user}'{r'}'} connect")
+        u = User.objects.get(email=self.request.user.email)
+        u.last_login = timezone.now()
+        u.save()
+        loggerUser.info(f"User {r'{'}'id': '{self.request.user.id}', "
+                        f"'email': '{self.request.user.email}'{r'}'} connect")
         return self.request.user
 
 
