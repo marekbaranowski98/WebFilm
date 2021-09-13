@@ -28,8 +28,7 @@ class RegisterAPI(generics.GenericAPIView):
         if serializer.is_valid():
             user = serializer.save()
 
-            data = RegisterSerializer(user).data
-            loggerUser.info(f'User {data} register')
+            loggerUser.info(f'User {user} register')
             response = Response({
                 'info': 'Użytkownik został pomyślne zarejestrowany.',
             })
@@ -121,7 +120,6 @@ class ValidationUserDataAPI(generics.CreateAPIView):
         :param kwargs:
         :return Response
         """
-        print(request.data)
         if not ('value' in request.data or 'key' in request.data) or \
                 len(User.objects.in_bulk([request.data['value']], field_name=request.data['key'])) == 0:
             return Response(status=204)

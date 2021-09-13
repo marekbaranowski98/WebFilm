@@ -19,3 +19,7 @@ export const logoutUserURL = (): string => {
 export const validateDataUserURL = (): string => {
     return `${userURL()}me/validator-unique/`;
 };
+
+export const registerUserURL = (): string => {
+    return `${userURL()}`;
+};

@@ -1,5 +1,5 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React, {useState} from 'react';
+import {Link, Redirect} from 'react-router-dom';
 
 import './style.css';
 import ErrorMessage from '../../components/ErrorMessage';
@@ -10,13 +10,40 @@ import {
     validateLogin, validateEmail, validatePassword, validateRepeatPassword,
     validateName, validateSurname, validateGender, validateBirthDate, validateStatute, checkDataIsAvailable
 } from '../../helpers/validators';
+import {registerUser} from '../../helpers/api/user';
 
 interface RegisterFormProps {
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
+    const [redirect, setRedirect] = useState<boolean>(false);
     const sendRequestAuthToAPI = (form: UserRegisterForm, setErrors: (errors: ErrorType) => void): void => {
-        console.log(form);
+        registerUser(form).then((r) => {
+            let response = (r as Response);
+            if (response.status === 201) {
+                setRedirect(true);
+            }else if(response.status == 403) {
+                response.json().then(allErrors => {
+                    let e: ErrorType = {};
+                    for (let oneError in allErrors['errors']) {
+                        e[oneError] = allErrors['errors'][oneError][0];
+                    }
+                    setErrors(e);
+                });
+            } else {
+                setErrors({
+                    'non_field_errors': 'Serwis niedostępny',
+                });
+            }
+        }, (e) => {
+            setErrors({
+                'non_field_errors': 'Serwis niedostępny',
+            });
+        }).catch((e) => {
+            setErrors({
+                'non_field_errors': 'Serwis niedostępny',
+            });
+        });
     };
     const validateFormRegister = async (
         {login, email, password, repeat_password, name, surname, gender, birth_date , accept_statute}: UserRegisterForm,
@@ -61,6 +88,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
 
     return (
         <form onSubmit={submitHandler}>
+            {redirect && <Redirect to={{
+                pathname: '/',
+            }}/>}
             <div className="input-field">
                 <div className="required-field">Login</div>
                 <input type="text" name="login" onBlur={updateValue} autoComplete="username" required />

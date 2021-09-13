@@ -34,7 +34,7 @@ class User(AbstractBaseUser):
         (2, 'Mężczyzna'),
     )
     gender = models.IntegerField(choices=GENDER_CHOICES, default=0)
-    birth_date = models.DateField(null=True, default=None, auto_now_add=False)
+    birth_date = models.DateField(null=True, auto_now_add=False)
     avatar = models.CharField(
         max_length=36,
         default='00000000-0000-0000-0000-000000000000',
@@ -49,7 +49,7 @@ class User(AbstractBaseUser):
         (0, 'Niekatywne'),
         (1, 'Aktywne'),
         (2, 'Dane uczące'),
-        (3, 'zbanowane'),
+        (3, 'Zbanowane'),
     )
     is_active = models.IntegerField(choices=ACTIVE_CHOICES, default=0)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -60,4 +60,12 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     def __str__(self):
-        return self.email
+        return {
+            'login': self.login,
+            'email': self.email,
+            'name': self.name,
+            'surname': self.surname,
+            'gender': self.gender,
+            'birth_date': self.birth_date.strftime('%Y-%m-%d'),
+            'avatar': self.avatar,
+        }.__str__()
