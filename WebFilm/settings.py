@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'docs',
     'frontend',
     'users',
+    'photos',
 ]
 
 MIDDLEWARE = [
