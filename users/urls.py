@@ -2,6 +2,8 @@
 
 path login/ handles login requests
 path me/ check is user logged
+path me/logout/ logout users
+path me/validator-unique/ check if data available
 path / handles register requests
 """
 from django.urls import path

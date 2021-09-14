@@ -216,3 +216,7 @@ LOGGING = {
         },
     },
 }
+
+# Fake GCS
+
+URL_GCS = env.str('URL_GCS')
