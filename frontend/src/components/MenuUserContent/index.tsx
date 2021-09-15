@@ -2,9 +2,9 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import './style.css';
-import userAvatar from '../../images/user.svg';
 import AutoHideOutsideClick from '../../helpers/AutoHideOutsideClick';
-import {CurrentUserContext} from "../../context/CurrentUserContext";
+import {CurrentUserContext} from '../../context/CurrentUserContext';
+import {getImage} from '../../helpers/api/photo';
 
 interface MenuUserContentProps {
 }
@@ -12,7 +12,16 @@ interface MenuUserContentProps {
 const MenuUserContent: React.FC<MenuUserContentProps> = () => {
     const wrapperUserMenuRef = useRef<HTMLDivElement>(null);
     const [showSubMenu, setShowSubMenu] = useState<boolean>(false);
+    const [avatar, setAvatar] = useState<string>('');
     const userContext = React.useContext(CurrentUserContext);
+
+    useEffect(() => {
+        if(userContext && userContext.user) {
+            getImage('users', userContext?.user?.avatar).then((a) => {
+               setAvatar(`data:image/png;base64,${a}`);
+            });
+        }
+    }, [userContext?.user]);
 
     const subMenuUser: {id: number, element: string, link: string, }[] = [
         { id: 1, element: 'Profil', link: '#', },
@@ -27,7 +36,7 @@ const MenuUserContent: React.FC<MenuUserContentProps> = () => {
     return (
         <div className="container-user-menu-submenu" ref={wrapperUserMenuRef}>
             <div className="container-user-menu expend-container">
-                <img src={userAvatar} alt="Avatar użytkownika"/>
+                <img src={avatar} alt="Avatar użytkownika"/>
                 <div className="info-user-menu">
                     <div className="info-user-name">{userContext?.user?.name}</div>
                     <div className="info-user-login">@{userContext?.user?.login}</div>

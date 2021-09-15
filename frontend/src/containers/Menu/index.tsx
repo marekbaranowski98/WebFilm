@@ -84,8 +84,10 @@ const Menu: React.FC<MenuProps> = ({}) => {
     ];
 
     useEffect(() => {
-        userContext?.checkIsUserLogged().then(r => setUserIsLogged(r), e => setUserIsLogged(e));
-    }, [userContext?.user]);
+        if(checkIsSmallScreen()) {
+            userContext?.checkIsUserLogged().then(r => setUserIsLogged(r), e => setUserIsLogged(e));
+        }
+    }, [userContext?.user, width]);
 
     AutoHideOutsideClick(wrapperMenuRef, isMenuOpen, setIsMenuOpen);
 
