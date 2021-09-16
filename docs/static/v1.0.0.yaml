@@ -27,7 +27,7 @@ paths:
       requestBody:
         description: User data required for registration
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/UserRegister'
         required: true
@@ -254,8 +254,7 @@ components:
           example: '2000-01-01'
         avatar:
           type: string
-          example: 00000000-0000-0000-0000-000000000000
-          pattern: '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
+          format: binary
         accept_statute:
           type: boolean
           example: false

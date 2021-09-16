@@ -214,9 +214,16 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'debug': {
+            'hadlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
     },
 }
 
 # Fake GCS
-
 URL_GCS = env.str('URL_GCS')
+
+# Forms
+MAX_FILE_SIZE_MB = env.float('MAX_FILE_SIZE_MB')

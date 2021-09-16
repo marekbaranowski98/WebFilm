@@ -8,7 +8,7 @@ export interface UserObject {
     user_id: number,
     login: string,
     name: string,
-    avatar: string,
+    avatarURL: string,
 }
 
 export interface UserRegisterForm {

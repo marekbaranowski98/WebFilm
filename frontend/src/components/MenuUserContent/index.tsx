@@ -17,7 +17,7 @@ const MenuUserContent: React.FC<MenuUserContentProps> = () => {
 
     useEffect(() => {
         if(userContext && userContext.user) {
-            getImage('users', userContext?.user?.avatar).then((a) => {
+            getImage('users', userContext?.user?.avatarURL).then((a) => {
                setAvatar(`data:image/png;base64,${a}`);
             });
         }

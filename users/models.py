@@ -6,6 +6,10 @@ from django.utils import timezone
 from users.managers import UserManager
 
 
+def default_avatar() -> str:
+    return '00000000-0000-0000-0000-000000000000'
+
+
 class User(AbstractBaseUser):
     username = None
     login = models.CharField(
@@ -35,9 +39,9 @@ class User(AbstractBaseUser):
     )
     gender = models.IntegerField(choices=GENDER_CHOICES, default=0)
     birth_date = models.DateField(null=True, auto_now_add=False)
-    avatar = models.CharField(
+    avatarURL = models.CharField(
         max_length=36,
-        default='00000000-0000-0000-0000-000000000000',
+        default=default_avatar,
         validators=[
             RegexValidator(
                 regex='[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}',
@@ -67,5 +71,5 @@ class User(AbstractBaseUser):
             'surname': self.surname,
             'gender': self.gender,
             'birth_date': self.birth_date.strftime('%Y-%m-%d'),
-            'avatar': self.avatar,
+            'avatarURL': self.avatarURL,
         }.__str__()

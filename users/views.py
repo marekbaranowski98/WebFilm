@@ -26,22 +26,27 @@ class RegisterAPI(generics.GenericAPIView):
         :param kwargs:
         :return: Response
         """
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
+        try:
+            serializer = self.get_serializer(data=request.data)
+            if serializer.is_valid():
+                user = serializer.save()
 
-            loggerUser.info(f'User {user} register')
-            response = Response({
-                'info': 'Użytkownik został pomyślne zarejestrowany.',
-            })
-            response.status_code = 201
-            return response
-        else:
-            response = Response({
-                'errors': serializer.errors,
-            })
-            response.status_code = 403
-            return response
+                loggerUser.info(f'User {user} register')
+                response = Response({
+                    'info': 'Użytkownik został pomyślne zarejestrowany.',
+                })
+                response.status_code = 201
+                return response
+            else:
+                response = Response({
+                    'errors': serializer.errors,
+                })
+                response.status_code = 403
+                return response
+        except:
+            return Response({
+                'non_field_errors': 'Coś poszło nie tak',
+            }, status=400)
 
 
 class LoginAPI(ObtainAuthToken, viewsets.ViewSet):
