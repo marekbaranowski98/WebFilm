@@ -73,7 +73,9 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
                 <input type="checkbox" name="remember_me" onChange={updateValue}/>
                 <div className="label-info">Zapamiętaj mnie</div>
             </label>
-            <button type="submit" className="button short-button" tabIndex={0} disabled={Object.keys(errors).length > 0}>
+            <button type="submit" className="button short-button" tabIndex={0} disabled={
+                Object.keys(errors).filter((x) => x !== 'non_field_errors').length > 0
+            }>
                 Zaloguj się
             </button>
             {errors.non_field_errors && <ErrorMessage message={errors.non_field_errors}/>}

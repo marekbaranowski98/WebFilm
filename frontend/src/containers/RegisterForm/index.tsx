@@ -155,7 +155,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
                 </label>
                 {errors.accept_statute && <ErrorMessage message={errors.accept_statute} />}
             </div>
-            <button type="submit" className="button short-button" tabIndex={0}>Zarejestruj się</button>
+            <button type="submit" className="button short-button" tabIndex={0} disabled={
+                Object.keys(errors).filter((x) => x !== 'non_field_errors').length > 0
+            }>
+                Zarejestruj się
+            </button>
             {errors.non_field_errors && <ErrorMessage message={errors.non_field_errors} />}
         </form>
     );
