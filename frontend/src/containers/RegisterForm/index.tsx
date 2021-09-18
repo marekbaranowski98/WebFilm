@@ -150,7 +150,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
                     <div className="required-field label-info">
                         Przeczytałem i akceptuje <Link
                             className="link"
-                            to={'/docs/statute'}
+                            to={'/statute'}
                             target="_blank">regulamin
                         </Link>
                     </div>
