@@ -12,6 +12,7 @@ from .serializers import RegisterSerializer, LoginFormUserSerializer, LoginUserD
 from .models import User
 
 loggerUser = logging.getLogger(__name__)
+loggerDebug = logging.getLogger('debug')
 
 
 class RegisterAPI(generics.GenericAPIView):
@@ -43,7 +44,8 @@ class RegisterAPI(generics.GenericAPIView):
                 })
                 response.status_code = 403
                 return response
-        except:
+        except Exception as e:
+            loggerDebug.debug(e)
             return Response({
                 'non_field_errors': 'Coś poszło nie tak',
             }, status=400)

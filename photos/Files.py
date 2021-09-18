@@ -2,7 +2,7 @@ import base64
 import tempfile
 import uuid
 
-from django.core.files.uploadedfile import TemporaryUploadedFile
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import AnonymousCredentials
 from google.cloud import storage
@@ -27,9 +27,9 @@ class FileManager:
             temp_file.seek(0, 0)
             return self.__convert_to_base64(temp_file.read())
 
-    def upload_file(self, bucket_path: str, file: TemporaryUploadedFile, destination_blob: str) -> None:
+    def upload_file(self, bucket_path: str, file: InMemoryUploadedFile, destination_blob: str) -> None:
         blob = self.__client.bucket(bucket_path).blob(destination_blob)
-        blob.upload_from_filename(file.file.name)
+        blob.upload_from_string(file.read())
 
     def generete_uuid(self) -> str:
         return str(uuid.uuid4())

@@ -103,7 +103,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise ValidationError({'birth_date': 'To pole jest wymagane.'}, code='birth-date')
 
     def validate_avatar_file(self, file: TemporaryUploadedFile):
-        limit_size_file = settings.MAX_FILE_SIZE_MB * 1024 * 1024
+        limit_size_file = settings.MAX_FILE_SIZE_MB * 1024**2
         if file.size > limit_size_file:
             raise ValidationError({'avatar': f'Maksymalny  rozmiar pliku to {limit_size_file} MB'})
         return file

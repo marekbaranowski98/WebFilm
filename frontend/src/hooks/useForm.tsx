@@ -1,6 +1,7 @@
 import React, {useReducer, useState} from 'react';
 
 import {ErrorType} from '../types/ErrorType';
+import {FileUploadType} from '../types/FileType';
 
 interface useFormProps<T> {
     initialObject: T,
@@ -37,16 +38,24 @@ const useForm = <T extends {}>({initialObject, validateObject, sendRequestToAPI,
 
     const [values, dispatch] = useReducer(validate, initialObject);
 
-    const updateValue = (e: React.ChangeEvent<HTMLInputElement |  HTMLSelectElement>): void  => {
-        let tmpValue: any = e.target.value;
-        if (e.target instanceof HTMLInputElement && e.target.type === 'checkbox') {
-            tmpValue = e.target.checked;
-        }
+    const updateValue = (e: React.ChangeEvent<HTMLInputElement |  HTMLSelectElement> | FileUploadType): void  => {
+        if('file_list' in e) {
+            console.log(e.file_list);
+            dispatch({
+                field: e.name,
+                value: e.file_list,
+            });
+        }else {
+            let tmpValue: any = e.target.value;
+            if (e.target instanceof HTMLInputElement && e.target.type === 'checkbox') {
+                tmpValue = e.target.checked;
+            }
 
-        dispatch({
-            field: e.target.name,
-            value: tmpValue,
-        });
+            dispatch({
+                field: e.target.name,
+                value: tmpValue,
+            });
+        }
     };
 
     const submitHandler = (e: React.FormEvent): void => {
@@ -57,7 +66,7 @@ const useForm = <T extends {}>({initialObject, validateObject, sendRequestToAPI,
         }
     };
 
-    return {updateValue, submitHandler, errors};
+    return {updateValue, submitHandler, errors, setErrors};
 }
 
 export default useForm;

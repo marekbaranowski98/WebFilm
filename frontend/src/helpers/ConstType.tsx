@@ -5,3 +5,10 @@ export const REGEX_EMAIL: RegExp = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!
 export const REGEX_PASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@$%^&*-_,.?;])[A-Za-z\d!@$%^&*-_,.?;]{8,128}$/;
 
 export const MIN_AGE_TO_SIGN_UP: number = 13;
+
+export const MAX_SIZE_IMAGE_MB = 30;
+
+export const ACCEPT_EXTENSIONS_IMAGE = [
+    'image/png',
+    'image/jpeg',
+];

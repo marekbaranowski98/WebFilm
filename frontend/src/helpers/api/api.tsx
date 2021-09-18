@@ -1,8 +1,8 @@
-const apiCall = async (url: string, method: string, body: Record<string, string> | null,
-                       resolve: any, reject: any, userAuth: boolean) => {
+const apiCall = async (url: string, method: string, body: FormData | null, resolve: any, reject: any,
+                       userAuth: boolean
+) => {
     let header: Record<string, string> = {
         'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=utf-8',
         'X-CSRFToken': getCookie('csrftoken'),
     };
     if(userAuth) {
@@ -13,7 +13,7 @@ const apiCall = async (url: string, method: string, body: Record<string, string>
         method: method,
         credentials: 'include',
         headers: header,
-        body: JSON.stringify(body),
+        body: body,
     }).then((response) => {
         resolve(response);
     }, (error) => {
@@ -21,7 +21,7 @@ const apiCall = async (url: string, method: string, body: Record<string, string>
     });
 };
 
-export const post = async (url: string, body: Record<string, string>, userAuth: boolean = false) => {
+export const post = async (url: string, body: FormData, userAuth: boolean = false) => {
     return new Promise(
         (resolve, reject) => {
             apiCall(url, 'POST', body, resolve, reject, userAuth);
@@ -70,3 +70,17 @@ const getCookie = (name: string): string => {
     }
     return cookieValue;
 }
+
+export const convertToFormData = (body: any) => {
+    let tmpFormData = new FormData();
+    for (let x in body) {
+        if(body[x] instanceof FileList) {
+            for(let y in body[x]) {
+                tmpFormData.append(x, body[x][y]);
+            }
+        }else {
+            tmpFormData.append(x, body[x]);
+        }
+    }
+    return tmpFormData;
+};

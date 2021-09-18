@@ -215,7 +215,7 @@ LOGGING = {
             'propagate': True,
         },
         'debug': {
-            'hadlers': ['file'],
+            'handlers': ['file'],
             'level': 'DEBUG',
             'propagate': True,
         },

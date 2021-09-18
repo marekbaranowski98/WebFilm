@@ -12,6 +12,10 @@ input[type=text], input[type=password], input[type=email], input[type=date], sel
     -moz-border-radius: 2rem;
 }
 
+input[type=file] {
+    display: none;
+}
+
 button {
     display: block;
     border: none;

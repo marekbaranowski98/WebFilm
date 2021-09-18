@@ -1,7 +1,14 @@
-import {MIN_AGE_TO_SIGN_UP, REGEX_EMAIL, REGEX_LOGIN, REGEX_PASSWORD} from './ConstType';
+import {
+    ACCEPT_EXTENSIONS_IMAGE,
+    MAX_SIZE_IMAGE_MB,
+    MIN_AGE_TO_SIGN_UP,
+    REGEX_EMAIL,
+    REGEX_LOGIN,
+    REGEX_PASSWORD
+} from './ConstType';
 import {Gender} from '../types/UserType';
 import {checkDataUser} from './api/user';
-import {ErrorType} from "../types/ErrorType";
+import {convertToFormData} from './api/api';
 
 export const validateLogin = (login: string): boolean => {
     if (login) {
@@ -42,7 +49,8 @@ export const validateEmail = (email?: string): boolean => {
 };
 
 export const checkDataIsAvailable = (key: string, value: string) => {
-    return checkDataUser({'key': key, 'value': value}).then(async (r) => {
+    let data = convertToFormData({'key': key, 'value': value});
+    return checkDataUser(data).then(async (r) => {
         let response = r as Response;
         if(response.status === 204) {
             return true;
@@ -98,7 +106,7 @@ export const validateRepeatPassword = (password: string, repeat_password: string
         error.name = 'repeat_password';
         throw error;
     }
-}
+};
 
 export const validateName = (name?: string): boolean => {
     if(name && name.length > 250) {
@@ -107,7 +115,7 @@ export const validateName = (name?: string): boolean => {
         throw error;
     }
     return true;
-}
+};
 
 export const validateSurname = (surname?: string): boolean => {
     if(surname && surname.length > 250) {
@@ -116,7 +124,7 @@ export const validateSurname = (surname?: string): boolean => {
         throw error;
     }
     return true;
-}
+};
 
 export const validateGender = (gender?: number): boolean => {
     if(gender && !Gender.some(x => x.id == gender)) {
@@ -125,11 +133,11 @@ export const validateGender = (gender?: number): boolean => {
         throw error;
     }
     return true;
-}
+};
 
 const validateDate = (date: string): boolean => {
     return !isNaN(new Date(date).getTime());
-}
+};
 
 export const validateBirthDate = (date: string): boolean => {
     if(!validateDate(date)) {
@@ -146,7 +154,7 @@ export const validateBirthDate = (date: string): boolean => {
         throw error;
     }
     return true;
-}
+};
 
 export const validateStatute = (status_statute: boolean): boolean => {
     if(status_statute) {
@@ -156,4 +164,21 @@ export const validateStatute = (status_statute: boolean): boolean => {
         error.name = 'accept_statute';
         throw error;
     }
-}
+};
+
+export const validateFile = (file: File): boolean => {
+    const max_size_image = MAX_SIZE_IMAGE_MB * 1024**2
+
+    if(file.size > max_size_image) {
+        let error: Error = new Error(`Maksymlany rozmiar pliku to ${MAX_SIZE_IMAGE_MB} MB.`);
+        error.name = 'avatar';
+        throw error;
+    }
+    if(!ACCEPT_EXTENSIONS_IMAGE.includes(file.type)) {
+        let error: Error = new Error('Akceptowalne są jedynie pliki graficzne.');
+        error.name = 'avatar';
+        throw error;
+    }
+
+    return true;
+};

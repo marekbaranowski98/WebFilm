@@ -20,7 +20,8 @@ export interface UserRegisterForm {
     surname?: string,
     gender?: number,
     birth_date: string,
-    accept_statute: boolean
+    avatar?: FileList,
+    accept_statute: boolean,
 }
 
 export const Gender: {id: number, value: string}[] = [

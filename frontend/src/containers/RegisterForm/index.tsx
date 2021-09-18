@@ -11,6 +11,7 @@ import {
     validateName, validateSurname, validateGender, validateBirthDate, validateStatute, checkDataIsAvailable
 } from '../../helpers/validators';
 import {registerUser} from '../../helpers/api/user';
+import FileInput from '../../components/FileInput';
 
 interface RegisterFormProps {
 }
@@ -73,7 +74,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
         }
     };
 
-    const {updateValue, submitHandler, errors} = useForm<UserRegisterForm>({
+    const {updateValue, submitHandler, errors, setErrors} = useForm<UserRegisterForm>({
         initialObject: {
             login: '',
             email: '',
@@ -142,6 +143,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
                 />
                 {errors.birth_date && <ErrorMessage message={errors.birth_date} />}
             </div>
+            <FileInput update={updateValue} start_errors={errors} set_errors={setErrors} />
             <div className="input-field">
                 <label className="label-checkbox">
                     <input type="checkbox" name="accept_statute" onChange={updateValue} required />
