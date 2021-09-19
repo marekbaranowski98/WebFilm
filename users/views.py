@@ -3,13 +3,14 @@ import logging
 
 from django.utils import timezone
 from rest_framework.authtoken.models import Token
-from rest_framework import generics, permissions, viewsets
+from rest_framework import generics, viewsets
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from .serializers import RegisterSerializer, LoginFormUserSerializer, LoginUserDataSerializer
 from .models import User
+from .permissions import LoginUser
 
 loggerUser = logging.getLogger(__name__)
 loggerDebug = logging.getLogger('debug')
@@ -106,7 +107,7 @@ class LoginAPI(ObtainAuthToken, viewsets.ViewSet):
 
 
 class CheckLoginUserAPI(generics.RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated, ]
+    permission_classes = [LoginUser]
     serializer_class = LoginUserDataSerializer
 
     def get_object(self) -> User:

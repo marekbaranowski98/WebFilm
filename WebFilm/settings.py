@@ -173,6 +173,9 @@ CORS_URLS_REGEX = r"^/api/.*$"
 
 # Authentication user
 AUTH_USER_MODEL = 'users.User'
+AUTHENTICATION_BACKENDS = [
+    'users.backends.UserBackend',
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

@@ -55,7 +55,7 @@ class User(AbstractBaseUser):
         (2, 'Dane uczące'),
         (3, 'Zbanowane'),
     )
-    is_active = models.IntegerField(choices=ACTIVE_CHOICES, default=0)
+    active_status = models.IntegerField(choices=ACTIVE_CHOICES, default=0)
     date_joined = models.DateTimeField(default=timezone.now)
 
     USERNAME_FIELD = 'email'
