@@ -163,6 +163,27 @@ paths:
             application/json:
               schema:
                   $ref: '#/components/schemas/Error'
+  /users/act/{key}/:
+    get:
+      tags:
+        - user
+      summary: Active new user
+      operationId: activeUser
+      parameters:
+      - name: key
+        in: path
+        description: Code to activate user
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        204:
+          description: Not content
+          content: {}
+        404:
+          description: Not Found
+          content: {}
   /photos/{bucket}/{blob}/:
     get:
       tags:

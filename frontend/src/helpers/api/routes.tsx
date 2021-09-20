@@ -28,6 +28,10 @@ const photosURL = (): string => {
     return `${SERVER_URL}photos/`;
 };
 
-export const getBlobFromBucket = (bucket: string, blob: string): string => {
+export const getBlobFromBucketURL = (bucket: string, blob: string): string => {
     return `${photosURL()}${bucket}/${blob}/`;
-}
+};
+
+export const activeUserURL = (uuid: string): string => {
+    return `${userURL()}act/${uuid}/`;
+};

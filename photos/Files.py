@@ -1,6 +1,5 @@
 import base64
 import tempfile
-import uuid
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from google.api_core.client_options import ClientOptions
@@ -19,6 +18,13 @@ class FileManager:
         )
 
     def get_file(self, bucket_path: str, blob_path: str) -> bytes:
+        """
+        Get file
+
+        :param bucket_path str name bucket
+        :param blob_path str name blob
+        :return return file bytes in base64
+        """
         bucket = self.__client.bucket(bucket_path)
         blob = bucket.blob(blob_path)
 
@@ -28,11 +34,16 @@ class FileManager:
             return self.__convert_to_base64(temp_file.read())
 
     def upload_file(self, bucket_path: str, file: InMemoryUploadedFile, destination_blob: str) -> None:
+        """
+        Upload file
+
+        :param bucket_path str name bucket
+        :param file file in bytes
+        :param destination_blob str name file in uuid
+        :return None
+        """
         blob = self.__client.bucket(bucket_path).blob(destination_blob)
         blob.upload_from_string(file.read())
-
-    def generete_uuid(self) -> str:
-        return str(uuid.uuid4())
 
     def __convert_to_base64(self, byte: bytes):
         return base64.b64encode(byte)

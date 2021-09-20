@@ -1,5 +1,5 @@
 import {post, get, convertToFormData} from './api';
-import {loginURL, loggedUserURL, logoutUserURL, validateDataUserURL, registerUserURL} from './routes';
+import {loginURL, loggedUserURL, logoutUserURL, validateDataUserURL, registerUserURL, activeUserURL} from './routes';
 import {UserLoginForm, UserRegisterForm} from '../../types/UserType';
 
 export const loginUser = async (data: UserLoginForm) => {
@@ -20,4 +20,8 @@ export const checkDataUser = async (body: FormData) => {
 
 export const registerUser = async (data: UserRegisterForm) => {
     return post(registerUserURL(), convertToFormData(data), false);
+};
+
+export const activeUser = async (uuid: string) => {
+    return get(activeUserURL(uuid), false);
 };

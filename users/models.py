@@ -56,6 +56,18 @@ class User(AbstractBaseUser):
         (3, 'Zbanowane'),
     )
     active_status = models.IntegerField(choices=ACTIVE_CHOICES, default=0)
+    active_code = models.CharField(
+        max_length=36,
+        unique=True,
+        null=True,
+        default=None,
+        validators=[
+            RegexValidator(
+                regex='[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}',
+                code='error_active',
+            ),
+        ],
+    )
     date_joined = models.DateTimeField(default=timezone.now)
 
     USERNAME_FIELD = 'email'

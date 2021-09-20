@@ -67,7 +67,9 @@ ROOT_URLCONF = 'WebFilm.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            f'{BASE_DIR}/frontend/static/',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -230,3 +232,12 @@ URL_GCS = env.str('URL_GCS')
 
 # Forms
 MAX_FILE_SIZE_MB = env.float('MAX_FILE_SIZE_MB')
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = env.str('EMAIL_HOST')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_NAME = env.str('EMAIL_HOST_NAME')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')

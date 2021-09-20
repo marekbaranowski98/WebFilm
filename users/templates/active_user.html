@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block title %}Aktywacja konta{% endblock %}
+
+{% block css %}
+    a.default-link, a.default-link:hover, a.default-link:focus, a.default-link:active {
+        color: revert;
+        text-decoration: underline;
+    }
+
+    .content-container p {
+        margin: 0.25rem;
+    }
+{% endblock %}
+
+{% block main_content %}
+    <p>Witaj {{ user.name }}!</p>
+    <p></p>
+    <p>Dziękujemy za założenie konta w naszym serwisie. Konto zostało utworzone, ale wymaga aktywacji. Do aktywacji konta należy wejść na stronę:</p>
+    <p><a class="default-link" href="http://127.0.0.1:8000/active-user/{{ user.active_code }}/">http://127.0.0.1:8000/active-user/{{ user.active_code }}/</a></p>
+    <p>Następnie należy się zalogować.</p>
+    <p>Ta wiadomość została wygenerowana przez system, nie odpowiadaj na nią.</p>
+    <p></p>
+    <p>Pozdrawiamy,</p>
+    <p>WebFilm</p>
+{% endblock %}

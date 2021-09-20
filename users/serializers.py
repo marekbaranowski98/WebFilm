@@ -5,13 +5,14 @@ from collections import OrderedDict
 from django.db import transaction
 from django.contrib.auth import authenticate, password_validation
 from django.core.files.uploadedfile import TemporaryUploadedFile
+from django.template import loader
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from WebFilm import settings
+from WebFilm import settings, helpers
 from .models import User, default_avatar
+from .email import Email
 from photos.Files import FileManager
-
 
 loggerDebug = logging.getLogger('debug')
 
@@ -27,7 +28,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             'id', 'login', 'email', 'password', 'repeat_password', 'name', 'surname', 'gender', 'birth_date',
             'avatar', 'accept_statute'
         )
-        extra_kwargs = {'password': {'write_only': True}, 'login': {'required': True},}
+        extra_kwargs = {'password': {'write_only': True}, 'login': {'required': True}, }
 
     @transaction.atomic
     def create(self, validated_data: dict):
@@ -41,7 +42,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             file_url = default_avatar()
             if validated_data.get('avatar'):
                 file = FileManager()
-                file_url = file.generete_uuid()
+                file_url = helpers.generate_uuid()
                 file.upload_file('users', validated_data['avatar'], file_url)
 
             user = User.objects.create_user(
@@ -53,7 +54,16 @@ class RegisterSerializer(serializers.ModelSerializer):
                 validated_data.get('birth_date'),
                 validated_data.get('gender', 0),
                 file_url,
+                helpers.generate_uuid(),
             )
+
+            html_message = loader.render_to_string('active_user.html', {
+                'user': user,
+            })
+
+            email = Email('Aktywacja konta', [f'{user.name} {user.surname} <{user.email}>'],
+                          self.__build_text_message(user), html_message)
+            email.send_email()
             return user
         except Exception as e:
             loggerDebug.debug(e)
@@ -103,7 +113,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise ValidationError({'birth_date': 'To pole jest wymagane.'}, code='birth-date')
 
     def validate_avatar_file(self, file: TemporaryUploadedFile):
-        limit_size_file = settings.MAX_FILE_SIZE_MB * 1024**2
+        limit_size_file = settings.MAX_FILE_SIZE_MB * 1024 ** 2
         if file.size > limit_size_file:
             raise ValidationError({'avatar': f'Maksymalny  rozmiar pliku to {limit_size_file} MB'})
         return file
@@ -118,6 +128,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         if not value:
             raise ValidationError({'accept_statute': 'Akceptacja regulaminu jest obowiązkowa.'}, code='accept-statute')
         return value
+
+    def __build_text_message(self, user: User) -> str:
+        return f'Witaj {user.name}!\nDziękujemy za założenie konta w naszym serwisie. Konto zostało utworzone, ' \
+               f'ale wymaga aktywacji. Do aktywacji konta należy wejść na stronę:\n' \
+               f'http://127.0.0.1:8000/active-user/{user.active_code}/. Następnie należy się zalogować.\n' \
+               f'Ta wiadomość została wygenerowana przez system, nie odpowiadaj na nią.\n\n' \
+               f'Pozdrawiamy,\nWebFilm'
 
 
 class LoginFormUserSerializer(serializers.ModelSerializer):

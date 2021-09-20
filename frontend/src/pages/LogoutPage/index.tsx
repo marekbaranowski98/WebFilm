@@ -26,7 +26,7 @@ const LogoutPage: React.FC<LogoutPageProps> = ({}) => {
     }, []);
 
     useEffect(() => {
-        if(counter > 0) {
+        if (counter > 0) {
             let interval = setInterval(() => setCounter(counter - 1), 1000);
             setIntervalID(interval);
 
@@ -34,26 +34,26 @@ const LogoutPage: React.FC<LogoutPageProps> = ({}) => {
                 clearInterval(interval);
             }
         }
-    }, [counter])
+    }, [counter]);
 
-    return(
-      <div className="logout-container">
-          {redirect && <Redirect to={{
-              pathname: '/',
-          }}/>}
-          <h2>Zostałeś wylogowany!</h2>
-          <p>
-              Zaraz nastąpi przkierwowanie na stronę główną.
-          </p>
-          <p>
-              Jeżeli nie nastąpi w ciągu {counter} sekund naciśnij ten guzik.
-          </p>
-          <Link to={'/'}>
-              <div className="button short-button">
-                  Powrót na stronę główną
-              </div>
-          </Link>
-      </div>
+    return (
+        <div className="content-container logout-container">
+            {redirect && <Redirect to={{
+                pathname: '/',
+            }}/>}
+            <h2>Zostałeś wylogowany!</h2>
+            <p>
+                Zaraz nastąpi przkierwowanie na stronę główną.
+            </p>
+            <p>
+                Jeżeli nie nastąpi w ciągu {counter} sekund naciśnij ten guzik.
+            </p>
+            <Link to={'/'}>
+                <div className="button short-button">
+                    Powrót na stronę główną
+                </div>
+            </Link>
+        </div>
     );
 }
 

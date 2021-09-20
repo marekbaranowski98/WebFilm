@@ -1,5 +1,5 @@
 import {
-    ACCEPT_EXTENSIONS_IMAGE,
+    ACCEPT_EXTENSIONS_IMAGE, GOOD_UUID,
     MAX_SIZE_IMAGE_MB,
     MIN_AGE_TO_SIGN_UP,
     REGEX_EMAIL,
@@ -181,4 +181,8 @@ export const validateFile = (file: File): boolean => {
     }
 
     return true;
+};
+
+export const validateUUID = (uuid: string): boolean => {
+    return GOOD_UUID.test(uuid);
 };

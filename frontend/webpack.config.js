@@ -37,9 +37,15 @@ module.exports = {
                 use: [
                     {
                         loader: 'file-loader',
+                        options: {
+                            name: 'image/[name].[ext]',
+                        },
                     },
                     {
                         loader: 'svgo-loader',
+                        options: {
+                            name: 'image/[name].[ext]',
+                        },
                     },
                 ],
             },

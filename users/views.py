@@ -5,6 +5,7 @@ from django.utils import timezone
 from rest_framework.authtoken.models import Token
 from rest_framework import generics, viewsets
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -141,3 +142,17 @@ class ValidationUserDataAPI(generics.CreateAPIView):
             return Response({
                 request.data['key']: f"Istnieje użytkownik z takim {request.data['key']}.",
             }, status=422)
+
+
+class ActiveUserAPI(generics.RetrieveUpdateAPIView):
+    def get(self, request, *args, **kwargs) -> Response:
+        key = str(kwargs['key'])
+        try:
+            u = get_object_or_404(User, active_code=key)
+            u.active_status = 1
+            u.active_code = None
+            u.save()
+            loggerUser.info(f'User {u.id} activate account.')
+            return Response(status=204)
+        except:
+            return Response(status=404)

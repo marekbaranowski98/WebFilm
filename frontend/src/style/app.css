@@ -56,3 +56,18 @@ a, a:hover, a:focus, a:active {
     min-height: calc(100vh - 6rem - 3rem);
     padding: 1rem;
 }
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: auto;
+}
+
+.content-container h2 {
+    text-align: center;
+}
+
+.content-container p {
+    margin: 1rem;
+}
