@@ -48,7 +48,7 @@ const ActivePage: React.FC<ActivePageProps> = ({}) => {
           }}/>}
           <h2>Konto zostało aktywowane</h2>
           <p>
-              Zaraz nastąpi przkierwowanie na stronę główną.
+              Zaraz nastąpi przekierowanie na stronę główną.
           </p>
           <p>
               Jeżeli nie nastąpi w ciągu {counter} sekund naciśnij ten guzik.

@@ -43,7 +43,7 @@ const LogoutPage: React.FC<LogoutPageProps> = ({}) => {
             }}/>}
             <h2>Zostałeś wylogowany!</h2>
             <p>
-                Zaraz nastąpi przkierwowanie na stronę główną.
+                Zaraz nastąpi przekierowanie na stronę główną.
             </p>
             <p>
                 Jeżeli nie nastąpi w ciągu {counter} sekund naciśnij ten guzik.
