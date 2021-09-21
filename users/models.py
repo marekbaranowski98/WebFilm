@@ -29,16 +29,16 @@ class User(AbstractBaseUser):
             ),
         ],
     )
-    email = models.EmailField(unique=True)
-    name = models.CharField(max_length=150, blank=True, default='')
-    surname = models.CharField(max_length=150, blank=True, default='')
+    email = models.EmailField(unique=True,)
+    name = models.CharField(max_length=150, blank=True, default='',)
+    surname = models.CharField(max_length=150, blank=True, default='',)
     GENDER_CHOICES = (
         (0, 'Nieokreślona'),
         (1, 'Kobieta'),
         (2, 'Mężczyzna'),
     )
-    gender = models.IntegerField(choices=GENDER_CHOICES, default=0)
-    birth_date = models.DateField(null=True, auto_now_add=False)
+    gender = models.IntegerField(choices=GENDER_CHOICES, default=0,)
+    birth_date = models.DateField(null=True, auto_now_add=False,)
     avatarURL = models.CharField(
         max_length=36,
         default=default_avatar,
@@ -68,7 +68,7 @@ class User(AbstractBaseUser):
             ),
         ],
     )
-    date_joined = models.DateTimeField(default=timezone.now)
+    date_joined = models.DateTimeField(default=timezone.now,)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
