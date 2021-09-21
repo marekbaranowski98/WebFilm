@@ -46,6 +46,6 @@
     .container-search {
         width: 90%;
         display: flex;
-        margin: 1rem auto;
+        margin: 0rem auto;
     }
 }

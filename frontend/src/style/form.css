@@ -22,3 +22,9 @@
 .container-form h2 {
     margin: 1rem;
 }
+
+@media screen and (max-width: 400px) {
+    .container-form {
+        padding: 1rem;
+    }
+}
