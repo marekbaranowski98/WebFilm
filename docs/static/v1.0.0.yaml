@@ -184,6 +184,44 @@ paths:
         404:
           description: Not Found
           content: {}
+  /users/me/reset-password/:
+    post:
+      tags:
+        - user
+      summary: Send email reset password
+      operationId: resetPassword
+      requestBody:
+        description: Email of the user for whom the password is to be reset
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: john@example.local
+                  minLength: 8
+                  maxLength: 254
+              required:
+                - email
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema: {}
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Error'
   /photos/{bucket}/{blob}/:
     get:
       tags:

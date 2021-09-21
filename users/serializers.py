@@ -10,7 +10,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from WebFilm import settings, helpers
-from .models import User, default_avatar
+from .models import User, default_avatar, PasswordReset
 from .email import Email
 from photos.Files import FileManager
 
@@ -172,3 +172,65 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'login', 'email', 'name', 'surname', 'gen', 'avatarURL')
+
+
+class RequestResetPasswordSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
+    user_id = serializers.IntegerField(required=False, allow_null=True, read_only=True)
+
+    class Meta:
+        model = PasswordReset
+
+        fields = ('email', 'user_id')
+
+    def validate(self, data):
+        """
+        Check email from data
+
+        :param data: str
+        :return:
+        """
+        try:
+            u = User.objects.get(email=data.get('email'))
+            if u.active_status == 1:
+                return data
+            raise ValidationError('Konto jest nieaktywne.')
+        except InterruptedError:
+            raise ValidationError('Taki adres nie istnieje.')
+        except ValidationError as v:
+            raise v
+
+    @transaction.atomic
+    def create(self, validated_data: dict):
+        """
+        Create new reset password
+
+        :param validated_data dict
+        :return:
+        """
+        try:
+            user = User.objects.get(email=validated_data.get('email'))
+            reset = PasswordReset.objects.create(
+                user_id=user,
+                reset_code=helpers.generate_uuid(),
+            )
+            reset.save()
+
+            html_message = loader.render_to_string('reset_password.html', {
+                'reset_password': reset,
+            })
+            email = Email('Reset hasła - WebFilm', [f'{user.name} {user.surname} <{user.email}>'],
+                          self.__build_text_message(reset), html_message)
+            email.send_email()
+
+            return reset
+        except Exception as e:
+            loggerDebug.debug(e)
+
+    def __build_text_message(self, reset_password: PasswordReset):
+        return f'Witaj {reset_password.user_id.name}!\nOtrzymaliśmy żądania resetu hasła. Jeżeli to nie ty proszę, ' \
+               f'zignoruj tę wiadomość.\nDo resetu hasła należy wejść na stronę:\n' \
+               f'http://127.0.0.1:8000/reset-password/{reset_password.reset_code}/.\n' \
+               f'Po zmianie hasła będzie można zalogować się.\nLink jest ważny przez godzinę.\n' \
+               f'Ta wiadomość została wygenerowana przez system, nie odpowiadaj na nią.\n\n' \
+               f'Pozdrawiamy,\nWebFilm'

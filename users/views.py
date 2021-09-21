@@ -9,7 +9,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from .serializers import RegisterSerializer, LoginFormUserSerializer, LoginUserDataSerializer
+from .serializers import RegisterSerializer, LoginFormUserSerializer, LoginUserDataSerializer, RequestResetPasswordSerializer
 from .models import User
 from .permissions import LoginUser
 
@@ -145,7 +145,15 @@ class ValidationUserDataAPI(generics.CreateAPIView):
 
 
 class ActiveUserAPI(generics.RetrieveUpdateAPIView):
-    def get(self, request, *args, **kwargs) -> Response:
+    def get(self, request: Request, *args, **kwargs) -> Response:
+        """
+        Active user
+
+        :param request Request
+        :param args:
+        :param kwargs:
+        :return Response
+        """
         key = str(kwargs['key'])
         try:
             u = get_object_or_404(User, active_code=key)
@@ -156,3 +164,24 @@ class ActiveUserAPI(generics.RetrieveUpdateAPIView):
             return Response(status=204)
         except:
             return Response(status=404)
+
+
+class ResetPasswordAPI(generics.CreateAPIView):
+    serializer_class = RequestResetPasswordSerializer
+
+    def post(self, request: Request, *args, **kwargs) -> Response:
+        """
+        Send request reset password to email from data
+
+        :param request Request
+        :param args:
+        :param kwargs:
+        :return Response
+        """
+        reset_password = self.get_serializer(data=request.data, context={'request': request})
+        if reset_password.is_valid():
+            reset_password.save()
+
+            return Response(status=200)
+        else:
+            return Response({'error': reset_password.errors}, status=404)

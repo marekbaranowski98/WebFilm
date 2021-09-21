@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.contrib.auth.models import AbstractBaseUser
 from django.core.validators import RegexValidator
 from django.db import models
@@ -85,3 +87,23 @@ class User(AbstractBaseUser):
             'birth_date': self.birth_date.strftime('%Y-%m-%d'),
             'avatarURL': self.avatarURL,
         }.__str__()
+
+
+class PasswordReset(models.Model):
+    user_id = models.ForeignKey(to=User, on_delete=models.CASCADE,)
+    reset_code = models.CharField(
+        max_length=36,
+        unique=True,
+        null=True,
+        default=None,
+        validators=[
+            RegexValidator(
+                regex='[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}',
+                code='error_reset',
+            ),
+        ],
+    )
+    expiration_date = models.DateTimeField(default=timezone.now() + timedelta(hours=1),)
+
+    class Meta:
+        db_table = 'users_password_reset'
