@@ -61,7 +61,7 @@ class RegisterSerializer(serializers.ModelSerializer):
                 'user': user,
             })
 
-            email = Email('Aktywacja konta', [f'{user.name} {user.surname} <{user.email}>'],
+            email = Email('Aktywacja konta - WebFilm', [f'{user.name} {user.surname} <{user.email}>'],
                           self.__build_text_message(user), html_message)
             email.send_email()
             return user

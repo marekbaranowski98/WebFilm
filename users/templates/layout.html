@@ -22,6 +22,27 @@
             .content-header {
                 justify-content: left;
             }
+
+            .content-container p {
+                margin: 0.25rem;
+            }
+
+            a.default-link, a.default-link:hover, a.default-link:focus, a.default-link:active {
+                color: revert;
+                text-decoration: underline;
+            }
+
+            p.button {
+                cursor: pointer;
+                padding: 0.75rem 1rem;
+                background-color: var(--color-main);
+                border-radius: 2rem;
+                -webkit-border-radius: 2rem;
+                -moz-border-radius: 2rem;
+                white-space: nowrap;
+                width: fit-content;
+                margin: 0.25rem 2rem;
+            }
             {% block css %}{% endblock %}
         </style>
     </head>
