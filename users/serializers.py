@@ -2,6 +2,7 @@ import datetime
 import logging
 
 from collections import OrderedDict
+from django.contrib.auth.hashers import make_password
 from django.db import transaction
 from django.contrib.auth import authenticate, password_validation
 from django.core.files.uploadedfile import TemporaryUploadedFile
@@ -68,6 +69,19 @@ class RegisterSerializer(serializers.ModelSerializer):
         except Exception as e:
             loggerDebug.debug(e)
 
+    def update(self, instance, validated_data):
+        """
+        Update User
+
+        :param instance User
+        :param validated_data OrderedDict
+        :return User
+        """
+        if validated_data.get('password'):
+            instance.password = make_password(validated_data.get('password'))
+        instance.save()
+        return instance
+
     def validate(self, data: OrderedDict):
         """
         Check data
@@ -77,7 +91,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         :except ValidationError
         """
         password = data.get('password')
-        if password:
+        confirm_password = data.get('repeat_password')
+
+        if password and confirm_password:
+            if password != confirm_password:
+                raise ValidationError({'password': 'Hasła muszą być identyczne'}, code='different-password')
             try:
                 password_validation.validate_password(
                     password,
@@ -90,10 +108,10 @@ class RegisterSerializer(serializers.ModelSerializer):
                 )
             except Exception as e:
                 raise ValidationError({'password': str.split(str(e)[2:-2], "', '")}, code='error-password')
-
-        confirm_password = data.pop('repeat_password')
-        if password != confirm_password:
-            raise ValidationError({'password': 'Hasła muszą być identyczne'}, code='different-password')
+        elif password:
+            raise ValidationError({'confirm_password': 'To pole jest wymagane.'})
+        elif confirm_password:
+            raise ValidationError({'password': 'To pole jest wymagane.'})
         return data
 
     def validate_birth_date(self, value):

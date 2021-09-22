@@ -9,8 +9,9 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from .serializers import RegisterSerializer, LoginFormUserSerializer, LoginUserDataSerializer, RequestResetPasswordSerializer
-from .models import User
+from .serializers import RegisterSerializer, LoginFormUserSerializer, LoginUserDataSerializer, \
+    RequestResetPasswordSerializer
+from .models import User, PasswordReset
 from .permissions import LoginUser
 
 loggerUser = logging.getLogger(__name__)
@@ -166,7 +167,7 @@ class ActiveUserAPI(generics.RetrieveUpdateAPIView):
             return Response(status=404)
 
 
-class ResetPasswordAPI(generics.CreateAPIView):
+class ResetPasswordAPI(generics.CreateAPIView, generics.UpdateAPIView, viewsets.ViewSet):
     serializer_class = RequestResetPasswordSerializer
 
     def post(self, request: Request, *args, **kwargs) -> Response:
@@ -181,7 +182,43 @@ class ResetPasswordAPI(generics.CreateAPIView):
         reset_password = self.get_serializer(data=request.data, context={'request': request})
         if reset_password.is_valid():
             reset_password.save()
+            print(reset_password.validated_data.get('email'))
+            loggerUser.info(f"User {reset_password.validated_data.get('email')} generated reset password link")
 
             return Response(status=200)
         else:
-            return Response({'error': reset_password.errors}, status=404)
+            return Response({'errors': reset_password.errors}, status=404)
+
+    def patch(self, request: Request, *args, **kwargs) -> Response:
+        """
+        Reset password
+
+        :param request Request
+        :param args:
+        :param kwargs:
+        :return Response
+        """
+        key = str(kwargs['key'])
+        try:
+            reset = PasswordReset.objects.get(reset_code=key)
+
+            if reset.expiration_date > datetime.datetime.now():
+                user = RegisterSerializer(instance=reset.user_id, data=request.data, partial=True)
+                if user.is_valid():
+                    user.save()
+
+                    reset.expiration_date = datetime.datetime.now()
+                    reset.reset_code = None
+                    reset.save()
+                    loggerUser.info(f'User {reset.user_id.id} reset password')
+                    return Response(status=204)
+                else:
+                    return Response({'errors': user.errors}, status=403)
+            else:
+                return Response({
+                    'non_field_errors': 'Link wygasł.'
+                }, status=408)
+        except PasswordReset.DoesNotExist:
+            return Response({
+                'non_field_errors': 'Podano błędny link.'
+            }, status=404)
