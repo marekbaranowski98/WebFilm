@@ -20,9 +20,11 @@ const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
             {redirect && <Redirect to={{
                 pathname: '/',
             }}/>}
-            <div className="container-form">
-                <h2>Zarejestruj się</h2>
-                <RegisterForm/>
+            <div className="box-form">
+                <div className="container-form">
+                    <h2>Zarejestruj się</h2>
+                    <RegisterForm/>
+                </div>
             </div>
         </div>
     );

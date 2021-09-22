@@ -24,13 +24,15 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
           {redirect && <Redirect to={{
               pathname: '/',
           }}/>}
-          <div className="container-form">
+          <div className="box-form">
+              <div className="container-form">
               <h2>Zaloguj się</h2>
               {chooseLoginEmail ?
                   <LoginForm/>
                   :
                   <LoginOptions setChooseLoginEmail={setChooseLoginEmail} />
               }
+              </div>
           </div>
           <SignInPerks />
       </div>

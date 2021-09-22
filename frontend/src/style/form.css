@@ -5,26 +5,24 @@
     align-items: center;
 }
 
+.box-form {
+    width: 20rem;
+}
+
 .container-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     border: solid 1px var(--color-text);
-    width: fit-content;
     height: fit-content;
-    padding: 1rem 2rem 2rem;
-    margin: 0 0.5rem;
+    padding: 5% 10% 9%;
+    margin: 0 2%;
     border-radius: 3rem;
     -webkit-border-radius: 3rem;
     -moz-border-radius: 3rem;
 }
 
-.container-form h2 {
-    margin: 1rem;
-}
 
-@media screen and (max-width: 400px) {
-    .container-form {
-        padding: 1rem;
-    }
+.container-form h2 {
+    margin: 5%;
 }

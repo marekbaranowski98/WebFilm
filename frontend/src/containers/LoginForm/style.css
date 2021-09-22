@@ -1,10 +1,9 @@
 .input-field {
-    width: 19rem;
-    margin-bottom: 1rem;
+    margin-bottom: 5%;
 }
 
 .input-field div {
-    margin-bottom: 0.1rem;
+    margin-bottom: 0.5%;
 }
 
 .input-field input {
@@ -12,23 +11,17 @@
 }
 
 .label-info {
-    margin: 0 0.5rem;
+    margin: 0 3%;
 }
 
 .short-button {
     width: fit-content;
     margin: 0 auto;
-    padding: 0.75rem 1.5rem;
+    padding: 4% 8%;
 }
 
 .link-request-reset-password {
     width: fit-content;
-    margin: 1rem auto 0;
+    margin: 5% auto 0;
     cursor: pointer;
-}
-
-@media screen and (max-width: 400px) {
-    .input-field {
-        width: 15rem;
-    }
 }

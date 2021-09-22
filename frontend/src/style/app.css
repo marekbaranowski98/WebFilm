@@ -71,3 +71,9 @@ a, a:hover, a:focus, a:active {
 .content-container p {
     margin: 1rem;
 }
+
+@media screen and (max-width: 600px){
+    .content-container {
+        width: 100%;
+    }
+}

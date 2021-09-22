@@ -1,3 +1,7 @@
+form {
+    width: 100%;
+}
+
 .required-field:after {
     content: '*';
     color: #FF0000;
