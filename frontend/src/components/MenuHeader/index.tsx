@@ -7,7 +7,7 @@ import AutoHideOutsideClick from "../../helpers/AutoHideOutsideClick";
 interface MenuHeaderProps {
     headerTitle: string,
     link: string,
-    subMenuChildren: {id: number, element: string}[],
+    subMenuChildren: {id: number, element: string, link: string}[],
 }
 
 const MenuHeader: React.FC<MenuHeaderProps> = ({headerTitle, link, subMenuChildren}) => {
@@ -30,7 +30,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({headerTitle, link, subMenuChildr
             {showSubMenu &&  subMenuChildren.length > 0 &&
                 <ul className="submenu">
                     {subMenuChildren.map(x =>
-                        <li key={x.id}><Link className="submenu-option" to={'#'}>{x.element}</Link></li>
+                        <li key={x.id}><Link className="submenu-option" to={x.link}>{x.element}</Link></li>
                     )}
                 </ul>
             }

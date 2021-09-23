@@ -1,11 +1,3 @@
 .input-field select {
     height: 2rem;
 }
-
-a.link {
-    color: var(--color-secondary);
-}
-
-a.link:hover {
-    color: var(--color-secondary-hover);
-}

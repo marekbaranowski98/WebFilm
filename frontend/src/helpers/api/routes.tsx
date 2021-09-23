@@ -35,3 +35,7 @@ export const getBlobFromBucketURL = (bucket: string, blob: string): string => {
 export const activeUserURL = (uuid: string): string => {
     return `${userURL()}act/${uuid}/`;
 };
+
+export const requestResetPasswordURL = (): string => {
+    return `${userURL()}me/reset-password/`;
+};

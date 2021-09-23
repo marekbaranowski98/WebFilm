@@ -1,6 +1,14 @@
 import {post, get, convertToFormData} from './api';
-import {loginURL, loggedUserURL, logoutUserURL, validateDataUserURL, registerUserURL, activeUserURL} from './routes';
-import {UserLoginForm, UserRegisterForm} from '../../types/UserType';
+import {
+    loginURL,
+    loggedUserURL,
+    logoutUserURL,
+    validateDataUserURL,
+    registerUserURL,
+    activeUserURL,
+    requestResetPasswordURL
+} from './routes';
+import {SendEmailResetPasswordEmail, UserLoginForm, UserRegisterForm} from '../../types/UserType';
 
 export const loginUser = async (data: UserLoginForm) => {
     return post(loginURL(), convertToFormData(data));
@@ -24,4 +32,8 @@ export const registerUser = async (data: UserRegisterForm) => {
 
 export const activeUser = async (uuid: string) => {
     return get(activeUserURL(uuid), false);
+};
+
+export const requestResetPassword = async (body: SendEmailResetPasswordEmail) => {
+    return post(requestResetPasswordURL(), convertToFormData(body), false);
 };

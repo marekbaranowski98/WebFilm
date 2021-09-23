@@ -213,8 +213,8 @@ class RequestResetPasswordSerializer(serializers.ModelSerializer):
             if u.active_status == 1:
                 return data
             raise ValidationError('Konto jest nieaktywne.')
-        except InterruptedError:
-            raise ValidationError('Taki adres nie istnieje.')
+        except User.DoesNotExist:
+            raise ValidationError('Nie ma użytkownika o takim adresie.')
         except ValidationError as v:
             raise v
 

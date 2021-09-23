@@ -33,7 +33,7 @@
     margin-bottom: 3%;
 }
 
-.box-file .button {
+label .button {
     white-space: normal;
     text-align: center;
     margin: 0 5%;
@@ -50,6 +50,7 @@
     top: 0.5rem;
     padding: 0.5rem;
     width: 2.25rem;
+    text-align: left;
 }
 
 .remove-image-button > .cross {

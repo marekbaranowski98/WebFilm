@@ -38,3 +38,7 @@ export const Gender: {id: number, value: string}[] = [
         value: 'Mężczyzna',
     },
 ];
+
+export interface SendEmailResetPasswordEmail {
+    email: string
+}

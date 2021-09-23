@@ -23,5 +23,5 @@
 .link-request-reset-password {
     width: fit-content;
     margin: 5% auto 0;
-    cursor: pointer;
+    display: block;
 }

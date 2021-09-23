@@ -15,6 +15,7 @@ import RegisterPage from '../pages/RegisterPage';
 import StatutePage from '../pages/StatutePage';
 import Footer from '../components/Footer';
 import ActivePage from '../pages/ActivePage';
+import RequestResetPassword from '../pages/RequestResetPassword';
 
 interface App {
 
@@ -34,6 +35,7 @@ const App: React.FC<App> = ({}) => {
                         <Route exact path="/register" component={RegisterPage}/>
                         <Route exact path="/statute" component={StatutePage}/>
                         <Route exact path="/active-user/:key" component={ActivePage}/>
+                        <Route exact path="/reset-password" component={RequestResetPassword}/>
                     </Switch>
                 </div>
             </BrowserRouter>

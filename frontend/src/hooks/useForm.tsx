@@ -62,6 +62,7 @@ const useForm = <T extends {}>({initialObject, validateObject, sendRequestToAPI,
         e.preventDefault();
 
         if(Object.keys(errors).filter((x) => x !== 'non_field_errors').length == 0) {
+            setErrors({});
             sendRequestToAPI(values, setErrors);
         }
     };

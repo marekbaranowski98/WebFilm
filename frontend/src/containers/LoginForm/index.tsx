@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Redirect} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 
 import './style.css';
 import {UserLoginForm} from '../../types/UserType';
@@ -79,7 +79,7 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
                 Zaloguj się
             </button>
             {errors.non_field_errors && <ErrorMessage message={errors.non_field_errors}/>}
-            <div className="link-request-reset-password">Nie pamiętam hasła</div>
+            <Link className="link link-request-reset-password" to={'/reset-password/'}>Nie pamiętam hasła</Link>
             {redirect && <Redirect to={{
                 pathname: '/',
             }}/>}

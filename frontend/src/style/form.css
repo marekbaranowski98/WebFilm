@@ -6,7 +6,7 @@
 }
 
 .box-form {
-    width: 20rem;
+    width: 25rem;
 }
 
 .container-form {
@@ -20,6 +20,7 @@
     border-radius: 3rem;
     -webkit-border-radius: 3rem;
     -moz-border-radius: 3rem;
+    width: auto;
 }
 
 
