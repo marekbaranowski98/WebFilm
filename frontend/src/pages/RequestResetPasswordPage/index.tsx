@@ -1,18 +1,28 @@
-import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
-import RequestResetPasswordForm from '../../containers/RequestResetPasswordForm';
+import React, {useEffect, useState} from 'react';
+import {Link, useLocation} from 'react-router-dom';
 
 import './style.css';
+import RequestResetPasswordForm from '../../containers/RequestResetPasswordForm';
+import {ResultType} from '../../types/ErrorType';
+import Alert from '../../components/Alert';
 
 interface RequestResetPasswordProps {
 }
 
-const RequestResetPassword: React.FC<RequestResetPasswordProps> = ({}) => {
-    const [sendResetLink, setSendResetLink] = useState<boolean>(false)
+const RequestResetPassword: React.FC<RequestResetPasswordProps> = () => {
+    const [sendResetLink, setSendResetLink] = useState<boolean>(false);
+    const location = useLocation<ResultType>();
+
+    useEffect(() => {
+       console.log(location);
+    });
 
     return (
         <div className="wrapper-form">
             <div className="box-form">
+                {location.state?.alertMessage && <Alert
+                    icon={location.state.alertMessage.icon}
+                    message={location.state.alertMessage.message}/>}
                 <div className="content-container container-form">
                     {sendResetLink ?
                         <>

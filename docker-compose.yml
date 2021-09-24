@@ -16,6 +16,12 @@ services:
         ports:
             - "3306:3306"
         restart: unless-stopped
+        command: [
+                'mysqld',
+                '--character-set-server=utf8mb4',
+                '--collation-server=utf8mb4_unicode_ci',
+                '--default-time-zone=+01:00'
+        ]
     swagger:
         container_name: webfilm_swagger
         image: swaggerapi/swagger-ui:v3.51.2
