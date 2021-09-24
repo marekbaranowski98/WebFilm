@@ -1,4 +1,4 @@
-import {post, get, convertToFormData} from './api';
+import {post, get, patch, convertToFormData} from './api';
 import {
     loginURL,
     loggedUserURL,
@@ -6,9 +6,9 @@ import {
     validateDataUserURL,
     registerUserURL,
     activeUserURL,
-    requestResetPasswordURL
+    requestResetPasswordURL, resetPasswordURL
 } from './routes';
-import {SendEmailResetPasswordEmail, UserLoginForm, UserRegisterForm} from '../../types/UserType';
+import {ResetPasswordObject, SendEmailResetPasswordEmail, UserLoginForm, UserRegisterForm} from '../../types/UserType';
 
 export const loginUser = async (data: UserLoginForm) => {
     return post(loginURL(), convertToFormData(data));
@@ -37,3 +37,7 @@ export const activeUser = async (uuid: string) => {
 export const requestResetPassword = async (body: SendEmailResetPasswordEmail) => {
     return post(requestResetPasswordURL(), convertToFormData(body), false);
 };
+
+export const resetPassword = async (key:string, body: ResetPasswordObject) => {
+    return patch(resetPasswordURL(key), convertToFormData(body), false);
+}

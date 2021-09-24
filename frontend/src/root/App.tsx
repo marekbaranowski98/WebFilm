@@ -15,7 +15,8 @@ import RegisterPage from '../pages/RegisterPage';
 import StatutePage from '../pages/StatutePage';
 import Footer from '../components/Footer';
 import ActivePage from '../pages/ActivePage';
-import RequestResetPassword from '../pages/RequestResetPassword';
+import RequestResetPasswordPage from '../pages/RequestResetPasswordPage';
+import ResetPasswordPage from '../pages/ResetPasswordPage';
 
 interface App {
 
@@ -30,12 +31,13 @@ const App: React.FC<App> = ({}) => {
                 <div className="main-container">
                     <Switch>
                         <Route exact path="/" component={MainContent}/>
-                        <Route exact path="/login" component={LoginPage}/>
-                        <Route exact path="/logout" component={LogoutPage}/>
-                        <Route exact path="/register" component={RegisterPage}/>
-                        <Route exact path="/statute" component={StatutePage}/>
-                        <Route exact path="/active-user/:key" component={ActivePage}/>
-                        <Route exact path="/reset-password" component={RequestResetPassword}/>
+                        <Route exact path="/login/" component={LoginPage}/>
+                        <Route exact path="/logout/" component={LogoutPage}/>
+                        <Route exact path="/register/" component={RegisterPage}/>
+                        <Route exact path="/statute/" component={StatutePage}/>
+                        <Route exact path="/active-user/:key/" component={ActivePage}/>
+                        <Route exact path="/reset-password" component={RequestResetPasswordPage}/>
+                        <Route exact path="/reset-password/:key/" component={ResetPasswordPage}/>
                     </Switch>
                 </div>
             </BrowserRouter>

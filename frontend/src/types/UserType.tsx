@@ -42,3 +42,8 @@ export const Gender: {id: number, value: string}[] = [
 export interface SendEmailResetPasswordEmail {
     email: string
 }
+
+export interface ResetPasswordObject {
+    password: string,
+    repeat_password: string,
+}

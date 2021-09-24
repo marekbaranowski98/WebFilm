@@ -1,41 +1,46 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Redirect} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
 
 import LoginForm from '../../containers/LoginForm';
 import LoginOptions from '../../containers/LoginOptions';
 import SignInPerks from '../../components/SignInPerks';
-import {CurrentUserContext} from '../../context/CurrentUserContext';
+import {AlertType, ResultType} from '../../types/ErrorType';
+import Alert from '../../components/Alert';
 
 interface LoginPageProps {
-
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({}) => {
-    const [redirect, setRedirect] = useState<boolean>(false);
     const [chooseLoginEmail, setChooseLoginEmail] = useState<boolean>(false);
-    const userContext = useContext(CurrentUserContext);
+    const location = useLocation<ResultType>();
+    const history = useHistory();
+    const [notification, setNotification] = useState<AlertType>();
 
     useEffect(() => {
-        userContext?.checkIsUserLogged().then(() => setRedirect(true), () => {});
+       if(location.state?.alertMessage) {
+           setNotification(location.state?.alertMessage);
+           history.replace({ pathname: location.pathname, state: undefined });
+       }
     }, []);
 
     return (
-      <div className="wrapper-form">
-          {redirect && <Redirect to={{
-              pathname: '/',
-          }}/>}
-          <div className="box-form">
-              <div className="container-form">
-              <h2>Zaloguj się</h2>
-              {chooseLoginEmail ?
-                  <LoginForm/>
-                  :
-                  <LoginOptions setChooseLoginEmail={setChooseLoginEmail} />
-              }
-              </div>
-          </div>
-          <SignInPerks />
-      </div>
+        <div className="wrapper-form">
+            <div className="box-form">
+                {notification && <Alert
+                    icon={notification.icon}
+                    message={notification.message}
+                />}
+                <div className="container-form">
+                    <h2>Zaloguj się</h2>
+                    {chooseLoginEmail ?
+                        <LoginForm/>
+                        :
+                        <LoginOptions setChooseLoginEmail={setChooseLoginEmail}/>
+                    }
+                </div>
+            </div>
+            <SignInPerks/>
+        </div>
     );
 };
 

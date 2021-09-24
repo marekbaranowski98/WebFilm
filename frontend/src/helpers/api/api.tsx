@@ -29,6 +29,14 @@ export const post = async (url: string, body: FormData, userAuth: boolean = fals
     );
 };
 
+export const patch = async (url: string, body: FormData, userAuth: boolean = false) => {
+    return new Promise(
+        (resolve, reject) => {
+            apiCall(url, 'PATCH', body, resolve, reject, userAuth);
+        }
+    );
+};
+
 export const get = async (url: string, userAuth: boolean = false) => {
     let header: Record<string, string> = {
         'Accept': 'application/json',

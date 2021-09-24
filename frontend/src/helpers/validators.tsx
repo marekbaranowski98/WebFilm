@@ -55,8 +55,8 @@ export const checkDataIsAvailable = (key: string, value: string) => {
         if(response.status === 204) {
             return true;
         }else if(response.status === 422) {
-            let e = await response.json()
-            for (const oneError in e) {
+            let e = await response.json();
+            for(const oneError in e) {
                 let error: Error = new Error(e[oneError]);
                 error.name = oneError;
                 throw error;
@@ -76,11 +76,15 @@ export const checkDataIsAvailable = (key: string, value: string) => {
 
 export const validatePassword = (password: string): boolean => {
     if (password) {
-        if (password.length < 8 || password.length > 128) {
-            let error: Error = new Error('Hasło powinno zawierać od 8 do 128 znaków.');
+        if(password.length < 8) {
+            let error: Error = new Error('Hasło powinno zawierać minimum 8 znaków.');
             error.name = 'password';
             throw error;
-        } else if (!REGEX_PASSWORD.test(password)) {
+        }else if(password.length > 128) {
+            let error: Error = new Error('Hasło nie może zawierać więcej niż 128 znaków.');
+            error.name = 'password';
+            throw error;
+        }else if (!REGEX_PASSWORD.test(password)) {
             let error: Error = new Error('Hasło musi zawierać cyfrę, znak specjalny !@$%^&*-_,.?;, małą i dużą litere.');
             error.name = 'password';
             throw error;

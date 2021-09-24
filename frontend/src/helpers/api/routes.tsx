@@ -39,3 +39,7 @@ export const activeUserURL = (uuid: string): string => {
 export const requestResetPasswordURL = (): string => {
     return `${userURL()}me/reset-password/`;
 };
+
+export const resetPasswordURL = (key: string): string => {
+    return `${requestResetPasswordURL()}${key}/`;
+};

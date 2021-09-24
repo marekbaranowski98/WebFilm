@@ -1,28 +1,34 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useLocation} from 'react-router-dom';
+import {Link, useLocation, useHistory} from 'react-router-dom';
 
 import './style.css';
 import RequestResetPasswordForm from '../../containers/RequestResetPasswordForm';
-import {ResultType} from '../../types/ErrorType';
+import {AlertType, ResultType} from '../../types/ErrorType';
 import Alert from '../../components/Alert';
 
-interface RequestResetPasswordProps {
+interface RequestResetPasswordPageProps {
 }
 
-const RequestResetPassword: React.FC<RequestResetPasswordProps> = () => {
+const RequestResetPasswordPage: React.FC<RequestResetPasswordPageProps> = ({}) => {
     const [sendResetLink, setSendResetLink] = useState<boolean>(false);
     const location = useLocation<ResultType>();
+    const history = useHistory();
+    const [notification, setNotification] = useState<AlertType>();
 
     useEffect(() => {
-       console.log(location);
-    });
+       if(location.state?.alertMessage) {
+           setNotification(location.state?.alertMessage);
+           history.replace({ pathname: location.pathname, state: undefined });
+       }
+    }, []);
 
     return (
         <div className="wrapper-form">
             <div className="box-form">
-                {location.state?.alertMessage && <Alert
-                    icon={location.state.alertMessage.icon}
-                    message={location.state.alertMessage.message}/>}
+                {notification && <Alert
+                    icon={notification.icon}
+                    message={notification.message}
+                />}
                 <div className="content-container container-form">
                     {sendResetLink ?
                         <>
@@ -48,4 +54,4 @@ const RequestResetPassword: React.FC<RequestResetPasswordProps> = () => {
     );
 };
 
-export default RequestResetPassword;
+export default RequestResetPasswordPage;
