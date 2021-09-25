@@ -179,9 +179,11 @@ class LoginFormUserSerializer(serializers.ModelSerializer):
 
 
 class LoginUserDataSerializer(serializers.ModelSerializer):
+    role_status = serializers.ReadOnlyField(source='role_id.order')
+
     class Meta:
         model = User
-        fields = ('id', 'login', 'name', 'avatarURL')
+        fields = ('id', 'login', 'name', 'avatarURL', 'role_status')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -230,6 +232,7 @@ class RequestResetPasswordSerializer(serializers.ModelSerializer):
             user = User.objects.get(email=validated_data.get('email'))
             reset = PasswordReset.objects.create(
                 user_id=user,
+                expiration_date=datetime.datetime.now() + datetime.timedelta(hours=1),
                 reset_code=helpers.generate_uuid(),
             )
             reset.save()

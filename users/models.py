@@ -12,6 +12,14 @@ def default_avatar() -> str:
     return '00000000-0000-0000-0000-000000000000'
 
 
+class RolesUser(models.Model):
+    order = models.IntegerField(unique=True,)
+    role_name = models.CharField(max_length=20, unique=True, blank=False,)
+
+    class Meta:
+        db_table = 'users_roles_user'
+
+
 class User(AbstractBaseUser):
     username = None
     login = models.CharField(
@@ -70,6 +78,7 @@ class User(AbstractBaseUser):
             ),
         ],
     )
+    role_id = models.ForeignKey(to=RolesUser, default=1, on_delete=models.RESTRICT,)
     date_joined = models.DateTimeField(default=timezone.now,)
 
     USERNAME_FIELD = 'email'

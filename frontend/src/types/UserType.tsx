@@ -9,6 +9,7 @@ export interface UserObject {
     login: string,
     name: string,
     avatarURL: string,
+    role_status: number,
 }
 
 export interface UserRegisterForm {
@@ -46,4 +47,11 @@ export interface SendEmailResetPasswordEmail {
 export interface ResetPasswordObject {
     password: string,
     repeat_password: string,
+}
+
+export enum UserRole {
+    AnonymousUser = 0,
+    User = 1,
+    Moderator = 5,
+    Admin = 10
 }

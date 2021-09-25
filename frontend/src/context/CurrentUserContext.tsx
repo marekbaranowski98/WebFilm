@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {UserObject} from '../types/UserType';
+import {UserObject, UserRole} from '../types/UserType';
 import {getLoggedUser} from '../helpers/api/user';
 import {checkExistCookie} from '../helpers/api/api';
 
 interface CurrentUserContextProps {
     user: UserObject | null,
-    checkIsUserLogged: () => Promise<boolean>,
+    checkIsUserLogged: () => Promise<UserRole>,
     logoutUser: () => void,
 }
 export const CurrentUserContext = React.createContext<CurrentUserContextProps | null>(null);
@@ -17,33 +17,36 @@ interface CurrentUserProviderProps {
 export const CurrentUserProvider: React.FC<CurrentUserProviderProps> = ({children}) => {
     const [user, setUser] = useState<UserObject | null>(null);
 
-    const checkIsUserLogged = async (): Promise<boolean> => {
+    const checkIsUserLogged = async (): Promise<UserRole> => {
         return new Promise((resolve, reject) => {
             if (user == null) {
                 if (checkExistCookie('token')) {
                     getLoggedUser().then((res) => {
                         let r = (res as Response);
                         if (r.status === 200) {
-                            r.json().then(u => setUser(u));
-                            resolve(true);
+                            r.json().then(u => {
+                                setUser(u);
+                                resolve(u.role_status);
+                            });
                         }else {
-                            reject(false);
+                            reject(UserRole.AnonymousUser);
                         }
                     }, (e) => {
-                        reject(false);
+                        reject(UserRole.AnonymousUser);
                     });
                 }else {
-                    reject(false);
+                    reject(UserRole.AnonymousUser);
                 }
             }else {
-                resolve(true);
+                resolve(user.role_status);
             }
         });
-    }
+    };
 
     const logoutUser = (): void => {
         setUser(null);
-    }
+    };
+
     return (
         <CurrentUserContext.Provider value={{
             user: user,
@@ -52,5 +55,5 @@ export const CurrentUserProvider: React.FC<CurrentUserProviderProps> = ({childre
         }}>
             {children}
         </CurrentUserContext.Provider>
-    )
+    );
  };

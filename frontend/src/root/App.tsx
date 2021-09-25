@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import '../style/app.css';
 import '../style/shape.css';
 import '../style/input.css';
 import '../style/form.css';
-import {CurrentUserProvider} from '../context/CurrentUserContext';
+import {CurrentUserContext, CurrentUserProvider} from '../context/CurrentUserContext';
 import SEO from '../components/SEO';
 import Header from '../containers/Header';
 import MainContent from '../containers/MainContent';

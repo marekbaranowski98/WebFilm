@@ -12,7 +12,9 @@ const UserMenu: React.FC<UserMenuProps> = ({}) => {
     const userContext = React.useContext(CurrentUserContext);
 
     useEffect(() => {
-        userContext?.checkIsUserLogged().then(r => setUserIsLogged(r), e => setUserIsLogged(e));
+        if (userContext?.user) {
+            setUserIsLogged(true);
+        }
     }, [userContext?.user]);
 
     return (
