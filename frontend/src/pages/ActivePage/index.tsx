@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Link, Redirect, useParams} from 'react-router-dom';
 
+import check from '../../images/check.svg';
+import error from '../../images/error.svg';
 import {validateUUID} from '../../helpers/validators';
 import {activeUser} from '../../helpers/api/user';
+import {CurrentUserContext} from "../../context/CurrentUserContext";
+import {RedirectType} from "../../types/ErrorType";
 
 interface ActivePageProps {
-
 }
 
 interface ActiveParams {
@@ -13,25 +16,79 @@ interface ActiveParams {
 }
 
 const ActivePage: React.FC<ActivePageProps> = ({}) => {
-    const { key } = useParams<ActiveParams>();
+    const {key} = useParams<ActiveParams>();
+    const userContext = React.useContext(CurrentUserContext);
     const [counter, setCounter] = useState(10);
     const [intervalID, setIntervalID] = useState<NodeJS.Timer>();
-    const [redirect, setRedirect] = useState(false);
+    const [url, setURL] = useState<RedirectType>();
 
     useEffect(() => {
-        if(validateUUID(key)) {
-            activeUser(key).then(() => {
-                setRedirect(true);
-            }, () => {
-                setRedirect(true);
+        if (validateUUID(key)) {
+            userContext?.checkIsUserLogged().then((res) => {
+                setURL({
+                    pathname: '/',
+                });
+            }, (res) => {
+                activeUser(key).then((r) => {
+                    let response = r as Response;
+                    if (response.status === 204) {
+                        setURL({
+                            pathname: '/',
+                            state: {
+                                alertMessage: {
+                                    icon: check,
+                                    message: 'Konto zostało aktywowane',
+                                },
+                            },
+                        });
+                    } else if (response.status === 401) {
+                        setURL({
+                            pathname: '/',
+                        });
+                    } else if (response.status === 404) {
+                        setURL({
+                            pathname: '/',
+                            state: {
+                                alertMessage: {
+                                    icon: error,
+                                    message: 'Błędny link',
+                                },
+                            },
+                        });
+                    } else {
+                        throw new Error();
+                    }
+                }, () => {
+                    throw new Error();
+                }).catch((e) => {
+                    throw new Error();
+                });
+            }).catch((e) => {
+                setURL({
+                    pathname: '/',
+                    state: {
+                        alertMessage: {
+                            icon: error,
+                            message: 'Serwis niedostępny',
+                        },
+                    },
+                });
             });
-        }else {
-            setRedirect(true);
+        } else {
+            setURL({
+                pathname: '/',
+                state: {
+                    alertMessage: {
+                        icon: error,
+                        message: 'Błędny link',
+                    },
+                },
+            });
         }
     }, []);
 
     useEffect(() => {
-        if(counter > 0) {
+        if (counter > 0) {
             let interval = setInterval(() => setCounter(counter - 1), 1000);
             setIntervalID(interval);
 
@@ -42,24 +99,22 @@ const ActivePage: React.FC<ActivePageProps> = ({}) => {
     }, [counter]);
 
     return (
-      <article className="content-container logout-container">
-          {redirect && <Redirect to={{
-              pathname: '/',
-          }}/>}
-          <h2>Konto zostało aktywowane</h2>
-          <p>
-              Zaraz nastąpi przekierowanie na stronę główną.
-          </p>
-          <p>
-              Jeżeli nie nastąpi w ciągu {counter} sekund naciśnij ten guzik.
-          </p>
-          <Link to={'/'}>
-              <div className="button short-button">
-                  Powrót na stronę główną
-              </div>
-          </Link>
-      </article>
-  );
+        <article className="content-container logout-container">
+            {url && <Redirect to={url}/>}
+            <h2>Konto zostało aktywowane</h2>
+            <p>
+                Zaraz nastąpi przekierowanie na stronę główną.
+            </p>
+            <p>
+                Jeżeli nie nastąpi w ciągu {counter} sekund naciśnij ten guzik.
+            </p>
+            <Link to={'/'}>
+                <div className="button short-button">
+                    Powrót na stronę główną
+                </div>
+            </Link>
+        </article>
+    );
 };
 
 export default ActivePage;

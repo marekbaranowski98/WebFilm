@@ -17,7 +17,7 @@ const LogoutPage: React.FC<LogoutPageProps> = ({}) => {
     useEffect(() => {
         if (userContext?.user == null) {
             setRedirect(true);
-        } else {
+        }else {
             getLogoutUser().then((r) => {
                 userContext?.logoutUser();
                 setRedirect(true);

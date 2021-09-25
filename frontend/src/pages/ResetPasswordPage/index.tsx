@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Redirect, useParams} from 'react-router-dom';
 
 import error from '../../images/error.svg';
+import {CurrentUserContext} from '../../context/CurrentUserContext';
 import ResetPasswordForm from '../../containers/ResetPasswordForm';
 import {validateUUID} from '../../helpers/validators';
 import {RedirectType} from '../../types/ErrorType';
@@ -14,7 +15,8 @@ interface ResetPasswordPageParams {
 }
 
 const ResetPasswordPage: React.FC<ResetPasswordPageProps> = ({}) => {
-    const {key} = useParams<ResetPasswordPageParams>()
+    const {key} = useParams<ResetPasswordPageParams>();
+    const userContext = useContext(CurrentUserContext);
     const [url, setURL] = useState<RedirectType>();
     useEffect(() => {
         if (!validateUUID(key)) {
@@ -26,6 +28,23 @@ const ResetPasswordPage: React.FC<ResetPasswordPageProps> = ({}) => {
                         message: 'Błędny link',
                     },
                 },
+            });
+        } else {
+            userContext?.checkIsUserLogged().then((res) => {
+                setURL({
+                    pathname: '/',
+                });
+            }, (res) => {
+            }).catch((e) => {
+                setURL({
+                    pathname: '/reset-password/',
+                    state: {
+                        alertMessage: {
+                            icon: error,
+                            message: 'Serwis niedostępny',
+                        },
+                    },
+                });
             });
         }
     }, []);

@@ -12,13 +12,14 @@ from rest_framework.response import Response
 from .serializers import RegisterSerializer, LoginFormUserSerializer, LoginUserDataSerializer, \
     RequestResetPasswordSerializer
 from .models import User, PasswordReset
-from .permissions import LoginUser
+from .permissions import LoginUserPermission
+from .mixin import OnlyAnonymousUserMixin
 
 loggerUser = logging.getLogger(__name__)
 loggerDebug = logging.getLogger('debug')
 
 
-class RegisterAPI(generics.GenericAPIView):
+class RegisterAPI(OnlyAnonymousUserMixin, generics.GenericAPIView):
     serializer_class = RegisterSerializer
 
     def post(self, request: Request, *args, **kwargs) -> Response:
@@ -109,7 +110,7 @@ class LoginAPI(ObtainAuthToken, viewsets.ViewSet):
 
 
 class CheckLoginUserAPI(generics.RetrieveAPIView):
-    permission_classes = [LoginUser]
+    permission_classes = [LoginUserPermission]
     serializer_class = LoginUserDataSerializer
 
     def get_object(self) -> User:
@@ -145,7 +146,7 @@ class ValidationUserDataAPI(generics.CreateAPIView):
             }, status=422)
 
 
-class ActiveUserAPI(generics.RetrieveUpdateAPIView):
+class ActiveUserAPI(OnlyAnonymousUserMixin, generics.RetrieveUpdateAPIView):
     def get(self, request: Request, *args, **kwargs) -> Response:
         """
         Active user
@@ -167,7 +168,7 @@ class ActiveUserAPI(generics.RetrieveUpdateAPIView):
             return Response(status=404)
 
 
-class ResetPasswordAPI(generics.CreateAPIView, generics.UpdateAPIView, viewsets.ViewSet):
+class ResetPasswordAPI(OnlyAnonymousUserMixin, generics.CreateAPIView, generics.UpdateAPIView, viewsets.ViewSet):
     serializer_class = RequestResetPasswordSerializer
 
     def post(self, request: Request, *args, **kwargs) -> Response:
@@ -182,7 +183,6 @@ class ResetPasswordAPI(generics.CreateAPIView, generics.UpdateAPIView, viewsets.
         reset_password = self.get_serializer(data=request.data, context={'request': request})
         if reset_password.is_valid():
             reset_password.save()
-            print(reset_password.validated_data.get('email'))
             loggerUser.info(f"User {reset_password.validated_data.get('email')} generated reset password link")
 
             return Response(status=200)

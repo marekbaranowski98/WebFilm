@@ -9,7 +9,7 @@ export interface AlertType {
 
 export interface RedirectType {
     pathname: string,
-    state: object,
+    state?: object,
 }
 
 export interface ResultType {

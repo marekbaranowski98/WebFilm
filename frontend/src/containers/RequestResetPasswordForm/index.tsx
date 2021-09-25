@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {Redirect} from 'react-router-dom';
+
 import ErrorMessage from '../../components/ErrorMessage';
 import useForm from '../../hooks/useForm';
 import {SendEmailResetPasswordEmail} from '../../types/UserType';
 import {validateEmail} from '../../helpers/validators';
-import {ErrorType} from '../../types/ErrorType';
+import {ErrorType, RedirectType} from '../../types/ErrorType';
 import {requestResetPassword} from '../../helpers/api/user';
 
 interface RequestResetPasswordFormProps {
@@ -11,6 +13,8 @@ interface RequestResetPasswordFormProps {
 }
 
 const RequestResetPasswordForm: React.FC<RequestResetPasswordFormProps> = ({setSendResetLink}) => {
+    const [url, setURL] = useState<RedirectType>();
+
     const validateFormRequestResetPassword = async (
         {email}: SendEmailResetPasswordEmail,
         nameValidation?: string
@@ -23,12 +27,16 @@ const RequestResetPasswordForm: React.FC<RequestResetPasswordFormProps> = ({setS
         }
     };
 
-    const sendRequestAuthToAPI  = (form: SendEmailResetPasswordEmail, setErrors: (errors: ErrorType) => void): void => {
+    const sendRequestAuthToAPI = (form: SendEmailResetPasswordEmail, setErrors: (errors: ErrorType) => void): void => {
         requestResetPassword(form).then((r) => {
             let response = (r as Response);
-            if(response.status === 200) {
+            if (response.status === 200) {
                 setSendResetLink(true);
-            }else if(response.status === 404) {
+            } else if (response.status === 401) {
+                setURL({
+                    pathname: '/',
+                });
+            } else if (response.status === 404) {
                 response.json().then(allErrors => {
                     let e: ErrorType = {};
                     for (let oneError in allErrors['errors']) {
@@ -36,12 +44,12 @@ const RequestResetPasswordForm: React.FC<RequestResetPasswordFormProps> = ({setS
                     }
                     setErrors(e);
                 });
-            }else {
+            } else {
                 throw new Error();
             }
         }, (e) => {
-           throw new Error();
-        }).catch((e) =>{
+            throw new Error();
+        }).catch((e) => {
             setErrors({
                 'non_field_errors': 'Serwis niedostępny',
             });
@@ -55,8 +63,10 @@ const RequestResetPasswordForm: React.FC<RequestResetPasswordFormProps> = ({setS
         validateObject: validateFormRequestResetPassword,
         sendRequestToAPI: sendRequestAuthToAPI,
     });
-    return(
+
+    return (
         <form onSubmit={submitHandler}>
+            {url && <Redirect to={url}/>}
             <div className="input-field">
                 <div className="required-field">Email</div>
                 <input type="email" name="email" onBlur={updateValue} autoComplete="email" required/>

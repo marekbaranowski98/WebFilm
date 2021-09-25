@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 
 import './style.css';
+import check from '../../images/check.svg';
 import ErrorMessage from '../../components/ErrorMessage';
 import useForm from '../../hooks/useForm';
 import {Gender, UserRegisterForm} from '../../types/UserType';
-import {ErrorType} from '../../types/ErrorType';
+import {ErrorType, RedirectType} from '../../types/ErrorType';
 import {
     validateLogin, validateEmail, validatePassword, validateRepeatPassword,
     validateName, validateSurname, validateGender, validateBirthDate, validateStatute, checkDataIsAvailable
@@ -17,12 +18,20 @@ interface RegisterFormProps {
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
-    const [redirect, setRedirect] = useState<boolean>(false);
+    const [url, setURL] = useState<RedirectType>();
     const sendRequestAuthToAPI = (form: UserRegisterForm, setErrors: (errors: ErrorType) => void): void => {
         registerUser(form).then((r) => {
             let response = (r as Response);
             if (response.status === 201) {
-                setRedirect(true);
+                setURL({
+                    pathname: '/',
+                    state: {
+                        alertMessage: {
+                            icon: check,
+                            message: 'Pomyślna rejestracja!',
+                        },
+                    },
+                });
             }else if(response.status == 403) {
                 response.json().then(allErrors => {
                     let e: ErrorType = {};
@@ -89,9 +98,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
 
     return (
         <form onSubmit={submitHandler}>
-            {redirect && <Redirect to={{
-                pathname: '/',
-            }}/>}
+            {url && <Redirect to={url}/>}
             <div className="input-field">
                 <div className="required-field">Login</div>
                 <input type="text" name="login" onBlur={updateValue} autoComplete="username" required />

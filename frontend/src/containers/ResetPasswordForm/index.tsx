@@ -14,7 +14,7 @@ interface ResetPasswordFormProps {
     uuid: string,
 }
 
-const ResetPasswordForm: React.FC<ResetPasswordFormProps> =  ({uuid}) => {
+const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({uuid}) => {
     const [redirect, setRedirect] = useState<RedirectType>();
 
     const validateFormRequestResetPassword = async (
@@ -31,10 +31,10 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> =  ({uuid}) => {
         }
     };
 
-    const sendRequestAuthToAPI  = (form: ResetPasswordObject, setErrors: (errors: ErrorType) => void): void => {
+    const sendRequestAuthToAPI = (form: ResetPasswordObject, setErrors: (errors: ErrorType) => void): void => {
         resetPassword(uuid, form).then((r) => {
             let response = (r as Response);
-            if(response.status === 204) {
+            if (response.status === 204) {
                 setRedirect({
                     pathname: '/login/',
                     state: {
@@ -44,7 +44,11 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> =  ({uuid}) => {
                         },
                     },
                 });
-            }else if(response.status === 403) {
+            } else if (response.status === 401) {
+                setRedirect({
+                    pathname: '/',
+                });
+            } else if (response.status === 403) {
                 response.json().then((allErrors) => {
                     let e: ErrorType = {};
                     for (let oneError in allErrors['errors']) {
@@ -52,7 +56,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> =  ({uuid}) => {
                     }
                     setErrors(e);
                 });
-            }else if(response.status === 404 || response.status === 408) {
+            } else if (response.status === 404 || response.status === 408) {
                 response.json().then((res) => {
                     setRedirect({
                         pathname: '/reset-password/',
@@ -64,12 +68,12 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> =  ({uuid}) => {
                         },
                     });
                 });
-            }else {
+            } else {
                 throw new Error();
             }
         }, (e) => {
-           throw new Error();
-        }).catch((e) =>{
+            throw new Error();
+        }).catch((e) => {
             setErrors({
                 'non_field_errors': 'Serwis niedostępny',
             });
@@ -89,13 +93,14 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> =  ({uuid}) => {
             {redirect && <Redirect to={redirect}/>}
             <div className="input-field">
                 <div className="required-field">Hasło</div>
-                <input type="password" name="password" onBlur={updateValue} autoComplete="new-password" required />
-                {errors.password && <ErrorMessage message={errors.password} />}
+                <input type="password" name="password" onBlur={updateValue} autoComplete="new-password" required/>
+                {errors.password && <ErrorMessage message={errors.password}/>}
             </div>
             <div className="input-field">
                 <div className="required-field">Powtórz hasło</div>
-                <input type="password" name="repeat_password" onBlur={updateValue} autoComplete="new-password" required />
-                {errors.repeat_password && <ErrorMessage message={errors.repeat_password} />}
+                <input type="password" name="repeat_password" onBlur={updateValue} autoComplete="new-password"
+                       required/>
+                {errors.repeat_password && <ErrorMessage message={errors.repeat_password}/>}
             </div>
             <button type="submit" className="button short-button" tabIndex={0} disabled={
                 Object.keys(errors).filter((x) => x !== 'non_field_errors').length > 0
