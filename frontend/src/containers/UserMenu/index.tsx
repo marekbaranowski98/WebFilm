@@ -14,13 +14,15 @@ const UserMenu: React.FC<UserMenuProps> = ({}) => {
     useEffect(() => {
         if (userContext?.user) {
             setUserIsLogged(true);
+        } else {
+            setUserIsLogged(false);
         }
     }, [userContext?.user]);
 
     return (
         <div>
             {userIsLogged ?
-                <MenuUserContent />
+                <MenuUserContent/>
                 :
                 <NoUserLoginMenu/>
             }

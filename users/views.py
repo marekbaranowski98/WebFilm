@@ -203,14 +203,14 @@ class ResetPasswordAPI(OnlyAnonymousUserMixin, generics.CreateAPIView, generics.
             reset = PasswordReset.objects.get(reset_code=key)
 
             if reset.expiration_date > datetime.datetime.now():
-                user = RegisterSerializer(instance=reset.user_id, data=request.data, partial=True)
+                user = RegisterSerializer(instance=reset.user, data=request.data, partial=True)
                 if user.is_valid():
                     user.save()
 
                     reset.expiration_date = datetime.datetime.now()
                     reset.reset_code = None
                     reset.save()
-                    loggerUser.info(f'User {reset.user_id.id} reset password')
+                    loggerUser.info(f'User {reset.user.id} reset password')
                     return Response(status=204)
                 else:
                     return Response({'errors': user.errors}, status=403)

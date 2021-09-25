@@ -78,7 +78,7 @@ class User(AbstractBaseUser):
             ),
         ],
     )
-    role_id = models.ForeignKey(to=RolesUser, default=1, on_delete=models.RESTRICT,)
+    role = models.ForeignKey(to=RolesUser, default=1, on_delete=models.RESTRICT, )
     date_joined = models.DateTimeField(default=timezone.now,)
 
     USERNAME_FIELD = 'email'
@@ -99,7 +99,7 @@ class User(AbstractBaseUser):
 
 
 class PasswordReset(models.Model):
-    user_id = models.ForeignKey(to=User, on_delete=models.CASCADE,)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, )
     reset_code = models.CharField(
         max_length=36,
         unique=True,
@@ -112,7 +112,7 @@ class PasswordReset(models.Model):
             ),
         ],
     )
-    expiration_date = models.DateTimeField(default=timezone.now() + timedelta(hours=1),)
+    expiration_date = models.DateTimeField(default=timezone.now)
 
     class Meta:
         db_table = 'users_password_reset'

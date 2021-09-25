@@ -9,7 +9,7 @@ export interface UserObject {
     login: string,
     name: string,
     avatarURL: string,
-    role_status: number,
+    role: number,
 }
 
 export interface UserRegisterForm {

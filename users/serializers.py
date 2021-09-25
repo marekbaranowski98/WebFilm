@@ -179,11 +179,11 @@ class LoginFormUserSerializer(serializers.ModelSerializer):
 
 
 class LoginUserDataSerializer(serializers.ModelSerializer):
-    role_status = serializers.ReadOnlyField(source='role_id.order')
+    role = serializers.ReadOnlyField(source='role.order')
 
     class Meta:
         model = User
-        fields = ('id', 'login', 'name', 'avatarURL', 'role_status')
+        fields = ('id', 'login', 'name', 'avatarURL', 'role')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -196,12 +196,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 class RequestResetPasswordSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
-    user_id = serializers.IntegerField(required=False, allow_null=True, read_only=True)
+    user = serializers.IntegerField(required=False, allow_null=True, read_only=True)
 
     class Meta:
         model = PasswordReset
 
-        fields = ('email', 'user_id')
+        fields = ('email', 'user')
 
     def validate(self, data):
         """
@@ -231,7 +231,7 @@ class RequestResetPasswordSerializer(serializers.ModelSerializer):
         try:
             user = User.objects.get(email=validated_data.get('email'))
             reset = PasswordReset.objects.create(
-                user_id=user,
+                user=user,
                 expiration_date=datetime.datetime.now() + datetime.timedelta(hours=1),
                 reset_code=helpers.generate_uuid(),
             )
@@ -249,7 +249,7 @@ class RequestResetPasswordSerializer(serializers.ModelSerializer):
             loggerDebug.debug(e)
 
     def __build_text_message(self, reset_password: PasswordReset):
-        return f'Witaj {reset_password.user_id.name}!\nOtrzymaliśmy żądania resetu hasła. Jeżeli to nie ty proszę, ' \
+        return f'Witaj {reset_password.user.name}!\nOtrzymaliśmy żądania resetu hasła. Jeżeli to nie ty proszę, ' \
                f'zignoruj tę wiadomość.\nDo resetu hasła należy wejść na stronę:\n' \
                f'http://127.0.0.1:8000/reset-password/{reset_password.reset_code}/.\n' \
                f'Po zmianie hasła będzie można zalogować się.\nLink jest ważny przez godzinę.\n' \

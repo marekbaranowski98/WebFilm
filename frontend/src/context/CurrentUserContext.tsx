@@ -8,6 +8,7 @@ interface CurrentUserContextProps {
     checkIsUserLogged: () => Promise<UserRole>,
     logoutUser: () => void,
 }
+
 export const CurrentUserContext = React.createContext<CurrentUserContextProps | null>(null);
 
 interface CurrentUserProviderProps {
@@ -26,19 +27,19 @@ export const CurrentUserProvider: React.FC<CurrentUserProviderProps> = ({childre
                         if (r.status === 200) {
                             r.json().then(u => {
                                 setUser(u);
-                                resolve(u.role_status);
+                                resolve(u.role);
                             });
-                        }else {
+                        } else {
                             reject(UserRole.AnonymousUser);
                         }
                     }, (e) => {
                         reject(UserRole.AnonymousUser);
                     });
-                }else {
+                } else {
                     reject(UserRole.AnonymousUser);
                 }
-            }else {
-                resolve(user.role_status);
+            } else {
+                resolve(user.role);
             }
         });
     };
@@ -56,4 +57,4 @@ export const CurrentUserProvider: React.FC<CurrentUserProviderProps> = ({childre
             {children}
         </CurrentUserContext.Provider>
     );
- };
+};
