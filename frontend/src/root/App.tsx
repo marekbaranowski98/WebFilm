@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import React from 'react';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
 import '../style/app.css';
 import '../style/shape.css';
 import '../style/input.css';
 import '../style/form.css';
-import {CurrentUserContext, CurrentUserProvider} from '../context/CurrentUserContext';
+import {CurrentUserProvider} from '../context/CurrentUserContext';
 import SEO from '../components/SEO';
 import Header from '../containers/Header';
 import MainContent from '../containers/MainContent';
@@ -17,31 +17,34 @@ import Footer from '../components/Footer';
 import ActivePage from '../pages/ActivePage';
 import RequestResetPasswordPage from '../pages/RequestResetPasswordPage';
 import ResetPasswordPage from '../pages/ResetPasswordPage';
+import AnonymousUserRoute from '../components/AnonymousUserRoute';
+import LoggedUserRoute from '../components/LoggedUserRoute';
+import {UserRole} from '../types/UserType';
 
 interface App {
-
 }
 
 const App: React.FC<App> = ({}) => {
     return (
         <CurrentUserProvider>
-            <SEO />
+            <SEO/>
             <BrowserRouter>
-                <Header />
+                <Header/>
                 <div className="main-container">
                     <Switch>
                         <Route exact path="/" component={MainContent}/>
-                        <Route exact path="/login/" component={LoginPage}/>
-                        <Route exact path="/logout/" component={LogoutPage}/>
-                        <Route exact path="/register/" component={RegisterPage}/>
+                        <AnonymousUserRoute exact={true} path={'/login/'} component={LoginPage}/>
+                        <LoggedUserRoute exact={true} path={'/logout/'} component={LogoutPage}
+                                         min_user_role={UserRole.User}/>
+                        <AnonymousUserRoute exact={true} path={'/register/'} component={RegisterPage}/>
                         <Route exact path="/statute/" component={StatutePage}/>
-                        <Route exact path="/active-user/:key/" component={ActivePage}/>
-                        <Route exact path="/reset-password" component={RequestResetPasswordPage}/>
-                        <Route exact path="/reset-password/:key/" component={ResetPasswordPage}/>
+                        <AnonymousUserRoute exact={true} path={'/active-user/:key/'} component={ActivePage}/>
+                        <AnonymousUserRoute exact={true} path={'/reset-password'} component={RequestResetPasswordPage}/>
+                        <AnonymousUserRoute exact={true} path={'/reset-password/:key/'} component={ResetPasswordPage}/>
                     </Switch>
                 </div>
             </BrowserRouter>
-            <Footer />
+            <Footer/>
         </CurrentUserProvider>
     );
 };

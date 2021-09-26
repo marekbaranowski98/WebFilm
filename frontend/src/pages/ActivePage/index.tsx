@@ -5,8 +5,7 @@ import check from '../../images/check.svg';
 import error from '../../images/error.svg';
 import {validateUUID} from '../../helpers/validators';
 import {activeUser} from '../../helpers/api/user';
-import {CurrentUserContext} from "../../context/CurrentUserContext";
-import {RedirectType} from "../../types/ErrorType";
+import {RedirectType} from '../../types/ErrorType';
 
 interface ActivePageProps {
 }
@@ -17,62 +16,45 @@ interface ActiveParams {
 
 const ActivePage: React.FC<ActivePageProps> = ({}) => {
     const {key} = useParams<ActiveParams>();
-    const userContext = React.useContext(CurrentUserContext);
     const [counter, setCounter] = useState(10);
     const [intervalID, setIntervalID] = useState<NodeJS.Timer>();
     const [url, setURL] = useState<RedirectType>();
 
     useEffect(() => {
         if (validateUUID(key)) {
-            userContext?.checkIsUserLogged().then((res) => {
-                setURL({
-                    pathname: '/',
-                });
-            }, (res) => {
-                activeUser(key).then((r) => {
-                    let response = r as Response;
-                    if (response.status === 204) {
-                        setURL({
-                            pathname: '/',
-                            state: {
-                                alertMessage: {
-                                    icon: check,
-                                    message: 'Konto zostało aktywowane',
-                                },
+            activeUser(key).then((r) => {
+                let response = r as Response;
+                if (response.status === 204) {
+                    setURL({
+                        pathname: '/',
+                        state: {
+                            alertMessage: {
+                                icon: check,
+                                message: 'Konto zostało aktywowane',
                             },
-                        });
-                    } else if (response.status === 401) {
-                        setURL({
-                            pathname: '/',
-                        });
-                    } else if (response.status === 404) {
-                        setURL({
-                            pathname: '/',
-                            state: {
-                                alertMessage: {
-                                    icon: error,
-                                    message: 'Błędny link',
-                                },
-                            },
-                        });
-                    } else {
-                        throw new Error();
-                    }
-                }, () => {
-                    throw new Error();
-                }).catch((e) => {
-                    throw new Error();
-                });
-            }).catch((e) => {
-                setURL({
-                    pathname: '/',
-                    state: {
-                        alertMessage: {
-                            icon: error,
-                            message: 'Serwis niedostępny',
                         },
-                    },
-                });
+                    });
+                } else if (response.status === 401) {
+                    setURL({
+                        pathname: '/',
+                    });
+                } else if (response.status === 404) {
+                    setURL({
+                        pathname: '/',
+                        state: {
+                            alertMessage: {
+                                icon: error,
+                                message: 'Błędny link',
+                            },
+                        },
+                    });
+                } else {
+                    throw new Error();
+                }
+            }, () => {
+                throw new Error();
+            }).catch((e) => {
+                throw new Error();
             });
         } else {
             setURL({

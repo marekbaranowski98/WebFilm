@@ -32,7 +32,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
                         },
                     },
                 });
-            }else if(response.status == 403) {
+            } else if (response.status === 401) {
+                setURL({
+                    pathname: '/',
+                });
+            } else if (response.status === 403) {
                 response.json().then(allErrors => {
                     let e: ErrorType = {};
                     for (let oneError in allErrors['errors']) {
@@ -56,7 +60,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
         });
     };
     const validateFormRegister = async (
-        {login, email, password, repeat_password, name, surname, gender, birth_date , accept_statute}: UserRegisterForm,
+        {login, email, password, repeat_password, name, surname, gender, birth_date, accept_statute}: UserRegisterForm,
         nameValidate?: string,
     ) => {
         switch (nameValidate) {
@@ -101,42 +105,43 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
             {url && <Redirect to={url}/>}
             <div className="input-field">
                 <div className="required-field">Login</div>
-                <input type="text" name="login" onBlur={updateValue} autoComplete="username" required />
-                {errors.login && <ErrorMessage message={errors.login} />}
+                <input type="text" name="login" onBlur={updateValue} autoComplete="username" required/>
+                {errors.login && <ErrorMessage message={errors.login}/>}
             </div>
             <div className="input-field">
                 <div className="required-field">Email</div>
-                <input type="email" name="email" onBlur={updateValue} autoComplete="email" required />
-                {errors.email && <ErrorMessage message={errors.email} />}
+                <input type="email" name="email" onBlur={updateValue} autoComplete="email" required/>
+                {errors.email && <ErrorMessage message={errors.email}/>}
             </div>
             <div className="input-field">
                 <div className="required-field">Hasło</div>
-                <input type="password" name="password" onBlur={updateValue} autoComplete="new-password" required />
-                {errors.password && <ErrorMessage message={errors.password} />}
+                <input type="password" name="password" onBlur={updateValue} autoComplete="new-password" required/>
+                {errors.password && <ErrorMessage message={errors.password}/>}
             </div>
             <div className="input-field">
                 <div className="required-field">Powtórz hasło</div>
-                <input type="password" name="repeat_password" onBlur={updateValue} autoComplete="new-password" required />
-                {errors.repeat_password && <ErrorMessage message={errors.repeat_password} />}
+                <input type="password" name="repeat_password" onBlur={updateValue} autoComplete="new-password"
+                       required/>
+                {errors.repeat_password && <ErrorMessage message={errors.repeat_password}/>}
             </div>
             <div className="input-field">
                 <div>Imię</div>
-                <input type="text" name="name" onBlur={updateValue} autoComplete="given-name" />
-                {errors.name && <ErrorMessage message={errors.name} />}
+                <input type="text" name="name" onBlur={updateValue} autoComplete="given-name"/>
+                {errors.name && <ErrorMessage message={errors.name}/>}
             </div>
             <div className="input-field">
                 <div>Nazwisko</div>
-                <input type="text" name="surname" onBlur={updateValue} autoComplete="family-name" />
-                {errors.surname && <ErrorMessage message={errors.surname} />}
+                <input type="text" name="surname" onBlur={updateValue} autoComplete="family-name"/>
+                {errors.surname && <ErrorMessage message={errors.surname}/>}
             </div>
             <div className="input-field">
                 <div>Płeć</div>
                 <select name="gender" onChange={updateValue}>
                     {Gender.map((x) =>
-                            <option key={x.id} value={x.id}>{x.value}</option>
+                        <option key={x.id} value={x.id}>{x.value}</option>
                     )}
                 </select>
-                {errors.gender && <ErrorMessage message={errors.gender} />}
+                {errors.gender && <ErrorMessage message={errors.gender}/>}
             </div>
             <div className="input-field">
                 <div>Data urodzenia</div>
@@ -148,28 +153,28 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
                     autoComplete="bday"
                     required
                 />
-                {errors.birth_date && <ErrorMessage message={errors.birth_date} />}
+                {errors.birth_date && <ErrorMessage message={errors.birth_date}/>}
             </div>
-            <FileInput update={updateValue} start_errors={errors} set_errors={setErrors} />
+            <FileInput update={updateValue} start_errors={errors} set_errors={setErrors}/>
             <div className="input-field">
                 <label className="label-checkbox">
-                    <input type="checkbox" name="accept_statute" onChange={updateValue} required />
+                    <input type="checkbox" name="accept_statute" onChange={updateValue} required/>
                     <div className="required-field label-info">
                         Przeczytałem i akceptuje <Link
-                            className="link"
-                            to={'/statute/'}
-                            target="_blank">regulamin
-                        </Link>
+                        className="link"
+                        to={'/statute/'}
+                        target="_blank">regulamin
+                    </Link>
                     </div>
                 </label>
-                {errors.accept_statute && <ErrorMessage message={errors.accept_statute} />}
+                {errors.accept_statute && <ErrorMessage message={errors.accept_statute}/>}
             </div>
             <button type="submit" className="button short-button" tabIndex={0} disabled={
                 Object.keys(errors).filter((x) => x !== 'non_field_errors').length > 0
             }>
                 Zarejestruj się
             </button>
-            {errors.non_field_errors && <ErrorMessage message={errors.non_field_errors} />}
+            {errors.non_field_errors && <ErrorMessage message={errors.non_field_errors}/>}
         </form>
     );
 }

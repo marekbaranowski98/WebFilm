@@ -15,14 +15,10 @@ const LogoutPage: React.FC<LogoutPageProps> = ({}) => {
     const [redirect, setRedirect] = useState(false);
 
     useEffect(() => {
-        if (userContext?.user == null) {
+        getLogoutUser().then((r) => {
+            userContext?.logoutUser();
             setRedirect(true);
-        }else {
-            getLogoutUser().then((r) => {
-                userContext?.logoutUser();
-                setRedirect(true);
-            }, (e) => setRedirect(true));
-        }
+        }, (e) => setRedirect(true));
     }, []);
 
     useEffect(() => {
