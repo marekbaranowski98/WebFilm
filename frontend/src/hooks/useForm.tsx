@@ -11,41 +11,35 @@ interface useFormProps<T> {
 
 const useForm = <T extends {}>({initialObject, validateObject, sendRequestToAPI,}: useFormProps<T>) => {
     const [errors, setErrors] = useState<ErrorType>({});
-    const [init, setInit] = useState<boolean>(true);
-    const validate = (state:  T, action: {field: string, value: any}): T  => {
-        if(init) {
-            setInit(false);
-            return state;
-        }else {
-            let errorsTMP: ErrorType = errors;
-            let tmpState: T;
-            delete errorsTMP[action.field];
+    const validate = (state: T, action: { field: string, value: any }): T => {
+        let errorsTMP: ErrorType = errors;
+        let tmpState: T;
+        delete errorsTMP[action.field];
 
-            tmpState = {
-                ...state,
-                [action.field]: action.value,
+        tmpState = {
+            ...state,
+            [action.field]: action.value,
+        };
+        validateObject(tmpState, action.field).catch((e) => {
+            errorsTMP = {
+                ...errorsTMP,
+                [(e as Error).name]: (e as Error).message
             };
-            validateObject(tmpState, action.field).catch((e) => {
-                errorsTMP = {
-                    ...errorsTMP,
-                    [(e as Error).name]: (e as Error).message
-                };
-                setErrors(errorsTMP);
-            });
-            return tmpState;
-        }
+            setErrors(errorsTMP);
+        });
+        return tmpState;
     };
 
     const [values, dispatch] = useReducer(validate, initialObject);
 
-    const updateValue = (e: React.ChangeEvent<HTMLInputElement |  HTMLSelectElement> | FileUploadType): void  => {
-        if('file_list' in e) {
+    const updateValue = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | FileUploadType): void => {
+        if ('file_list' in e) {
             console.log(e.file_list);
             dispatch({
                 field: e.name,
                 value: e.file_list,
             });
-        }else {
+        } else {
             let tmpValue: any = e.target.value;
             if (e.target instanceof HTMLInputElement && e.target.type === 'checkbox') {
                 tmpValue = e.target.checked;
@@ -61,7 +55,7 @@ const useForm = <T extends {}>({initialObject, validateObject, sendRequestToAPI,
     const submitHandler = (e: React.FormEvent): void => {
         e.preventDefault();
 
-        if(Object.keys(errors).filter((x) => x !== 'non_field_errors').length == 0) {
+        if (Object.keys(errors).filter((x) => x !== 'non_field_errors').length == 0) {
             setErrors({});
             sendRequestToAPI(values, setErrors);
         }

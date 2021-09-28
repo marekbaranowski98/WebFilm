@@ -9,6 +9,7 @@ from django.core.files.uploadedfile import TemporaryUploadedFile
 from django.template import loader
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from drf_recaptcha import fields
 
 from WebFilm import settings, helpers
 from .models import User, default_avatar, PasswordReset
@@ -18,18 +19,34 @@ from photos.Files import FileManager
 loggerDebug = logging.getLogger('debug')
 
 
+class RecaptchaV3Serializer(serializers.Serializer):
+    recaptcha = fields.ReCaptchaV3Field(
+        action='recaptcha',
+    )
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
+
+
 class RegisterSerializer(serializers.ModelSerializer):
     repeat_password = serializers.CharField(allow_blank=False, write_only=True)
     accept_statute = serializers.BooleanField(required=True)
     avatar = serializers.ImageField(required=False)
+    recaptcha = serializers.CharField(required=False)
 
     class Meta:
         model = User
         fields = (
             'id', 'login', 'email', 'password', 'repeat_password', 'name', 'surname', 'gender', 'birth_date',
-            'avatar', 'accept_statute'
+            'avatar', 'accept_statute', 'recaptcha'
         )
-        extra_kwargs = {'password': {'write_only': True}, 'login': {'required': True}, }
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'login': {'required': True},
+        }
 
     @transaction.atomic
     def create(self, validated_data: dict):
@@ -147,6 +164,9 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise ValidationError({'accept_statute': 'Akceptacja regulaminu jest obowiązkowa.'}, code='accept-statute')
         return value
 
+    def validate_recaptcha(self, value):
+        return validate_recaptcha(value, self.context)
+
     def __build_text_message(self, user: User) -> str:
         return f'Witaj {user.name}!\nDziękujemy za założenie konta w naszym serwisie. Konto zostało utworzone, ' \
                f'ale wymaga aktywacji. Do aktywacji konta należy wejść na stronę:\n' \
@@ -155,14 +175,22 @@ class RegisterSerializer(serializers.ModelSerializer):
                f'Pozdrawiamy,\nWebFilm'
 
 
+def validate_recaptcha(token, context):
+    captcha = RecaptchaV3Serializer(data=OrderedDict({'recaptcha': token}), context=context)
+    if not captcha.is_valid():
+        raise ValidationError('Wykryliśmy, że jesteś botem.', code='recaptcha')
+    return token
+
+
 class LoginFormUserSerializer(serializers.ModelSerializer):
     email = serializers.CharField()
-    password = serializers.CharField()
+    # password = serializers.CharField()
     remember_me = serializers.BooleanField(required=False, default=False)
+    recaptcha = serializers.CharField(required=False)
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'remember_me',)
+        fields = ('email', 'password', 'remember_me', 'recaptcha', )
 
     def validate(self, data: OrderedDict):
         """
@@ -176,6 +204,9 @@ class LoginFormUserSerializer(serializers.ModelSerializer):
         if not user:
             raise serializers.ValidationError("Błędny login lub hasło", code='error-login')
         return user
+
+    def validate_recaptcha(self, value):
+        return validate_recaptcha(value, self.context)
 
 
 class LoginUserDataSerializer(serializers.ModelSerializer):
@@ -197,11 +228,11 @@ class UserSerializer(serializers.ModelSerializer):
 class RequestResetPasswordSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     user = serializers.IntegerField(required=False, allow_null=True, read_only=True)
+    recaptcha = serializers.CharField(required=False)
 
     class Meta:
         model = PasswordReset
-
-        fields = ('email', 'user')
+        fields = ('email', 'user', 'recaptcha', )
 
     def validate(self, data):
         """
@@ -219,6 +250,9 @@ class RequestResetPasswordSerializer(serializers.ModelSerializer):
             raise ValidationError('Nie ma użytkownika o takim adresie.')
         except ValidationError as v:
             raise v
+
+    def validate_recaptcha(self, value):
+        return validate_recaptcha(value, self.context)
 
     @transaction.atomic
     def create(self, validated_data: dict):

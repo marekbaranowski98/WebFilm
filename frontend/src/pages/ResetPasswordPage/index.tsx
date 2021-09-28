@@ -5,6 +5,7 @@ import error from '../../images/error.svg';
 import ResetPasswordForm from '../../containers/ResetPasswordForm';
 import {validateUUID} from '../../helpers/validators';
 import {RedirectType} from '../../types/ErrorType';
+import ReCaptchaProvider from '../../context/ReCaptchaContext';
 
 interface ResetPasswordPageProps {
 }
@@ -37,7 +38,9 @@ const ResetPasswordPage: React.FC<ResetPasswordPageProps> = ({}) => {
             <div className="box-form">
                 <div className="content-container container-form">
                     <h2>Zmień hasło</h2>
-                    <ResetPasswordForm uuid={key}/>
+                    <ReCaptchaProvider>
+                        <ResetPasswordForm uuid={key}/>
+                    </ReCaptchaProvider>
                 </div>
             </div>
         </div>

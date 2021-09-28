@@ -7,6 +7,7 @@ import {SendEmailResetPasswordEmail} from '../../types/UserType';
 import {validateEmail} from '../../helpers/validators';
 import {ErrorType, RedirectType} from '../../types/ErrorType';
 import {requestResetPassword} from '../../helpers/api/user';
+import ReCaptcha from '../../components/ReCaptcha';
 
 interface RequestResetPasswordFormProps {
     setSendResetLink: (statusLink: boolean) => void,
@@ -14,6 +15,7 @@ interface RequestResetPasswordFormProps {
 
 const RequestResetPasswordForm: React.FC<RequestResetPasswordFormProps> = ({setSendResetLink}) => {
     const [url, setURL] = useState<RedirectType>();
+    const [token, setToken] = useState<string>();
 
     const validateFormRequestResetPassword = async (
         {email}: SendEmailResetPasswordEmail,
@@ -28,6 +30,9 @@ const RequestResetPasswordForm: React.FC<RequestResetPasswordFormProps> = ({setS
     };
 
     const sendRequestAuthToAPI = (form: SendEmailResetPasswordEmail, setErrors: (errors: ErrorType) => void): void => {
+        if (token != null) {
+            form.recaptcha = token;
+        }
         requestResetPassword(form).then((r) => {
             let response = (r as Response);
             if (response.status === 200) {
@@ -59,6 +64,7 @@ const RequestResetPasswordForm: React.FC<RequestResetPasswordFormProps> = ({setS
     const {updateValue, submitHandler, errors} = useForm<SendEmailResetPasswordEmail>({
         initialObject: {
             email: '',
+            recaptcha: '',
         },
         validateObject: validateFormRequestResetPassword,
         sendRequestToAPI: sendRequestAuthToAPI,
@@ -66,7 +72,9 @@ const RequestResetPasswordForm: React.FC<RequestResetPasswordFormProps> = ({setS
 
     return (
         <form onSubmit={submitHandler}>
+            <ReCaptcha setToken={setToken}/>
             {url && <Redirect to={url}/>}
+            {errors.recaptcha && <ErrorMessage message={errors.recaptcha}/>}
             <div className="input-field">
                 <div className="required-field">Email</div>
                 <input type="email" name="email" onBlur={updateValue} autoComplete="email" required/>

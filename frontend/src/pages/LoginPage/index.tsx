@@ -6,6 +6,7 @@ import LoginOptions from '../../containers/LoginOptions';
 import SignInPerks from '../../components/SignInPerks';
 import {AlertType, ResultType} from '../../types/ErrorType';
 import Alert from '../../components/Alert';
+import ReCaptchaProvider from '../../context/ReCaptchaContext';
 
 interface LoginPageProps {
 }
@@ -32,11 +33,13 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
                 />}
                 <div className="container-form">
                     <h2>Zaloguj się</h2>
-                    {chooseLoginEmail ?
-                        <LoginForm/>
-                        :
-                        <LoginOptions setChooseLoginEmail={setChooseLoginEmail}/>
-                    }
+                    <ReCaptchaProvider>
+                        {chooseLoginEmail ?
+                            <LoginForm/>
+                            :
+                            <LoginOptions setChooseLoginEmail={setChooseLoginEmail}/>
+                        }
+                    </ReCaptchaProvider>
                 </div>
             </div>
             <SignInPerks/>

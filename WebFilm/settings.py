@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'drf_recaptcha',
     'docs',
     'frontend',
     'users',
@@ -243,3 +244,11 @@ EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
 EMAIL_HOST_NAME = env.str('EMAIL_HOST_NAME')
 EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+
+# ReCaptcha
+DRF_RECAPTCHA_SECRET_KEY = env.str('DRF_RECAPTCHA_SECRET_KEY')
+DRF_RECAPTCHA_DEFAULT_V3_SCORE = env.float('DRF_RECAPTCHA_DEFAULT_V3_SCORE')
+DRF_RECAPTCHA_TESTING = env.bool('DEBUG')
+
+# CSP
+# TODO add csp

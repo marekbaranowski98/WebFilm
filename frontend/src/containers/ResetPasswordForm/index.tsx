@@ -9,6 +9,7 @@ import {validatePassword, validateRepeatPassword} from '../../helpers/validators
 import {ErrorType, RedirectType} from '../../types/ErrorType';
 import useForm from '../../hooks/useForm';
 import {resetPassword} from '../../helpers/api/user';
+import ReCaptcha from '../../components/ReCaptcha';
 
 interface ResetPasswordFormProps {
     uuid: string,
@@ -16,6 +17,7 @@ interface ResetPasswordFormProps {
 
 const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({uuid}) => {
     const [redirect, setRedirect] = useState<RedirectType>();
+    const [token, setToken] = useState<string>();
 
     const validateFormRequestResetPassword = async (
         {password, repeat_password}: ResetPasswordObject,
@@ -32,6 +34,9 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({uuid}) => {
     };
 
     const sendRequestAuthToAPI = (form: ResetPasswordObject, setErrors: (errors: ErrorType) => void): void => {
+        if (token != null) {
+            form.recaptcha = token;
+        }
         resetPassword(uuid, form).then((r) => {
             let response = (r as Response);
             if (response.status === 204) {
@@ -84,13 +89,16 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({uuid}) => {
         initialObject: {
             password: '',
             repeat_password: '',
+            recaptcha: '',
         },
         validateObject: validateFormRequestResetPassword,
         sendRequestToAPI: sendRequestAuthToAPI,
     });
     return (
         <form onSubmit={submitHandler}>
+            <ReCaptcha setToken={setToken}/>
             {redirect && <Redirect to={redirect}/>}
+            {errors.recaptcha && <ErrorMessage message={errors.recaptcha}/>}
             <div className="input-field">
                 <div className="required-field">Hasło</div>
                 <input type="password" name="password" onBlur={updateValue} autoComplete="new-password" required/>

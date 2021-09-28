@@ -13,13 +13,19 @@ import {
 } from '../../helpers/validators';
 import {registerUser} from '../../helpers/api/user';
 import FileInput from '../../components/FileInput';
+import ReCaptcha from '../../components/ReCaptcha';
 
 interface RegisterFormProps {
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
     const [url, setURL] = useState<RedirectType>();
+    const [token, setToken] = useState<string>();
+
     const sendRequestAuthToAPI = (form: UserRegisterForm, setErrors: (errors: ErrorType) => void): void => {
+        if (token != null) {
+            form.recaptcha = token;
+        }
         registerUser(form).then((r) => {
             let response = (r as Response);
             if (response.status === 201) {
@@ -45,14 +51,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
                     setErrors(e);
                 });
             } else {
-                setErrors({
-                    'non_field_errors': 'Serwis niedostępny',
-                });
+                throw new Error();
             }
         }, (e) => {
-            setErrors({
-                'non_field_errors': 'Serwis niedostępny',
-            });
+            throw new Error();
         }).catch((e) => {
             setErrors({
                 'non_field_errors': 'Serwis niedostępny',
@@ -95,6 +97,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
             repeat_password: '',
             birth_date: new Date().toISOString().split('T')[0],
             accept_statute: false,
+            recaptcha: '',
         },
         validateObject: validateFormRegister,
         sendRequestToAPI: sendRequestAuthToAPI,
@@ -102,7 +105,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
 
     return (
         <form onSubmit={submitHandler}>
+            <ReCaptcha setToken={setToken}/>
             {url && <Redirect to={url}/>}
+            {errors.recaptcha && <ErrorMessage message={errors.recaptcha}/>}
             <div className="input-field">
                 <div className="required-field">Login</div>
                 <input type="text" name="login" onBlur={updateValue} autoComplete="username" required/>

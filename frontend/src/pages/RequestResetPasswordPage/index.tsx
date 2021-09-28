@@ -5,6 +5,7 @@ import './style.css';
 import RequestResetPasswordForm from '../../containers/RequestResetPasswordForm';
 import {AlertType, RedirectType, ResultType} from '../../types/ErrorType';
 import Alert from '../../components/Alert';
+import ReCaptchaProvider from '../../context/ReCaptchaContext';
 
 interface RequestResetPasswordPageProps {
 }
@@ -47,7 +48,9 @@ const RequestResetPasswordPage: React.FC<RequestResetPasswordPageProps> = ({}) =
                         :
                         <>
                             <h2>Zresetuj hasło</h2>
-                            <RequestResetPasswordForm setSendResetLink={setSendResetLink}/>
+                            <ReCaptchaProvider>
+                                <RequestResetPasswordForm setSendResetLink={setSendResetLink}/>
+                            </ReCaptchaProvider>
                         </>
                     }
                 </div>

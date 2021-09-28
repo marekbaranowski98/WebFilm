@@ -2,6 +2,7 @@ export interface UserLoginForm {
     email: string,
     password: string,
     remember_me?: boolean,
+    recaptcha: string,
 }
 
 export interface UserObject {
@@ -23,6 +24,7 @@ export interface UserRegisterForm {
     birth_date: string,
     avatar?: FileList,
     accept_statute: boolean,
+    recaptcha: string,
 }
 
 export const Gender: {id: number, value: string}[] = [
@@ -42,11 +44,13 @@ export const Gender: {id: number, value: string}[] = [
 
 export interface SendEmailResetPasswordEmail {
     email: string
+    recaptcha: string,
 }
 
 export interface ResetPasswordObject {
     password: string,
     repeat_password: string,
+    recaptcha: string,
 }
 
 export enum UserRole {

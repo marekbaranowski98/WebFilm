@@ -9,15 +9,20 @@ import {loginUser} from '../../helpers/api/user';
 import ErrorMessage from '../../components/ErrorMessage';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
 import useForm from '../../hooks/useForm';
+import ReCaptcha from '../../components/ReCaptcha';
 
 interface LoginFormProps {
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({}) => {
     const [redirect, setRedirect] = useState<boolean>(false);
+    const [token, setToken] = useState<string>();
     const userContext = React.useContext(CurrentUserContext);
 
     const sendRequestAuthToAPI = (form: UserLoginForm, setErrors: (errors: ErrorType) => void): void => {
+        if (token != null) {
+            form.recaptcha = token;
+        }
         loginUser(form).then((resolve) => {
             let res = (resolve as Response);
             if (res.status !== 200) {
@@ -53,6 +58,7 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
         initialObject: {
             email: '',
             password: '',
+            recaptcha: '',
         },
         validateObject: validateFormLogin,
         sendRequestToAPI: sendRequestAuthToAPI,
@@ -60,6 +66,8 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
 
     return (
         <form onSubmit={submitHandler}>
+            <ReCaptcha setToken={setToken}/>
+            {errors.recaptcha && <ErrorMessage message={errors.recaptcha}/>}
             <div className="input-field">
                 <div className="required-field">Email</div>
                 <input type="email" name="email" onBlur={updateValue} required/>
