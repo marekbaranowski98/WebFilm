@@ -1,7 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useContext, useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import './style.css';
+import settings from '../../images/settings.svg';
+import {CurrentUserContext} from '../../context/CurrentUserContext';
 import {UserObject} from '../../types/UserType';
 import {getImage} from '../../helpers/api/photo';
 
@@ -11,6 +13,7 @@ interface UserHeaderProps {
 
 const UserHeader: React.FC<UserHeaderProps> = ({user}) => {
     const [avatar, setAvatar] = useState<string>();
+    const userContext = useContext(CurrentUserContext);
 
     useEffect(() => {
         if(user) {
@@ -24,7 +27,13 @@ const UserHeader: React.FC<UserHeaderProps> = ({user}) => {
         <header>
             {user ?
                 <div className="user-header">
-                    <img src={avatar} alt="Avatar użytkownika"/>
+                    {user.id === userContext?.user?.id &&
+                        <Link className="link user-setting" to={'/settings/'}>
+                            <img src={settings} alt="Ustawienia"/>
+                            Ustawienia
+                        </Link>
+                    }
+                    <img src={avatar} className="user-avatar" alt="Avatar użytkownika"/>
                     <div className="user-identity">
                         <h2>{user.name} {user.surname}</h2>
                         <p>@{user.login}</p>

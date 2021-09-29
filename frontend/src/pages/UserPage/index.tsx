@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect, useParams} from 'react-router-dom';
 
+import error from '../../images/error.svg';
 import UserHeader from '../../components/UserHeader';
 import {getUser} from '../../helpers/api/user';
-import error from '../../images/error.svg';
 import {RedirectType} from '../../types/ErrorType';
 
 interface UserPageProps {

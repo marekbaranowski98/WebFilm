@@ -6,7 +6,7 @@ export interface UserLoginForm {
 }
 
 export interface UserLoggedObject {
-    user_id: number,
+    id: number,
     login: string,
     name: string,
     avatarURL: string,
@@ -14,7 +14,7 @@ export interface UserLoggedObject {
 }
 
 export interface UserObject {
-    user_id: number,
+    id: number,
     login: string,
     name: string,
     surname: string,

@@ -5,8 +5,7 @@ import error from '../../images/error.svg';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
 import {RedirectType} from '../../types/ErrorType';
 
-const AnonymousUserRoute: React.FC<RouteProps> = ({path, exact, component
-                                                  }) => {
+const AnonymousUserRoute: React.FC<RouteProps> = ({path, exact, component}) => {
     const userContext = useContext(CurrentUserContext);
     const [url, setURL] = useState<RedirectType>();
 

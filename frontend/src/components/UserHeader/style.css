@@ -2,13 +2,28 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    width: 80%;
+    margin: 0 auto;
 }
 
-.user-header > img {
+.user-avatar {
     width: 10rem;
     border-radius: 5rem;
     -webkit-border-radius: 5rem;
     -moz-border-radius: 5rem;
+}
+
+a.user-setting {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-bottom: 1%;
+}
+
+.user-setting img {
+    width: 3rem;
+    margin-right: 3%;
 }
 
 .user-error {

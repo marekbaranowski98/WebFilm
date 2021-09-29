@@ -94,7 +94,7 @@ const Menu: React.FC<MenuProps> = ({}) => {
                                 <div className="cross"/>
                             </div>
                             <ul>
-                                {(checkIsSmallScreen() && loggedUserRole) &&
+                                {(checkIsSmallScreen() && loggedUserRole > 0) &&
                                     <li><MenuUserContent/></li>
                                 }
                                 {menuName.map(x => x.visibility &&
