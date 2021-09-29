@@ -43,3 +43,7 @@ export const requestResetPasswordURL = (): string => {
 export const resetPasswordURL = (key: string): string => {
     return `${requestResetPasswordURL()}${key}/`;
 };
+
+export const userLoginURL = (login: string): string => {
+    return `${userURL()}${login}/`;
+};

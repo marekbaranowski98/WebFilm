@@ -9,3 +9,4 @@ sqlparse==0.4.1
 google-cloud-storage==1.42.1
 drf-recaptcha==2.0.4
 six==1.16.0
+pillow==8.3.2

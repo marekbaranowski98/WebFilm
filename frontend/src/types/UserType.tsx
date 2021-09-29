@@ -5,12 +5,20 @@ export interface UserLoginForm {
     recaptcha: string,
 }
 
-export interface UserObject {
+export interface UserLoggedObject {
     user_id: number,
     login: string,
     name: string,
     avatarURL: string,
     role: number,
+}
+
+export interface UserObject {
+    user_id: number,
+    login: string,
+    name: string,
+    surname: string,
+    avatarURL: string,
 }
 
 export interface UserRegisterForm {

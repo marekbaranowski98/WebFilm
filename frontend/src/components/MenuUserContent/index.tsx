@@ -24,7 +24,7 @@ const MenuUserContent: React.FC<MenuUserContentProps> = () => {
     }, [userContext?.user]);
 
     const subMenuUser: {id: number, element: string, link: string, }[] = [
-        { id: 1, element: 'Profil', link: '#', },
+        { id: 1, element: 'Profil', link: `/user/${userContext?.user?.login}/`, },
         { id: 2, element: 'Rekomendacje filmowe', link: '#', },
         { id: 3, element: 'Do obejrzenia', link: '#', },
         { id: 4, element: 'Ocenione filmy', link: '#',},

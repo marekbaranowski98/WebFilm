@@ -6,7 +6,7 @@ import {
     validateDataUserURL,
     registerUserURL,
     activeUserURL,
-    requestResetPasswordURL, resetPasswordURL
+    requestResetPasswordURL, resetPasswordURL, userLoginURL
 } from './routes';
 import {ResetPasswordObject, SendEmailResetPasswordEmail, UserLoginForm, UserRegisterForm} from '../../types/UserType';
 
@@ -40,4 +40,8 @@ export const requestResetPassword = async (body: SendEmailResetPasswordEmail) =>
 
 export const resetPassword = async (key:string, body: ResetPasswordObject) => {
     return patch(resetPasswordURL(key), convertToFormData(body), false);
-}
+};
+
+export const getUser = async (login: string) => {
+    return get(userLoginURL(login), false);
+};

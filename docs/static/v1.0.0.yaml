@@ -345,6 +345,32 @@ paths:
                   non_field_errors:
                     type: string
                     example: Link wygasł.
+  /users/{login}/:
+    get:
+      tags:
+        - user
+      summary: Get user
+      operationId: getUser
+      parameters:
+      - name: login
+        in: path
+        description: Login user
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: Not Found
+          content: {}
+        410:
+          description: Gone
+          content: {}
   /photos/{bucket}/{blob}/:
     get:
       tags:
@@ -492,6 +518,30 @@ components:
       required:
         - email
         - password
+    User:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int32
+        login:
+          type: string
+          example: John123
+          pattern: '^[\w.-]+$'
+          minLength: 6
+          maxLength: 30
+        name:
+          type: string
+          example: John
+          maxLength: 150
+        surname:
+          type: string
+          example: Smith
+          maxLength: 150
+        avatar:
+          type: string
+          example: 00000000-0000-0000-0000-000000000000
+          pattern: '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
     Error:
       type: object
       properties:

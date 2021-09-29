@@ -81,7 +81,7 @@ const ActivePage: React.FC<ActivePageProps> = ({}) => {
     }, [counter]);
 
     return (
-        <article className="content-container logout-container">
+        <article className="content-container center-container">
             {url && <Redirect to={url}/>}
             <h2>Konto zostało aktywowane</h2>
             <p>

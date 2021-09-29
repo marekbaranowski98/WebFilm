@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {UserObject, UserRole} from '../types/UserType';
+import {UserLoggedObject, UserRole} from '../types/UserType';
 import {getLoggedUser} from '../helpers/api/user';
 import {checkExistCookie} from '../helpers/api/api';
 
 interface CurrentUserContextProps {
-    user: UserObject | null,
+    user: UserLoggedObject | null,
     checkIsUserLogged: () => Promise<UserRole>,
     logoutUser: () => void,
 }
@@ -16,7 +16,7 @@ interface CurrentUserProviderProps {
 }
 
 export const CurrentUserProvider: React.FC<CurrentUserProviderProps> = ({children}) => {
-    const [user, setUser] = useState<UserObject | null>(null);
+    const [user, setUser] = useState<UserLoggedObject | null>(null);
 
     const checkIsUserLogged = async (): Promise<UserRole> => {
         return new Promise((resolve, reject) => {

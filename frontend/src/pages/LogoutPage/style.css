@@ -1,8 +1,8 @@
-.logout-container {
+.center-container {
     width: fit-content;
     text-align: center;
 }
 
-.logout-container > p {
+.center-container > p {
     margin: 0.5rem;
 }

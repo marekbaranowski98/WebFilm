@@ -19,6 +19,7 @@ import RequestResetPasswordPage from './RequestResetPasswordPage';
 import ResetPasswordPage from './ResetPasswordPage';
 import AnonymousUserRoute from '../components/AnonymousUserRoute';
 import LoggedUserRoute from '../components/LoggedUserRoute';
+import UserPage from './UserPage/';
 import {UserRole} from '../types/UserType';
 
 interface App {
@@ -41,6 +42,7 @@ const App: React.FC<App> = ({}) => {
                         <AnonymousUserRoute exact={true} path={'/active-user/:key/'} component={ActivePage}/>
                         <AnonymousUserRoute exact={true} path={'/reset-password'} component={RequestResetPasswordPage}/>
                         <AnonymousUserRoute exact={true} path={'/reset-password/:key/'} component={ResetPasswordPage}/>
+                        <Route exact={true} path={'/user/:login/'} component={UserPage}/>
                     </Switch>
                 </div>
             </BrowserRouter>

@@ -165,6 +165,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         return value
 
     def validate_recaptcha(self, value):
+        """
+        Check recaptcha
+
+        :param value str
+        :return value str
+        """
         return validate_recaptcha(value, self.context)
 
     def __build_text_message(self, user: User) -> str:
@@ -184,7 +190,6 @@ def validate_recaptcha(token, context):
 
 class LoginFormUserSerializer(serializers.ModelSerializer):
     email = serializers.CharField()
-    # password = serializers.CharField()
     remember_me = serializers.BooleanField(required=False, default=False)
     recaptcha = serializers.CharField(required=False)
 
@@ -206,6 +211,12 @@ class LoginFormUserSerializer(serializers.ModelSerializer):
         return user
 
     def validate_recaptcha(self, value):
+        """
+        Check recaptcha
+
+        :param value str
+        :return value str
+        """
         return validate_recaptcha(value, self.context)
 
 
@@ -218,11 +229,9 @@ class LoginUserDataSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    gen = serializers.CharField(source='get_gender_display')
-
     class Meta:
         model = User
-        fields = ('id', 'login', 'email', 'name', 'surname', 'gen', 'avatarURL')
+        fields = ('id', 'login', 'name', 'surname', 'avatarURL', )
 
 
 class RequestResetPasswordSerializer(serializers.ModelSerializer):
@@ -252,6 +261,12 @@ class RequestResetPasswordSerializer(serializers.ModelSerializer):
             raise v
 
     def validate_recaptcha(self, value):
+        """
+        Check recaptcha
+
+        :param value str
+        :return value str
+        """
         return validate_recaptcha(value, self.context)
 
     @transaction.atomic

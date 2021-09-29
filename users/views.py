@@ -10,7 +10,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from .serializers import RegisterSerializer, LoginFormUserSerializer, LoginUserDataSerializer, \
-    RequestResetPasswordSerializer
+    RequestResetPasswordSerializer, UserSerializer
 from .models import User, PasswordReset
 from .permissions import LoginUserPermission
 from .mixin import OnlyAnonymousUserMixin
@@ -227,3 +227,24 @@ class ResetPasswordAPI(OnlyAnonymousUserMixin, generics.CreateAPIView, generics.
             return Response({
                 'non_field_errors': 'Podano błędny link.'
             }, status=404)
+
+
+class GetUser(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+
+    def get(self, request: Request, *args, **kwargs) -> Response:
+        """
+        Get user by login
+
+        :param request Request
+        :param args:
+        :param kwargs:
+        :return Response
+        """
+        try:
+            u = User.objects.get(login=self.kwargs.get('login'))
+            if u.active_status == 1:
+                return Response(self.get_serializer(u).data, status=200)
+            return Response(status=410)
+        except:
+            return Response(status=404)
