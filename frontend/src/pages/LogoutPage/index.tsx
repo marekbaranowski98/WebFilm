@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
+import {Helmet} from 'react-helmet-async';
 
 import './style.css';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
@@ -37,6 +38,9 @@ const LogoutPage: React.FC<LogoutPageProps> = ({}) => {
             {redirect && <Redirect to={{
                 pathname: '/',
             }}/>}
+            <Helmet>
+                <title>Wylogowanie - WebFilm</title>
+            </Helmet>
             <h2>Zostałeś wylogowany!</h2>
             <p>
                 Zaraz nastąpi przekierowanie na stronę główną.

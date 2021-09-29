@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect, useParams} from 'react-router-dom';
+import {Helmet} from 'react-helmet-async';
 
 import error from '../../images/error.svg';
 import ResetPasswordForm from '../../containers/ResetPasswordForm';
@@ -35,6 +36,9 @@ const ResetPasswordPage: React.FC<ResetPasswordPageProps> = ({}) => {
     return (
         <div className="wrapper-form">
             {url && <Redirect to={url}/>}
+            <Helmet>
+                <title>Zmień hasło - WebFilm</title>
+            </Helmet>
             <div className="box-form">
                 <div className="content-container container-form">
                     <h2>Zmień hasło</h2>

@@ -12,7 +12,7 @@ interface CurrentUserContextProps {
 export const CurrentUserContext = React.createContext<CurrentUserContextProps | null>(null);
 
 interface CurrentUserProviderProps {
-    children: JSX.Element[],
+    children: React.ReactNode,
 }
 
 export const CurrentUserProvider: React.FC<CurrentUserProviderProps> = ({children}) => {

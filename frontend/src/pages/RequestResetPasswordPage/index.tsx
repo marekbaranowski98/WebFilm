@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useLocation, useHistory, Redirect} from 'react-router-dom';
+import {Helmet} from 'react-helmet-async';
 
 import './style.css';
 import RequestResetPasswordForm from '../../containers/RequestResetPasswordForm';
@@ -27,6 +28,9 @@ const RequestResetPasswordPage: React.FC<RequestResetPasswordPageProps> = ({}) =
     return (
         <div className="wrapper-form">
             {url && <Redirect to={url}/>}
+            <Helmet>
+                <title>Zapomniałem hasło - WebFilm</title>
+            </Helmet>
             <div className="box-form">
                 {notification && <Alert
                     icon={notification.icon}

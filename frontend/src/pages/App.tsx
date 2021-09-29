@@ -1,5 +1,6 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {HelmetProvider} from 'react-helmet-async';
 
 import '../style/app.css';
 import '../style/shape.css';
@@ -28,25 +29,29 @@ interface App {
 const App: React.FC<App> = ({}) => {
     return (
         <CurrentUserProvider>
-            <SEO/>
-            <BrowserRouter>
-                <Header/>
-                <div className="main-container">
-                    <Switch>
-                        <Route exact path="/" component={MainContent}/>
-                        <AnonymousUserRoute exact={true} path={'/login/'} component={LoginPage}/>
-                        <LoggedUserRoute exact={true} path={'/logout/'} component={LogoutPage}
-                                         min_user_role={UserRole.User}/>
-                        <AnonymousUserRoute exact={true} path={'/register/'} component={RegisterPage}/>
-                        <Route exact path="/statute/" component={StatutePage}/>
-                        <AnonymousUserRoute exact={true} path={'/active-user/:key/'} component={ActivePage}/>
-                        <AnonymousUserRoute exact={true} path={'/reset-password'} component={RequestResetPasswordPage}/>
-                        <AnonymousUserRoute exact={true} path={'/reset-password/:key/'} component={ResetPasswordPage}/>
-                        <Route exact={true} path={'/user/:login/'} component={UserPage}/>
-                    </Switch>
-                </div>
-            </BrowserRouter>
-            <Footer/>
+            <HelmetProvider>
+                <SEO/>
+                <BrowserRouter>
+                    <Header/>
+                    <div className="main-container">
+                        <Switch>
+                            <Route exact path="/" component={MainContent}/>
+                            <AnonymousUserRoute exact={true} path={'/login/'} component={LoginPage}/>
+                            <LoggedUserRoute exact={true} path={'/logout/'} component={LogoutPage}
+                                             min_user_role={UserRole.User}/>
+                            <AnonymousUserRoute exact={true} path={'/register/'} component={RegisterPage}/>
+                            <Route exact path="/statute/" component={StatutePage}/>
+                            <AnonymousUserRoute exact={true} path={'/active-user/:key/'} component={ActivePage}/>
+                            <AnonymousUserRoute exact={true} path={'/reset-password'}
+                                                component={RequestResetPasswordPage}/>
+                            <AnonymousUserRoute exact={true} path={'/reset-password/:key/'}
+                                                component={ResetPasswordPage}/>
+                            <Route exact={true} path={'/user/:login/'} component={UserPage}/>
+                        </Switch>
+                    </div>
+                </BrowserRouter>
+                <Footer/>
+            </HelmetProvider>
         </CurrentUserProvider>
     );
 };

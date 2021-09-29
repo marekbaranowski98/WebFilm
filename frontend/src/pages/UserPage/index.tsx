@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect, useParams} from 'react-router-dom';
+import {Helmet} from 'react-helmet-async';
 
 import error from '../../images/error.svg';
 import UserHeader from '../../components/UserHeader';
@@ -25,7 +26,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
                 response.json().then((json) => {
                     setUser(<UserHeader user={json}/>);
                 });
-            }else {
+            } else {
                 setUser(<UserHeader/>);
             }
         }, (e) => {
@@ -46,6 +47,9 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     return (
         <article className="content-container">
             {url && <Redirect to={url}/>}
+            <Helmet>
+                <title>{login} - profil - WebFilm</title>
+            </Helmet>
             {user ?
                 user
                 :

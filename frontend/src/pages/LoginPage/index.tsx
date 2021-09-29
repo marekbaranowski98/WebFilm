@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
+import {Helmet} from 'react-helmet-async';
 
 import LoginForm from '../../containers/LoginForm';
 import LoginOptions from '../../containers/LoginOptions';
@@ -26,6 +27,9 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
 
     return (
         <div className="wrapper-form">
+            <Helmet>
+                <title>Zaloguj się - WebFilm</title>
+            </Helmet>
             <div className="box-form">
                 {notification && <Alert
                     icon={notification.icon}

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link, Redirect, useParams} from 'react-router-dom';
+import {Helmet} from 'react-helmet-async';
 
 import check from '../../images/check.svg';
 import error from '../../images/error.svg';
@@ -83,6 +84,9 @@ const ActivePage: React.FC<ActivePageProps> = ({}) => {
     return (
         <article className="content-container center-container">
             {url && <Redirect to={url}/>}
+            <Helmet>
+                <title>Aktywacja konta - WebFilm</title>
+            </Helmet>
             <h2>Konto zostało aktywowane</h2>
             <p>
                 Zaraz nastąpi przekierowanie na stronę główną.
