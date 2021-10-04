@@ -13,4 +13,4 @@ export const getImage = async (bucket: string, blob: string): Promise<string> =>
     }, (e) => {
         throw new Error('Nie ma takiego obrazu.');
     });
-}
+};

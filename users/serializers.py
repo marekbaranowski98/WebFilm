@@ -346,6 +346,14 @@ class UserEditSerializer(serializers.ModelSerializer):
             instance.password = make_password(validated_data.get('password'))
         if validated_data.get('email'):
             instance.email = BaseUserManager.normalize_email(validated_data.get('email'))
+        if validated_data.get('avatar'):
+            file = FileManager()
+            if instance.avatarURL != default_avatar():
+                file.delete_file('users', instance.avatarURL)
+            url = helpers.generate_uuid()
+            file.upload_file('users', validated_data.get('avatar'), url)
+            instance.avatarURL = url
+
         instance.save()
         return instance
 

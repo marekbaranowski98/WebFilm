@@ -74,16 +74,7 @@ const SettingOption: React.FC<SettingOptionProps> = ({generateForm, label, value
                     message: `${label} zostało zmienione.`,
                 });
                 closeForm();
-            } else if (response.status === 403) {
-                response.json().then(allErrors => {
-                    let e: ErrorType = {};
-                    for (let oneError in allErrors['errors']) {
-                        console.log(allErrors['errors'][oneError][0]);
-                        e[oneError] = allErrors['errors'][oneError][0];
-                    }
-                    setErrors(e);
-                });
-            } else if (response.status === 404) {
+            } else if (response.status === 401 || response.status === 404) {
                 setURL({
                     pathname: '/',
                     state: {
@@ -93,7 +84,15 @@ const SettingOption: React.FC<SettingOptionProps> = ({generateForm, label, value
                         },
                     },
                 });
-            } else {
+            } else if (response.status === 403) {
+                response.json().then(allErrors => {
+                    let e: ErrorType = {};
+                    for (let oneError in allErrors['errors']) {
+                        e[oneError] = allErrors['errors'][oneError][0];
+                    }
+                    setErrors(e);
+                });
+            }  else {
                 throw new Error();
             }
         }, (e) => {

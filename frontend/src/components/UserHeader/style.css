@@ -15,9 +15,19 @@
     -moz-border-radius: 5rem;
 }
 
+.container-settings-avatar {
+    position: relative;
+}
+
+.clear-avatar {
+    z-index: 3;
+    display: none;
+}
+
 .settings-avatar {
     position: relative;
     cursor: pointer;
+    display: block;
 }
 
 .options-avatar {
@@ -37,6 +47,10 @@
 }
 
 .user-avatar:hover + .options-avatar, .options-avatar:hover {
+    display: inherit;
+}
+
+.settings-avatar:hover + .clear-avatar, .clear-avatar:hover {
     display: inherit;
 }
 

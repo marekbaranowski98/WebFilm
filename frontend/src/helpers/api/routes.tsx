@@ -47,3 +47,7 @@ export const resetPasswordURL = (key: string): string => {
 export const userLoginURL = (login: string): string => {
     return `${userURL()}${login}/`;
 };
+
+export const userClearAvatar = (): string => {
+    return `${loggedUserURL()}delete-avatar/`;
+};

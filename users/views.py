@@ -8,9 +8,10 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from photos.Files import FileManager
 from .serializers import RegisterSerializer, LoginFormUserSerializer, LoginUserDataSerializer, \
     RequestResetPasswordSerializer, UserSerializer, UserEditSerializer
-from .models import User, PasswordReset
+from .models import User, default_avatar, PasswordReset
 from .permissions import LoginUserPermission
 from .mixin import OnlyAnonymousUserMixin
 
@@ -288,4 +289,28 @@ class GetUserAPI(generics.RetrieveAPIView):
                 return Response(self.get_serializer(u).data, status=200)
             return Response(status=410)
         except:
+            return Response(status=404)
+
+
+class DeleteAvatarUserAPI(generics.DestroyAPIView):
+    permission_classes = [LoginUserPermission]
+
+    def delete(self, request: Request, *args, **kwargs) -> Response:
+        """
+        Remove avatar image
+
+        :param request Request
+        :param args:
+        :param kwargs:
+        :return Response
+        """
+        try:
+            u = User.objects.get(id=request.user.id)
+            if request.user.avatarURL is not default_avatar():
+                file = FileManager()
+                file.delete_file('users', u.avatarURL)
+                u.avatarURL = default_avatar()
+                u.save()
+            return Response(LoginUserDataSerializer(u).data, status=200)
+        except User.DoesNotExist:
             return Response(status=404)

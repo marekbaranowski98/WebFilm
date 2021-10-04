@@ -33,7 +33,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
                     response.json().then(async  (json) => {
                         let tmpUser: UserObject = json;
 
-                        tmpUser.avatar = `data:image/png;base64,${await getImage('users', json['avatarURL'])}`;
+                        tmpUser.avatar = await getImage('users', json['avatarURL']);
                         setUser(<UserHeader user={tmpUser} show_edit={true}/>);
                     });
                 } else {
@@ -53,7 +53,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
                 });
             });
         }
-    }, [login]);
+    }, [login, userContext?.user]);
 
     return (
         <article className="content-container">

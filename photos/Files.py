@@ -45,5 +45,17 @@ class FileManager:
         blob = self.__client.bucket(bucket_path).blob(destination_blob)
         blob.upload_from_string(file.read())
 
+    def delete_file(self, bucket_path: str, blob_path: str) -> None:
+        """
+        Delete file
+
+        :param bucket_path str name bucket
+        :param blob_path str name blob
+        :return
+        """
+        bucket = self.__client.bucket(bucket_path)
+        blob = bucket.blob(blob_path)
+        blob.delete()
+
     def __convert_to_base64(self, byte: bytes):
         return base64.b64encode(byte)

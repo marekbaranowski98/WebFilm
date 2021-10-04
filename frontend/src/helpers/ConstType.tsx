@@ -14,3 +14,5 @@ export const ACCEPT_EXTENSIONS_IMAGE = [
 ];
 
 export const GOOD_UUID = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
+
+export const DEFAULT_UUID = '00000000-0000-0000-0000-000000000000';

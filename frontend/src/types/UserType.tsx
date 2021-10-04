@@ -13,6 +13,7 @@ export interface UserObject {
     surname: string,
     gender: number,
     birth_date: Date,
+    avatarURL?: string,
     avatar: string,
     role: number,
 }

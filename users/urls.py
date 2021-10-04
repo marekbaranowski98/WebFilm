@@ -10,11 +10,12 @@ path me/reset-password/ reset password
 path me/reset-password/<uuid:key> link to reset password
 path / handles register requests
 path <slug:login> handles page user
+path me/delete-avatar/ clear avatar user
 """
 from django.urls import path
 
 from .views import RegisterAPI, UserDataAPI, LoginAPI, ValidationUserDataAPI, ActiveUserAPI, \
-    ResetPasswordAPI, GetUserAPI
+    ResetPasswordAPI, GetUserAPI, DeleteAvatarUserAPI
 
 urlpatterns = [
     path('login/', LoginAPI.as_view({'post': 'post'}), name='login'),
@@ -29,4 +30,5 @@ urlpatterns = [
     path('me/reset-password/<uuid:key>/', ResetPasswordAPI.as_view({'patch': 'patch'}), name='reset_password'),
     path('', RegisterAPI.as_view(), name='register'),
     path('<slug:login>/', GetUserAPI.as_view(), name='get_user'),
+    path('me/delete-avatar/', DeleteAvatarUserAPI.as_view(), name='remove_avatar'),
 ]

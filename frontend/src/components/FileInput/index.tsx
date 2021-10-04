@@ -25,9 +25,9 @@ const FileInput: React.FC<FileInputProps> = ({
         setError(start_errors.avatar);
     }, [start_errors]);
 
-    const uploadFile = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        if (event.target.files) {
-            saveFile(event.target.files);
+    const uploadFile = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        if (e.target.files) {
+            saveFile(e.target.files);
         }
     };
 
@@ -54,29 +54,29 @@ const FileInput: React.FC<FileInputProps> = ({
         }
     };
 
-    const removeFile = (event: React.MouseEvent<HTMLDivElement>): void => {
+    const removeFile = (e: React.MouseEvent<HTMLDivElement>): void => {
         setFiles(undefined);
     };
 
-    const fileDrop = (event: React.DragEvent<HTMLElement>): void => {
-        overrideEventDefaults(event);
+    const fileDrop = (e: React.DragEvent<HTMLElement>): void => {
+        overrideEventDefaults(e);
 
-        saveFile(event.dataTransfer.files);
+        saveFile(e.dataTransfer.files);
     };
 
-    const enterBoxFile = (event: React.DragEvent): void => {
-        overrideEventDefaults(event);
-        event.currentTarget.className = ['box-file', 'zoom-box'].join(' ');
+    const enterBoxFile = (e: React.DragEvent): void => {
+        overrideEventDefaults(e);
+        e.currentTarget.className = ['box-file', 'zoom-box'].join(' ');
     };
 
-    const leaveBoxFile = (event: React.DragEvent): void => {
-        overrideEventDefaults(event);
-        event.currentTarget.className = ['box-file'].join(' ');
+    const leaveBoxFile = (e: React.DragEvent): void => {
+        overrideEventDefaults(e);
+        e.currentTarget.className = ['box-file'].join(' ');
     };
 
-    const overrideEventDefaults = (event: React.DragEvent): void => {
-        event.preventDefault();
-        event.stopPropagation();
+    const overrideEventDefaults = (e: React.DragEvent): void => {
+        e.preventDefault();
+        e.stopPropagation();
     };
 
     return (
