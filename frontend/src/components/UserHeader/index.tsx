@@ -1,39 +1,38 @@
-import React, {useEffect, useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
 
 import './style.css';
+import camera from '../../images/camera.svg';
 import settings from '../../images/settings.svg';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
 import {UserObject} from '../../types/UserType';
-import {getImage} from '../../helpers/api/photo';
 
 interface UserHeaderProps {
-    user?: UserObject;
+    user?: UserObject | null;
+    show_edit?: boolean,
 }
 
-const UserHeader: React.FC<UserHeaderProps> = ({user}) => {
-    const [avatar, setAvatar] = useState<string>();
+const UserHeader: React.FC<UserHeaderProps> = ({user, show_edit}) => {
     const userContext = useContext(CurrentUserContext);
-
-    useEffect(() => {
-        if(user) {
-            getImage('users', user.avatarURL).then((image) => {
-                setAvatar(`data:image/png;base64,${image}`);
-            });
-        }
-    }, [user]);
 
     return (
         <header>
             {user ?
                 <div className="user-header">
-                    {user.id === userContext?.user?.id &&
-                        <Link className="link user-setting" to={'/settings/'}>
+                    {(user.id === userContext?.user?.id && show_edit) &&
+                        <Link className="link user-settings" to={'/settings/'}>
                             <img src={settings} alt="Ustawienia"/>
                             Ustawienia
                         </Link>
                     }
-                    <img src={avatar} className="user-avatar" alt="Avatar użytkownika"/>
+                    {user.id === userContext?.user?.id ?
+                        <div className="settings-avatar">
+                            <img src={user.avatar} className="user-avatar" alt="Avatar użytkownika"/>
+                            <img src={camera} className="options-avatar" alt="Zmień avatar"/>
+                        </div>
+                        :
+                        <img src={user.avatar} className="user-avatar" alt="Avatar użytkownika"/>
+                    }
                     <div className="user-identity">
                         <h2>{user.name} {user.surname}</h2>
                         <p>@{user.login}</p>

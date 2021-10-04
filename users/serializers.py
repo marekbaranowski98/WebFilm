@@ -2,7 +2,9 @@ import datetime
 import logging
 
 from collections import OrderedDict
-from django.contrib.auth.hashers import make_password
+
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.hashers import make_password, check_password
 from django.db import transaction
 from django.contrib.auth import authenticate, password_validation
 from django.core.files.uploadedfile import TemporaryUploadedFile
@@ -35,13 +37,13 @@ class RegisterSerializer(serializers.ModelSerializer):
     repeat_password = serializers.CharField(allow_blank=False, write_only=True)
     accept_statute = serializers.BooleanField(required=True)
     avatar = serializers.ImageField(required=False)
-    recaptcha = serializers.CharField(required=False)
+    recaptcha = serializers.CharField()
 
     class Meta:
         model = User
         fields = (
             'id', 'login', 'email', 'password', 'repeat_password', 'name', 'surname', 'gender', 'birth_date',
-            'avatar', 'accept_statute', 'recaptcha'
+            'avatar', 'accept_statute', 'recaptcha',
         )
         extra_kwargs = {
             'password': {'write_only': True},
@@ -86,7 +88,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         except Exception as e:
             loggerDebug.debug(e)
 
-    def update(self, instance, validated_data):
+    def update(self, instance: User, validated_data: OrderedDict):
         """
         Update User
 
@@ -126,12 +128,17 @@ class RegisterSerializer(serializers.ModelSerializer):
             except Exception as e:
                 raise ValidationError({'password': str.split(str(e)[2:-2], "', '")}, code='error-password')
         elif password:
-            raise ValidationError({'confirm_password': 'To pole jest wymagane.'})
+            raise ValidationError({'repeat_password': 'To pole jest wymagane.'})
         elif confirm_password:
             raise ValidationError({'password': 'To pole jest wymagane.'})
+
+        if data.get('recaptcha'):
+            validate_recaptcha(data.get('recaptcha'), self.context)
+        else:
+            raise ValidationError({'recaptcha': 'To pole jest wymagane.'})
         return data
 
-    def validate_birth_date(self, value):
+    def validate_birth_date(self, value: datetime.date):
         """
         Check birth date
 
@@ -142,29 +149,35 @@ class RegisterSerializer(serializers.ModelSerializer):
             today = datetime.date.today()
             min_age = today - datetime.date(year=today.year - 13, month=today.month, day=today.day)
             if value > today - min_age:
-                raise ValidationError({'birth_date': 'Aby założyć konto należy mieć min 13 lat.'}, code='birth-date')
+                raise ValidationError(['Aby założyć konto należy mieć min 13 lat.'], code='birth-date')
             return value
         else:
-            raise ValidationError({'birth_date': 'To pole jest wymagane.'}, code='birth-date')
+            raise ValidationError(['To pole jest wymagane.'], code='birth-date')
 
     def validate_avatar_file(self, file: TemporaryUploadedFile):
+        """
+        Check avatar
+
+        :param file TemporaryUploadedFile
+        :return TemporaryUploadedFile
+        """
         limit_size_file = settings.MAX_FILE_SIZE_MB * 1024 ** 2
         if file.size > limit_size_file:
             raise ValidationError({'avatar': f'Maksymalny  rozmiar pliku to {limit_size_file} MB'})
         return file
 
-    def validate_accept_statute(self, value):
+    def validate_accept_statute(self, value: bool):
         """
         Check accept statute
 
-        :param value boolean
-        :return value boolean
+        :param value bool
+        :return value bool
         """
         if not value:
             raise ValidationError({'accept_statute': 'Akceptacja regulaminu jest obowiązkowa.'}, code='accept-statute')
         return value
 
-    def validate_recaptcha(self, value):
+    def validate_recaptcha(self, value: str):
         """
         Check recaptcha
 
@@ -191,7 +204,7 @@ def validate_recaptcha(token, context):
 class LoginFormUserSerializer(serializers.ModelSerializer):
     email = serializers.CharField()
     remember_me = serializers.BooleanField(required=False, default=False)
-    recaptcha = serializers.CharField(required=False)
+    recaptcha = serializers.CharField()
 
     class Meta:
         model = User
@@ -210,7 +223,7 @@ class LoginFormUserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Błędny login lub hasło", code='error-login')
         return user
 
-    def validate_recaptcha(self, value):
+    def validate_recaptcha(self, value: str):
         """
         Check recaptcha
 
@@ -225,7 +238,7 @@ class LoginUserDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'login', 'name', 'avatarURL', 'role')
+        fields = ('id', 'login', 'email', 'name', 'surname', 'gender', 'birth_date', 'avatarURL', 'role')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -237,18 +250,18 @@ class UserSerializer(serializers.ModelSerializer):
 class RequestResetPasswordSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     user = serializers.IntegerField(required=False, allow_null=True, read_only=True)
-    recaptcha = serializers.CharField(required=False)
+    recaptcha = serializers.CharField()
 
     class Meta:
         model = PasswordReset
         fields = ('email', 'user', 'recaptcha', )
 
-    def validate(self, data):
+    def validate(self, data: OrderedDict):
         """
         Check email from data
 
-        :param data: str
-        :return:
+        :param data OrderedDict
+        :return OrderedDict
         """
         try:
             u = User.objects.get(email=data.get('email'))
@@ -260,7 +273,7 @@ class RequestResetPasswordSerializer(serializers.ModelSerializer):
         except ValidationError as v:
             raise v
 
-    def validate_recaptcha(self, value):
+    def validate_recaptcha(self, value: str):
         """
         Check recaptcha
 
@@ -304,3 +317,57 @@ class RequestResetPasswordSerializer(serializers.ModelSerializer):
                f'Po zmianie hasła będzie można zalogować się.\nLink jest ważny przez godzinę.\n' \
                f'Ta wiadomość została wygenerowana przez system, nie odpowiadaj na nią.\n\n' \
                f'Pozdrawiamy,\nWebFilm'
+
+
+class UserEditSerializer(serializers.ModelSerializer):
+    current_password = serializers.CharField(allow_blank=False, write_only=True)
+    repeat_password = serializers.CharField(allow_blank=False, write_only=True)
+    accept_statute = serializers.BooleanField(required=False)
+    avatar = serializers.ImageField(required=False)
+    recaptcha = serializers.CharField(required=False)
+
+    class Meta(RegisterSerializer.Meta):
+        fields = RegisterSerializer.Meta.fields + (
+            'current_password', 'repeat_password', 'accept_statute', 'avatar', 'recaptcha',
+        )
+
+    def update(self, instance: User, validated_data: OrderedDict):
+        """
+        Update User
+
+        :param instance User
+        :param validated_data OrderedDict
+        :return User
+        """
+        for (key, value) in validated_data.items():
+            setattr(instance, key, value)
+
+        if validated_data.get('password'):
+            instance.password = make_password(validated_data.get('password'))
+        if validated_data.get('email'):
+            instance.email = BaseUserManager.normalize_email(validated_data.get('email'))
+        instance.save()
+        return instance
+
+    def validate(self, data: OrderedDict):
+        """
+        Check data
+
+        :param data OrderedDict
+        :return OrderedDict
+        """
+        if data.get('email') or data.get('login') or data.get('password'):
+            if not data.get('current_password'):
+                raise ValidationError({'current_password': ['To pole jest wymagane.']})
+        return data
+
+    def validate_current_password(self, value: str):
+        """
+        User authorization by password
+
+        :param value str
+        :return str
+        """
+        if not check_password(value, self.instance.password):
+            raise ValidationError(['Niepoprawne obecne hasło.'])
+        return value

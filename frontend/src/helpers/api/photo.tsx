@@ -6,7 +6,7 @@ export const getImage = async (bucket: string, blob: string): Promise<string> =>
         let response = r as Response;
         if(response.status === 200) {
             let e = await response.json();
-            return e.image;
+            return `data:image/png;base64,${e.image}`;
         }else {
             throw new Error('Nie ma takiego obrazu.');
         }

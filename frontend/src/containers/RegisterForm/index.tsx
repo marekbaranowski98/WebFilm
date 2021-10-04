@@ -67,9 +67,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
     ) => {
         switch (nameValidate) {
             case 'login':
-                return validateLogin(login) && checkDataIsAvailable('login', login);
+                return validateLogin(login) && checkDataIsAvailable('login', login, false);
             case 'email':
-                return validateEmail(email) && checkDataIsAvailable('email', email);
+                return validateEmail(email) && checkDataIsAvailable('email', email, false);
             case 'password':
                 return validatePassword(password);
             case 'repeat_password':

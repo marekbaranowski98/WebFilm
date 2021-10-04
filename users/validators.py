@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 
 
 class FormatValidator(object):
-    def __init__(self, regax='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'):
+    def __init__(self, regax='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@$%^&*\-_,.?;]).{8,128}$'):
         self.__regax = regax
 
     def validate(self, password, user=None):

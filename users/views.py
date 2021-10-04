@@ -5,12 +5,11 @@ from django.utils import timezone
 from rest_framework.authtoken.models import Token
 from rest_framework import generics, viewsets
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from .serializers import RegisterSerializer, LoginFormUserSerializer, LoginUserDataSerializer, \
-    RequestResetPasswordSerializer, UserSerializer
+    RequestResetPasswordSerializer, UserSerializer, UserEditSerializer
 from .models import User, PasswordReset
 from .permissions import LoginUserPermission
 from .mixin import OnlyAnonymousUserMixin
@@ -100,7 +99,7 @@ class LoginAPI(ObtainAuthToken, viewsets.ViewSet):
             response.status_code = 200
             return response
         else:
-            if request.POST.get('email'):
+            if request.data.get('email'):
                 loggerUser.info(f'Attempting to log in to the user  email {request.data["email"]}')
             response = Response({
                 'errors': serializer.errors
@@ -109,22 +108,62 @@ class LoginAPI(ObtainAuthToken, viewsets.ViewSet):
             return response
 
 
-class CheckLoginUserAPI(generics.RetrieveAPIView):
+class UserDataAPI(generics.RetrieveAPIView, generics.UpdateAPIView, viewsets.ViewSet):
     permission_classes = [LoginUserPermission]
-    serializer_class = LoginUserDataSerializer
 
-    def get_object(self) -> User:
+    def get_serializer_class(self):
+        if self.action == 'get':
+            return LoginUserDataSerializer
+        return UserEditSerializer
+
+    def get(self, request: Request, *args, **kwargs) -> Response:
         """
         Return user object
 
-        :return User
+        :param request Request
+        :param args:
+        :param kwargs:
+        :return Response
         """
-        u = User.objects.get(email=self.request.user.email)
-        u.last_login = timezone.now()
-        u.save()
-        loggerUser.info(f"User {r'{'}'id': '{self.request.user.id}', "
-                        f"'email': '{self.request.user.email}'{r'}'} connect")
-        return self.request.user
+        try:
+            u = User.objects.get(email=self.request.user.email)
+            u.last_login = timezone.now()
+            u.save()
+            loggerUser.info(f"User {r'{'}'id': '{self.request.user.id}', "
+                            f"'email': '{self.request.user.email}'{r'}'} connect")
+            return Response(self.get_serializer(u).data, status=200)
+        except:
+            return Response(status=404)
+
+    def patch(self, request: Request, *args, **kwargs) -> Response:
+        """
+        Update user
+
+        :param request Request
+        :param args:
+        :param kwargs:
+        :return Response
+        """
+        try:
+            serializer = self.get_serializer(
+                instance=request.user,
+                data=request.data,
+                partial=True,
+                context={'request': request},
+            )
+            if serializer.is_valid():
+                u = serializer.save()
+
+                loggerUser.info(f'User {u} edit data.')
+                return Response(LoginUserDataSerializer(u).data, status=200)
+            else:
+                return Response({
+                    'errors': serializer.errors,
+                }, status=403)
+        except User.DoesNotExist:
+            return Response({
+                'non_field_errors': 'Coś poszło nie tak.'
+            }, status=404)
 
 
 class ValidationUserDataAPI(generics.CreateAPIView):
@@ -138,6 +177,8 @@ class ValidationUserDataAPI(generics.CreateAPIView):
         :return Response
         """
         if not ('value' in request.data or 'key' in request.data) or \
+                (request.user.is_authenticated and User._meta.get_field(request.data['key'])
+                        .value_from_object(request.user) == request.data['value']) or \
                 len(User.objects.in_bulk([request.data['value']], field_name=request.data['key'])) == 0:
             return Response(status=204)
         else:
@@ -158,7 +199,7 @@ class ActiveUserAPI(OnlyAnonymousUserMixin, generics.RetrieveUpdateAPIView):
         """
         key = str(kwargs['key'])
         try:
-            u = get_object_or_404(User, active_code=key)
+            u = generics.get_object_or_404(User, active_code=key)
             u.active_status = 1
             u.active_code = None
             u.save()
@@ -229,7 +270,7 @@ class ResetPasswordAPI(OnlyAnonymousUserMixin, generics.CreateAPIView, generics.
             }, status=404)
 
 
-class GetUser(generics.RetrieveAPIView):
+class GetUserAPI(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
     def get(self, request: Request, *args, **kwargs) -> Response:

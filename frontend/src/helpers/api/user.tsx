@@ -22,8 +22,8 @@ export const getLogoutUser = async () => {
     return get(logoutUserURL(), true);
 };
 
-export const checkDataUser = async (body: FormData) => {
-    return post(validateDataUserURL(), body, false);
+export const checkDataUser = async (body: FormData, isLogged: boolean) => {
+    return post(validateDataUserURL(), body, isLogged);
 };
 
 export const registerUser = async (data: UserRegisterForm) => {
@@ -44,4 +44,8 @@ export const resetPassword = async (key:string, body: ResetPasswordObject) => {
 
 export const getUser = async (login: string) => {
     return get(userLoginURL(login), false);
+};
+
+export const editUser = async (body: object) => {
+    return patch(loggedUserURL(), convertToFormData(body), true);
 };

@@ -88,6 +88,7 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return {
+            'id': self.id,
             'login': self.login,
             'email': self.email,
             'name': self.name,

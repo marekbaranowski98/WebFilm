@@ -9,19 +9,45 @@
 
 .user-avatar {
     width: 10rem;
+    height: 10rem;
     border-radius: 5rem;
     -webkit-border-radius: 5rem;
     -moz-border-radius: 5rem;
 }
 
-a.user-setting {
+.settings-avatar {
+    position: relative;
+    cursor: pointer;
+}
+
+.options-avatar {
+    display: none;
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 5rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.settings-avatar:hover {
+    opacity: 0.7;
+}
+
+.user-avatar:hover + .options-avatar, .options-avatar:hover {
+    display: inherit;
+}
+
+a.user-settings {
     display: flex;
     align-items: center;
     margin-left: auto;
     margin-bottom: 1%;
 }
 
-.user-setting img {
+.user-settings img {
     width: 3rem;
     margin-right: 3%;
 }

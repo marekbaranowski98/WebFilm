@@ -22,6 +22,7 @@ import AnonymousUserRoute from '../components/AnonymousUserRoute';
 import LoggedUserRoute from '../components/LoggedUserRoute';
 import UserPage from './UserPage/';
 import {UserRole} from '../types/UserType';
+import SettingsPage from './SettingsPage';
 
 interface App {
 }
@@ -47,6 +48,8 @@ const App: React.FC<App> = ({}) => {
                             <AnonymousUserRoute exact={true} path={'/reset-password/:key/'}
                                                 component={ResetPasswordPage}/>
                             <Route exact={true} path={'/user/:login/'} component={UserPage}/>
+                            <LoggedUserRoute exact={true} path={'/settings/'} component={SettingsPage}
+                                             min_user_role={UserRole.User}/>
                         </Switch>
                     </div>
                 </BrowserRouter>

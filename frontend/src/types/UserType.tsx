@@ -5,20 +5,16 @@ export interface UserLoginForm {
     recaptcha: string,
 }
 
-export interface UserLoggedObject {
-    id: number,
-    login: string,
-    name: string,
-    avatarURL: string,
-    role: number,
-}
-
 export interface UserObject {
     id: number,
     login: string,
+    email: string,
     name: string,
     surname: string,
-    avatarURL: string,
+    gender: number,
+    birth_date: Date,
+    avatar: string,
+    role: number,
 }
 
 export interface UserRegisterForm {
@@ -33,6 +29,29 @@ export interface UserRegisterForm {
     avatar?: FileList,
     accept_statute: boolean,
     recaptcha: string,
+}
+
+export interface UserNameSurnameForm {
+    name?: string,
+    surname?: string,
+}
+
+export interface UserBirthDateForm {
+    birth_date: string,
+}
+
+export interface UserGenderForm {
+    gender?: number,
+}
+
+export interface UserEmailForm {
+    email: string,
+    current_password: string,
+}
+
+export interface UserNickForm {
+    login: string,
+    current_password: string,
 }
 
 export const Gender: {id: number, value: string}[] = [
@@ -51,11 +70,12 @@ export const Gender: {id: number, value: string}[] = [
 ];
 
 export interface SendEmailResetPasswordEmail {
-    email: string
+    email: string,
     recaptcha: string,
 }
 
 export interface ResetPasswordObject {
+    current_password?: string,
     password: string,
     repeat_password: string,
     recaptcha: string,

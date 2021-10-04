@@ -55,7 +55,8 @@ const useForm = <T extends {}>({initialObject, validateObject, sendRequestToAPI,
     const submitHandler = (e: React.FormEvent): void => {
         e.preventDefault();
 
-        if (Object.keys(errors).filter((x) => x !== 'non_field_errors').length == 0) {
+        if (Object.keys(errors).filter((x) => x !== 'non_field_errors').length == 0 &&
+            Object.keys(values).length > 0) {
             setErrors({});
             sendRequestToAPI(values, setErrors);
         }

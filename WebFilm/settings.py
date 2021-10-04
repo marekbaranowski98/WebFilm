@@ -152,29 +152,29 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:8080",
+    'http://127.0.0.1:8080',
 ]
 
 CORS_ALLOW_METHODS = [
-    "GET",
-    "POST",
-    "PATCH",
+    'GET',
+    'POST',
+    'PATCH',
 ]
 
 CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
 ]
 
-CORS_URLS_REGEX = r"^/api/.*$"
-
+CORS_URLS_REGEX = r'^/api/.*$'
+CORS_ALLOW_CREDENTIALS = True
 
 # Authentication user
 AUTH_USER_MODEL = 'users.User'

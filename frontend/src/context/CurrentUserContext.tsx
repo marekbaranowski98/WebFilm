@@ -1,12 +1,15 @@
 import React, {useState} from 'react';
-import {UserLoggedObject, UserRole} from '../types/UserType';
+
+import {UserObject, UserRole} from '../types/UserType';
 import {getLoggedUser} from '../helpers/api/user';
 import {checkExistCookie} from '../helpers/api/api';
+import {getImage} from '../helpers/api/photo';
 
 interface CurrentUserContextProps {
-    user: UserLoggedObject | null,
+    user: UserObject | null,
     checkIsUserLogged: () => Promise<UserRole>,
     logoutUser: () => void,
+    updateUser: (user: UserObject) => void,
 }
 
 export const CurrentUserContext = React.createContext<CurrentUserContextProps | null>(null);
@@ -16,7 +19,7 @@ interface CurrentUserProviderProps {
 }
 
 export const CurrentUserProvider: React.FC<CurrentUserProviderProps> = ({children}) => {
-    const [user, setUser] = useState<UserLoggedObject | null>(null);
+    const [user, setUser] = useState<UserObject | null>(null);
 
     const checkIsUserLogged = async (): Promise<UserRole> => {
         return new Promise((resolve, reject) => {
@@ -26,7 +29,7 @@ export const CurrentUserProvider: React.FC<CurrentUserProviderProps> = ({childre
                         let r = (res as Response);
                         if (r.status === 200) {
                             r.json().then(u => {
-                                setUser(u);
+                                updateUser(u);
                                 resolve(u.role);
                             });
                         } else {
@@ -48,11 +51,21 @@ export const CurrentUserProvider: React.FC<CurrentUserProviderProps> = ({childre
         setUser(null);
     };
 
+    const updateUser = (u: any): void => {
+        let tmpUser: UserObject = u;
+        tmpUser.birth_date = new Date(u['birth_date']);
+        getImage('users', u['avatarURL']).then((image) => {
+            tmpUser.avatar = image;
+            setUser(tmpUser);
+        }, () => setUser(tmpUser));
+    };
+
     return (
         <CurrentUserContext.Provider value={{
             user: user,
             checkIsUserLogged: checkIsUserLogged,
             logoutUser: logoutUser,
+            updateUser: updateUser,
         }}>
             {children}
         </CurrentUserContext.Provider>

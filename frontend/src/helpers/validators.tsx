@@ -48,9 +48,9 @@ export const validateEmail = (email?: string): boolean => {
     }
 };
 
-export const checkDataIsAvailable = (key: string, value: string) => {
+export const checkDataIsAvailable = (key: string, value: string, isLogged: boolean) => {
     let data = convertToFormData({'key': key, 'value': value});
-    return checkDataUser(data).then(async (r) => {
+    return checkDataUser(data, isLogged).then(async (r) => {
         let response = r as Response;
         if(response.status === 204) {
             return true;
@@ -113,8 +113,8 @@ export const validateRepeatPassword = (password: string, repeat_password: string
 };
 
 export const validateName = (name?: string): boolean => {
-    if(name && name.length > 250) {
-        let error: Error = new Error('Imię może mieć max 250 znaków.');
+    if(name && name.length > 150) {
+        let error: Error = new Error('Imię może mieć max 150 znaków.');
         error.name = 'name';
         throw error;
     }
@@ -122,8 +122,8 @@ export const validateName = (name?: string): boolean => {
 };
 
 export const validateSurname = (surname?: string): boolean => {
-    if(surname && surname.length > 250) {
-        let error: Error = new Error('Nazwisko może mieć max 250 znaków.');
+    if(surname && surname.length > 150) {
+        let error: Error = new Error('Nazwisko może mieć max 150 znaków.');
         error.name = 'surname';
         throw error;
     }
