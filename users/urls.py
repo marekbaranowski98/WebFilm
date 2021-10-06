@@ -3,6 +3,7 @@
 path login/ handles login requests
 path me/ check is user logged (method get)
 path me/ edit user (method patch)
+path me/ delete user (method delete)
 path me/logout/ logout users
 path me/validator-unique/ check if data available
 path act/<uuid:key>/ active user
@@ -22,6 +23,7 @@ urlpatterns = [
     path('me/', UserDataAPI.as_view({
         'get': 'get',
         'patch': 'patch',
+        'delete': 'delete',
     }), name='users'),
     path('me/logout/', LoginAPI.as_view({'get': 'get'}), name='logout_user'),
     path('me/validator-unique/', ValidationUserDataAPI.as_view(), name='validation_user'),

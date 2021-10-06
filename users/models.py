@@ -37,7 +37,7 @@ class User(AbstractBaseUser):
             ),
         ],
     )
-    email = models.EmailField(unique=True,)
+    email = models.EmailField(unique=True, null=True,)
     name = models.CharField(max_length=150, blank=True, default='',)
     surname = models.CharField(max_length=150, blank=True, default='',)
     GENDER_CHOICES = (
@@ -49,6 +49,7 @@ class User(AbstractBaseUser):
     birth_date = models.DateField(null=True, auto_now_add=False,)
     avatarURL = models.CharField(
         max_length=36,
+        null=True,
         default=default_avatar,
         validators=[
             RegexValidator(
@@ -77,7 +78,7 @@ class User(AbstractBaseUser):
         ],
     )
     role = models.ForeignKey(to=RolesUser, default=1, on_delete=models.RESTRICT, )
-    date_joined = models.DateTimeField(default=timezone.now,)
+    date_joined = models.DateTimeField(null=True, default=timezone.now,)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

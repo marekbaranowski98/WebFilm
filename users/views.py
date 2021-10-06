@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 from photos.Files import FileManager
 from .serializers import RegisterSerializer, LoginFormUserSerializer, LoginUserDataSerializer, \
-    RequestResetPasswordSerializer, UserSerializer, UserEditSerializer
+    RequestResetPasswordSerializer, UserSerializer, UserEditSerializer, UserDeleteSerializer
 from .models import User, default_avatar, PasswordReset
 from .permissions import LoginUserPermission
 from .mixin import OnlyAnonymousUserMixin
@@ -109,12 +109,14 @@ class LoginAPI(ObtainAuthToken, viewsets.ViewSet):
             return response
 
 
-class UserDataAPI(generics.RetrieveAPIView, generics.UpdateAPIView, viewsets.ViewSet):
+class UserDataAPI(generics.RetrieveAPIView, generics.UpdateAPIView, generics.DestroyAPIView, viewsets.ViewSet):
     permission_classes = [LoginUserPermission]
 
     def get_serializer_class(self):
         if self.action == 'get':
             return LoginUserDataSerializer
+        elif self.action == 'delete':
+            return UserDeleteSerializer
         return UserEditSerializer
 
     def get(self, request: Request, *args, **kwargs) -> Response:
@@ -157,6 +159,39 @@ class UserDataAPI(generics.RetrieveAPIView, generics.UpdateAPIView, viewsets.Vie
 
                 loggerUser.info(f'User {u} edit data.')
                 return Response(LoginUserDataSerializer(u).data, status=200)
+            else:
+                return Response({
+                    'errors': serializer.errors,
+                }, status=403)
+        except User.DoesNotExist:
+            return Response({
+                'non_field_errors': 'Coś poszło nie tak.'
+            }, status=404)
+
+    def delete(self, request: Request, *args, **kwargs) -> Response:
+        """
+        Delete user
+
+        :param request Request
+        :param args:
+        :param kwargs:
+        :return Response
+        """
+        try:
+            serializer = self.get_serializer(
+                instance=request.user,
+                data=request.data,
+                context={'request': request},
+            )
+            if serializer.is_valid():
+                u = serializer.save()
+
+                Token.objects.get(user=u).delete()
+                response = Response(status=204)
+                response.delete_cookie('token')
+
+                loggerUser.info(f'User {u.id} delete account.')
+                return response
             else:
                 return Response({
                     'errors': serializer.errors,

@@ -1,4 +1,4 @@
-import {post, get, patch, convertToFormData} from './api';
+import {post, get, patch, convertToFormData, delete_api} from './api';
 import {
     loginURL,
     loggedUserURL,
@@ -6,9 +6,15 @@ import {
     validateDataUserURL,
     registerUserURL,
     activeUserURL,
-    requestResetPasswordURL, resetPasswordURL, userLoginURL
+    requestResetPasswordURL, resetPasswordURL, userLoginURL, editUserURL, userClearAvatarURL, deleteUserURL
 } from './routes';
-import {ResetPasswordObject, SendEmailResetPasswordEmail, UserLoginForm, UserRegisterForm} from '../../types/UserType';
+import {
+    ResetPasswordObject,
+    SendEmailResetPasswordEmail,
+    UserDeleteForm,
+    UserLoginForm,
+    UserRegisterForm
+} from '../../types/UserType';
 
 export const loginUser = async (data: UserLoginForm) => {
     return post(loginURL(), convertToFormData(data));
@@ -47,5 +53,13 @@ export const getUser = async (login: string) => {
 };
 
 export const editUser = async (body: object) => {
-    return patch(loggedUserURL(), convertToFormData(body), true);
+    return patch(editUserURL(), convertToFormData(body), true);
+};
+
+export const deleteAvatar = async () => {
+    return delete_api(userClearAvatarURL(), convertToFormData({}), true);
+};
+
+export const deleteUser = async (body: UserDeleteForm) => {
+    return delete_api(deleteUserURL(), convertToFormData(body), true);
 };

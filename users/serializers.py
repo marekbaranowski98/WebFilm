@@ -46,8 +46,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             'avatar', 'accept_statute', 'recaptcha',
         )
         extra_kwargs = {
-            'password': {'write_only': True},
-            'login': {'required': True},
+            'password': {'write_only': True, },
+            'login': {'required': True, },
+            'email': {'required': True, },
+            'birth_date': {'required': True, },
         }
 
     @transaction.atomic
@@ -208,7 +210,7 @@ class LoginFormUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'remember_me', 'recaptcha', )
+        fields = ('email', 'password', 'remember_me', 'recaptcha',)
 
     def validate(self, data: OrderedDict):
         """
@@ -244,7 +246,7 @@ class LoginUserDataSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'login', 'name', 'surname', 'avatarURL', )
+        fields = ('id', 'login', 'name', 'surname', 'avatarURL',)
 
 
 class RequestResetPasswordSerializer(serializers.ModelSerializer):
@@ -254,7 +256,7 @@ class RequestResetPasswordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PasswordReset
-        fields = ('email', 'user', 'recaptcha', )
+        fields = ('email', 'user', 'recaptcha',)
 
     def validate(self, data: OrderedDict):
         """
@@ -368,6 +370,54 @@ class UserEditSerializer(serializers.ModelSerializer):
             if not data.get('current_password'):
                 raise ValidationError({'current_password': ['To pole jest wymagane.']})
         return data
+
+    def validate_current_password(self, value: str):
+        """
+        User authorization by password
+
+        :param value str
+        :return str
+        """
+        if not check_password(value, self.instance.password):
+            raise ValidationError(['Niepoprawne obecne hasło.'])
+        return value
+
+
+class UserDeleteSerializer(serializers.ModelSerializer):
+    current_password = serializers.CharField(allow_blank=False)
+
+    class Meta:
+        model = User
+        fields = ('current_password', )
+
+    def update(self, instance: User, validated_data: OrderedDict):
+        """
+        Delete User
+
+        :param instance User
+        :param validated_data OrderedDict
+        :return User
+        """
+        instance.login = None
+        instance.password = ''
+        instance.last_login = None
+        instance.email = None
+        instance.name = ''
+        instance.surname = ''
+        instance.gender = 0
+        instance.birth_date = None
+        instance.active_status = 2
+        instance.date_joined = None
+        instance.active_code = None
+        instance.role_id = 1
+
+        if instance.avatarURL != default_avatar():
+            file = FileManager()
+            file.delete_file('users', instance.avatarURL)
+        instance.avatarURL = None
+
+        instance.save()
+        return instance
 
     def validate_current_password(self, value: str):
         """

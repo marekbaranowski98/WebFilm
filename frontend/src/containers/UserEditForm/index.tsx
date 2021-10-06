@@ -1,19 +1,22 @@
 import React, {useState} from 'react';
 
 import './style.css';
+import trash from '../../images/trash.svg';
+import pencil from '../../images/pencil.svg';
 import {
     Gender,
     UserObject,
     UserNameSurnameForm,
     UserBirthDateForm,
     UserGenderForm,
-    UserEmailForm, UserNickForm, ResetPasswordObject
+    UserEmailForm, UserNickForm, ResetPasswordObject, UserDeleteForm
 } from '../../types/UserType';
 import SettingOption from '../../components/SettingOption';
 import {FileUploadType} from '../../types/FileType';
 import {AlertType, ErrorType} from '../../types/ErrorType';
 import ErrorMessage from '../../components/ErrorMessage';
 import Alert from '../../components/Alert';
+import {deleteUser, editUser} from '../../helpers/api/user';
 
 interface UserEditFormProps {
     user?: UserObject | null,
@@ -21,6 +24,12 @@ interface UserEditFormProps {
 
 const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
     const [notification, setNotification] = useState<AlertType>();
+    const editRequestAPI = (form: object): Promise<any> => {
+        return editUser(form);
+    }
+    const deleteRequestAPI = (form: object): Promise<any> => {
+        return deleteUser(form as UserDeleteForm);
+    }
     const changeNameSurname = (
         update: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | FileUploadType) => void,
         errors: ErrorType,
@@ -99,6 +108,11 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
             errors: ErrorType,
         ) => React.ReactNode,
         initialObject: object,
+        icon: string,
+        sendRequestToAPI: (
+            form: object,
+        ) => Promise<any>,
+        nameOKButton: string,
     }[] = [
         {
             id: 1,
@@ -106,6 +120,9 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
             value: `${user?.name} ${user?.surname}`,
             form: changeNameSurname,
             initialObject: {} as UserNameSurnameForm,
+            icon: pencil,
+            sendRequestToAPI: editRequestAPI,
+            nameOKButton: 'Zapisz',
         },
         {
             id: 2,
@@ -113,6 +130,9 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
             value: `${user?.birth_date.toLocaleDateString()}`,
             form: changeBirthDate,
             initialObject: {} as UserBirthDateForm,
+            icon: pencil,
+            sendRequestToAPI: editRequestAPI,
+            nameOKButton: 'Zapisz',
         },
         {
             id: 3,
@@ -120,6 +140,9 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
             value: `${Gender.find(x => x.id === user?.gender)?.value}`,
             form: changeGender,
             initialObject: {} as UserGenderForm,
+            icon: pencil,
+            sendRequestToAPI: editRequestAPI,
+            nameOKButton: 'Zapisz',
         },
     ];
 
@@ -229,6 +252,24 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
             </>
         );
     };
+    const deleteForm = (
+        update: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | FileUploadType) => void,
+        errors: ErrorType,
+    ): React.ReactNode => {
+        return (
+            <div className="input-field">
+                <div>Podaj aktualne hasło aby usunąć konto:</div>
+                <input
+                    type="password"
+                    name="current_password"
+                    onBlur={update}
+                    autoComplete="current-password"
+                    required
+                />
+                {errors.current_password && <ErrorMessage message={errors.current_password}/>}
+            </div>
+        );
+    };
 
     const listSettingsSecurityOptions: {
         id: number,
@@ -239,6 +280,11 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
             errors: ErrorType,
         ) => React.ReactNode,
         initialObject: object,
+        icon: string,
+        sendRequestToAPI: (
+            form: object,
+        ) => Promise<any>,
+        nameOKButton: string,
     }[] = [
         {
             id: 1,
@@ -246,6 +292,9 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
             value: `${user?.email}`,
             form: changeEmail,
             initialObject: {} as UserEmailForm,
+            icon: pencil,
+            sendRequestToAPI: editRequestAPI,
+            nameOKButton: 'Zapisz',
         },
         {
             id: 2,
@@ -253,6 +302,9 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
             value: `${user?.login}`,
             form: changeLogin,
             initialObject: {} as UserNickForm,
+            icon: pencil,
+            sendRequestToAPI: editRequestAPI,
+            nameOKButton: 'Zapisz',
         },
         {
             id: 3,
@@ -260,6 +312,19 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
             value: '********',
             form: changePassword,
             initialObject: {} as ResetPasswordObject,
+            icon: pencil,
+            sendRequestToAPI: editRequestAPI,
+            nameOKButton: 'Zapisz',
+        },
+        {
+            id: 4,
+            label: 'Usuń konto',
+            value: '********',
+            form: deleteForm,
+            initialObject: {} as UserDeleteForm,
+            icon: trash,
+            sendRequestToAPI: deleteRequestAPI,
+            nameOKButton: 'Usuń',
         },
     ];
 
@@ -279,6 +344,9 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
                         value={x.value}
                         typeForm={x.initialObject}
                         setAlert={setNotification}
+                        icon={x.icon}
+                        sendRequestToAPI={x.sendRequestToAPI}
+                        nameOKButton={x.nameOKButton}
                     />
                 )}
             </div>
@@ -292,6 +360,9 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
                         value={x.value}
                         typeForm={x.initialObject}
                         setAlert={setNotification}
+                        icon={x.icon}
+                        sendRequestToAPI={x.sendRequestToAPI}
+                        nameOKButton={x.nameOKButton}
                     />
                 )}
             </div>

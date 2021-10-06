@@ -2,9 +2,9 @@ import React, {useContext, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 
 import './style.css';
-import pencil from '../../images/pencil.svg';
 import check from '../../images/check.svg';
 import error from '../../images/error.svg';
+import info from '../../images/info.svg';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
 import useForm from '../../hooks/useForm';
 import {AlertType, ErrorType, RedirectType} from '../../types/ErrorType';
@@ -16,7 +16,6 @@ import {
     validatePassword,
     validateRepeatPassword, validateSurname
 } from '../../helpers/validators';
-import {editUser} from '../../helpers/api/user';
 
 interface SettingOptionProps {
     generateForm: (
@@ -27,9 +26,14 @@ interface SettingOptionProps {
     value: string,
     typeForm: object,
     setAlert: (alert: AlertType) => void,
+    icon: string,
+    sendRequestToAPI: (
+        form: object,
+    ) => Promise<any>,
+    nameOKButton: string,
 }
 
-const SettingOption: React.FC<SettingOptionProps> = ({generateForm, label, value, typeForm, setAlert}) => {
+const SettingOption: React.FC<SettingOptionProps> = ({generateForm, label, value, typeForm, setAlert, icon, sendRequestToAPI, nameOKButton}) => {
     const userContext = useContext(CurrentUserContext);
     const [url, setURL] = useState<RedirectType>();
     const [form, setForm] = useState<boolean>();
@@ -64,8 +68,8 @@ const SettingOption: React.FC<SettingOptionProps> = ({generateForm, label, value
                 return true;
         }
     }
-    const sendRequestToAPI = (form: object, setErrors: (errors: ErrorType) => void): void => {
-        editUser(form).then((r) => {
+    const sendRequest = (form: object, setErrors: (errors: ErrorType) => void): void => {
+        sendRequestToAPI(form).then((r) => {
             let response = (r as Response);
             if (response.status === 200) {
                 response.json().then((u => userContext?.updateUser(u)));
@@ -74,13 +78,24 @@ const SettingOption: React.FC<SettingOptionProps> = ({generateForm, label, value
                     message: `${label} zostało zmienione.`,
                 });
                 closeForm();
-            } else if (response.status === 401 || response.status === 404) {
+            } else if (response.status === 204) {
+                userContext?.logoutUser();
+                setURL({
+                    pathname: '/',
+                    state: {
+                        alertMessage: {
+                            icon: info,
+                            message: 'Zostałeś wylogowany.',
+                        },
+                    },
+                });
+            }else if (response.status === 401 || response.status === 404) {
                 setURL({
                     pathname: '/',
                     state: {
                         alertMessage: {
                             icon: error,
-                            message: 'Nie jesteś zalogowany',
+                            message: 'Nie jesteś zalogowany.',
                         },
                     },
                 });
@@ -107,7 +122,7 @@ const SettingOption: React.FC<SettingOptionProps> = ({generateForm, label, value
     const {updateValue, submitHandler, errors, setErrors} = useForm<typeof typeForm>({
         initialObject: {},
         validateObject: validateObject,
-        sendRequestToAPI: sendRequestToAPI,
+        sendRequestToAPI: sendRequest,
     });
 
     return (
@@ -126,7 +141,7 @@ const SettingOption: React.FC<SettingOptionProps> = ({generateForm, label, value
                                     Object.keys(errors).filter((x) => x !== 'non_field_errors').length > 0
                                 }
                             >
-                                Zapisz
+                                {nameOKButton}
                             </button>
                         </div>
                     </form>
@@ -137,8 +152,8 @@ const SettingOption: React.FC<SettingOptionProps> = ({generateForm, label, value
                     <div className="settings-field">
                         <p>{value}</p>
                         <img
-                            src={pencil}
-                            alt="Edytuj"
+                            src={icon}
+                            alt="Akcja"
                             onClick={openForm}
                         />
                     </div>

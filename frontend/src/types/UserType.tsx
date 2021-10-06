@@ -55,6 +55,10 @@ export interface UserNickForm {
     current_password: string,
 }
 
+export interface UserDeleteForm {
+    current_password: string,
+}
+
 export const Gender: {id: number, value: string}[] = [
     {
         id: 0,

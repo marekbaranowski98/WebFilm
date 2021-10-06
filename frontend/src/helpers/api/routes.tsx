@@ -48,6 +48,14 @@ export const userLoginURL = (login: string): string => {
     return `${userURL()}${login}/`;
 };
 
-export const userClearAvatar = (): string => {
+export const userClearAvatarURL = (): string => {
     return `${loggedUserURL()}delete-avatar/`;
+};
+
+export const editUserURL = (): string => {
+    return `${userURL()}me/`;
+};
+
+export const deleteUserURL = (): string => {
+    return `${userURL()}me/`;
 };

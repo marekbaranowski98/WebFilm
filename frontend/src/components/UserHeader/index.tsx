@@ -9,11 +9,9 @@ import {CurrentUserContext} from '../../context/CurrentUserContext';
 import {UserObject} from '../../types/UserType';
 import ErrorMessage from '../ErrorMessage';
 import {validateFile} from '../../helpers/validators';
-import {editUser} from '../../helpers/api/user';
+import {deleteAvatar, editUser} from '../../helpers/api/user';
 import {ErrorType, RedirectType} from '../../types/ErrorType';
 import {DEFAULT_UUID} from '../../helpers/ConstType';
-import {convertToFormData, delete_api} from '../../helpers/api/api';
-import {userClearAvatar} from '../../helpers/api/routes';
 
 interface UserHeaderProps {
     user?: UserObject | null;
@@ -61,7 +59,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({user, show_edit}) => {
         }
     }
     const removeAvatar = (): void => {
-        delete_api(userClearAvatar(), convertToFormData({}), true).then((r) => {
+        deleteAvatar().then((r) => {
             let response = (r as Response);
             if (response.status === 200) {
                 response.json().then((u => userContext?.updateUser(u)));
