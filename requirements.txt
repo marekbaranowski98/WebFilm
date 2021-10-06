@@ -1,5 +1,12 @@
 asgiref==3.4.1
 Django==3.2.6
+django-cors-headers==3.8.0
 django-environ-2==2.1.0
+djangorestframework==3.12.4
+mysqlclient==2.0.3
 pytz==2021.1
 sqlparse==0.4.1
+google-cloud-storage==1.42.1
+drf-recaptcha==2.0.4
+six==1.16.0
+pillow==8.3.2

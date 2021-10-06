@@ -20,8 +20,12 @@
     "isolatedModules": true,
     "noEmit": false,
     "jsx": "react-jsx",
+    "sourceMap": true,
   },
   "include": [
     "src",
+  ],
+  "exclude": [
+    "node_modules",
   ],
 }

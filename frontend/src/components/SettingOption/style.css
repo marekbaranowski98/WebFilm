@@ -1,0 +1,26 @@
+.settings-label {
+    font-weight: 900;
+    margin-right: 5%;
+}
+
+.settings-field img {
+    margin-left: 1rem;
+    width: 2rem;
+    cursor: pointer;
+}
+
+.grid-form {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    justify-content: inherit;
+}
+
+.grid-form > .container-form {
+    padding: 2rem;
+    margin: 0;
+    width: 100%;
+}
+
+.container-form > .container-login-button {
+    justify-content: center;
+}

@@ -1,0 +1,34 @@
+header.main-header {
+    width: 100%;
+    height: 6rem;
+    background-color: var(--color-background-secondary);
+}
+
+.content-header {
+    width: 80%;
+    height: 100%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-header > * {
+    margin: 0 0.5rem;
+    align-items: center;
+}
+
+.content-header a {
+    display: flex;
+}
+
+.logo {
+    width: 4rem;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.name-page {
+    display: inline-block;
+    font-weight: 900;
+}

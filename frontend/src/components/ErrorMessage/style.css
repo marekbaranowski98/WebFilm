@@ -1,0 +1,10 @@
+.error {
+    color: #FF0000;
+    display: flex;
+    align-items: center;
+    margin-top: 1.5%;
+}
+
+.error img {
+    margin-right: 0.25rem;
+}

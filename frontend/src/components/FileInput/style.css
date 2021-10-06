@@ -1,0 +1,65 @@
+.box-input {
+    background-color: var(--color-background-secondary);
+    height: 13rem;
+    padding: 3%;
+    border-radius: 2rem;
+    -webkit-border-radius: 2rem;
+    -moz-border-radius: 2rem;
+}
+
+.zoom-box {
+    -webkit-transform: scale(0.95);
+    -ms-transform: scale(0.95);
+    transform: scale(0.95);
+}
+
+.box-file {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: var(--color-text) dotted 0.15rem;
+    height: 100%;
+    border-radius: 2rem;
+    -webkit-border-radius: 2rem;
+    -moz-border-radius: 2rem;
+    will-change: transform;
+    transition: transform 0.25s ease-in-out;
+}
+
+.upload-logo {
+    width: 30%;
+    margin-bottom: 3%;
+}
+
+label .button {
+    white-space: normal;
+    text-align: center;
+    margin: 0 5%;
+}
+
+.miniature {
+    position: relative;
+    height: 10rem;
+    max-width: 80%;
+}
+
+.remove-image-button {
+    position: absolute;
+    right: 0.25rem;
+    top: 0.5rem;
+    padding: 0.5rem;
+    width: 2.25rem;
+    text-align: left;
+}
+
+.remove-image-button > .cross {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.min-image {
+    height: 100%;
+    width: 100%;
+}

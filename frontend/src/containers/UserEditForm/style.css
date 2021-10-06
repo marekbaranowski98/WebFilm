@@ -1,0 +1,25 @@
+.edit-form {
+    width: 60%;
+    margin: 0 auto;
+}
+.edit-form > h2 {
+    text-align: inherit;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    margin: 0.5rem 1rem;
+}
+
+.settings-grid > div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 800px){
+    .edit-form {
+        width: 100%;
+    }
+}

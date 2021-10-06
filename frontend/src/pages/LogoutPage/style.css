@@ -1,0 +1,8 @@
+.center-container {
+    width: fit-content;
+    text-align: center;
+}
+
+.center-container > p {
+    margin: 0.5rem;
+}

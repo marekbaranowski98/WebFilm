@@ -1,0 +1,28 @@
+.input-field {
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.input-field div {
+    margin-bottom: 0.5%;
+}
+
+.input-field input {
+    height: 2rem;
+}
+
+.label-info {
+    margin: 0 3%;
+}
+
+.short-button {
+    width: fit-content;
+    margin: 0 auto;
+    padding: 4% 8%;
+}
+
+.link-request-reset-password {
+    width: fit-content;
+    margin: 5% auto 0;
+    display: block;
+}

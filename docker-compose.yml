@@ -16,6 +16,12 @@ services:
         ports:
             - "3306:3306"
         restart: unless-stopped
+        command: [
+                'mysqld',
+                '--character-set-server=utf8mb4',
+                '--collation-server=utf8mb4_unicode_ci',
+                '--default-time-zone=+01:00'
+        ]
     swagger:
         container_name: webfilm_swagger
         image: swaggerapi/swagger-ui:v3.51.2
@@ -25,3 +31,11 @@ services:
             -   ./docs/static:/tmp
         ports:
             -   "8080:8080"
+    gcs:
+        container_name: webfilm_fake_gcs
+        image: fsouza/fake-gcs-server:v1.30.1
+        command: -scheme http
+        volumes:
+            -   ./data/gcs:/data
+        ports:
+            -   "4443:4443"
