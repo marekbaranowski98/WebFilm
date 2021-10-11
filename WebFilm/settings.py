@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'frontend',
     'users',
     'photos',
+    'movies',
 ]
 
 MIDDLEWARE = [
