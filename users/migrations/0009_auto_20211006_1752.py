@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='avatarURL',
-            field=models.CharField(default=users.models.default_avatar, max_length=36, null=True, validators=[django.core.validators.RegexValidator(code='error_avatar', regex='[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}')]),
+            field=models.CharField(default='00000000-0000-0000-0000-000000000000', max_length=36, null=True, validators=[django.core.validators.RegexValidator(code='error_avatar', regex='[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}')]),
         ),
         migrations.AlterField(
             model_name='user',

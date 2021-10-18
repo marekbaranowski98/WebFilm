@@ -14,9 +14,10 @@ from rest_framework.exceptions import ValidationError
 from drf_recaptcha import fields
 
 from WebFilm import settings, helpers
-from .models import User, default_avatar, PasswordReset
+from .models import User, PasswordReset
 from .email import Email
 from photos.Files import FileManager
+from WebFilm.helpers import default_uuid
 
 loggerDebug = logging.getLogger('debug')
 
@@ -61,7 +62,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         :return:
         """
         try:
-            file_url = default_avatar()
+            file_url = default_uuid()
             if validated_data.get('avatar'):
                 file = FileManager()
                 file_url = helpers.generate_uuid()
@@ -350,7 +351,7 @@ class UserEditSerializer(serializers.ModelSerializer):
             instance.email = BaseUserManager.normalize_email(validated_data.get('email'))
         if validated_data.get('avatar'):
             file = FileManager()
-            if instance.avatarURL != default_avatar():
+            if instance.avatarURL != default_uuid():
                 file.delete_file('users', instance.avatarURL)
             url = helpers.generate_uuid()
             file.upload_file('users', validated_data.get('avatar'), url)
@@ -411,7 +412,7 @@ class UserDeleteSerializer(serializers.ModelSerializer):
         instance.active_code = None
         instance.role_id = 1
 
-        if instance.avatarURL != default_avatar():
+        if instance.avatarURL != default_uuid():
             file = FileManager()
             file.delete_file('users', instance.avatarURL)
         instance.avatarURL = None

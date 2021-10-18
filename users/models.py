@@ -4,10 +4,7 @@ from django.db import models
 from django.utils import timezone
 
 from users.managers import UserManager
-
-
-def default_avatar() -> str:
-    return '00000000-0000-0000-0000-000000000000'
+from WebFilm.helpers import default_uuid
 
 
 class RolesUser(models.Model):
@@ -50,7 +47,7 @@ class User(AbstractBaseUser):
     avatarURL = models.CharField(
         max_length=36,
         null=True,
-        default=default_avatar,
+        default=default_uuid(),
         validators=[
             RegexValidator(
                 regex='[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}',

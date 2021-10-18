@@ -9,7 +9,7 @@ services:
             MARIADB_USER: webfilm
             MARIADB_PASSWORD: nhy6&UJM
             MARIADB_CHARACTER_SET: utf8mb4
-            MARIADB_COLLATE: utf8mb4_unicode_ci
+            MARIADB_COLLATE: utf8mb4_bin
             TZ: Europe/Warsaw
         volumes:
             - ./data/db:/var/lib/mysql
@@ -18,9 +18,9 @@ services:
         restart: unless-stopped
         command: [
                 'mysqld',
+                '--default-time-zone=+01:00',
                 '--character-set-server=utf8mb4',
-                '--collation-server=utf8mb4_unicode_ci',
-                '--default-time-zone=+01:00'
+                '--collation-server=utf8mb4_bin',
         ]
     swagger:
         container_name: webfilm_swagger

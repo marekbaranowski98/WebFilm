@@ -11,9 +11,10 @@ from rest_framework.response import Response
 from photos.Files import FileManager
 from .serializers import RegisterSerializer, LoginFormUserSerializer, LoginUserDataSerializer, \
     RequestResetPasswordSerializer, UserSerializer, UserEditSerializer, UserDeleteSerializer
-from .models import User, default_avatar, PasswordReset
+from .models import User, PasswordReset
 from .permissions import LoginUserPermission
 from .mixin import OnlyAnonymousUserMixin
+from WebFilm.helpers import default_uuid
 
 loggerUser = logging.getLogger(__name__)
 loggerDebug = logging.getLogger('debug')
@@ -341,10 +342,10 @@ class DeleteAvatarUserAPI(generics.DestroyAPIView):
         """
         try:
             u = User.objects.get(id=request.user.id)
-            if request.user.avatarURL is not default_avatar():
+            if request.user.avatarURL is not default_uuid():
                 file = FileManager()
                 file.delete_file('users', u.avatarURL)
-                u.avatarURL = default_avatar()
+                u.avatarURL = default_uuid()
                 u.save()
             return Response(LoginUserDataSerializer(u).data, status=200)
         except User.DoesNotExist:
