@@ -7,11 +7,11 @@ import Search from '../../components/Search';
 import {AlertType, ResultType} from '../../types/ErrorType';
 import Alert from '../../components/Alert';
 
-interface MainContentProps {
+interface MainPageProps {
 }
 
-const MainContent: React.FC<MainContentProps> = ({}) => {
-    const {height, width} = useWindowsDimensions();
+const MainPage: React.FC<MainPageProps> = ({}) => {
+    const {heightWindow, widthWindow} = useWindowsDimensions();
     const location = useLocation<ResultType>();
     const history = useHistory();
     const [notification, setNotification] = useState<AlertType>();
@@ -25,7 +25,7 @@ const MainContent: React.FC<MainContentProps> = ({}) => {
 
     return (
         <>
-            {width < 600 && <Search/>}
+            {widthWindow < 600 && <Search/>}
             {notification && <Alert
                 icon={notification.icon}
                 message={notification.message}
@@ -34,4 +34,4 @@ const MainContent: React.FC<MainContentProps> = ({}) => {
     );
 };
 
-export default MainContent;
+export default MainPage;

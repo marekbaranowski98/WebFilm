@@ -9,7 +9,7 @@ import '../style/form.css';
 import {CurrentUserProvider} from '../context/CurrentUserContext';
 import SEO from '../components/SEO';
 import Header from '../containers/Header';
-import MainContent from '../containers/MainContent';
+import MainPage from './MainPage';
 import LoginPage from './LoginPage';
 import LogoutPage from './LogoutPage';
 import RegisterPage from './RegisterPage';
@@ -36,7 +36,7 @@ const App: React.FC<App> = ({}) => {
                     <Header/>
                     <div className="main-container">
                         <Switch>
-                            <Route exact path="/" component={MainContent}/>
+                            <Route exact path="/" component={MainPage}/>
                             <AnonymousUserRoute exact={true} path={'/login/'} component={LoginPage}/>
                             <LoggedUserRoute exact={true} path={'/logout/'} component={LogoutPage}
                                              min_user_role={UserRole.User}/>
