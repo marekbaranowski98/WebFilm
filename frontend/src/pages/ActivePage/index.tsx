@@ -5,7 +5,7 @@ import {Helmet} from 'react-helmet-async';
 import check from '../../images/check.svg';
 import error from '../../images/error.svg';
 import {validateUUID} from '../../helpers/validators';
-import {activeUser} from '../../helpers/api/user';
+import {activeUser} from '../../helpers/api/user/userCall';
 import {RedirectType} from '../../types/ErrorType';
 
 interface ActivePageProps {

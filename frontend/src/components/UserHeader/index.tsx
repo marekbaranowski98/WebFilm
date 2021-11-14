@@ -9,7 +9,7 @@ import {CurrentUserContext} from '../../context/CurrentUserContext';
 import {UserObject} from '../../types/UserType';
 import ErrorMessage from '../ErrorMessage';
 import {validateFile} from '../../helpers/validators';
-import {deleteAvatar, editUser} from '../../helpers/api/user';
+import {deleteAvatar, editUser} from '../../helpers/api/user/userCall';
 import {ErrorType, RedirectType} from '../../types/ErrorType';
 import {DEFAULT_UUID} from '../../helpers/ConstType';
 

@@ -5,7 +5,7 @@ import './style.css';
 import {UserLoginForm} from '../../types/UserType';
 import {ErrorType} from '../../types/ErrorType';
 import {validateEmail} from '../../helpers/validators';
-import {loginUser} from '../../helpers/api/user';
+import {loginUser} from '../../helpers/api/user/userCall';
 import ErrorMessage from '../../components/ErrorMessage';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
 import useForm from '../../hooks/useForm';

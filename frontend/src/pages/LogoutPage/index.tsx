@@ -4,7 +4,7 @@ import {Helmet} from 'react-helmet-async';
 
 import './style.css';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
-import {getLogoutUser} from '../../helpers/api/user';
+import {getLogoutUser} from '../../helpers/api/user/userCall';
 
 interface LogoutPageProps {
 }

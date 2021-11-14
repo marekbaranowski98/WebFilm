@@ -6,7 +6,7 @@ import useForm from '../../hooks/useForm';
 import {SendEmailResetPasswordEmail} from '../../types/UserType';
 import {validateEmail} from '../../helpers/validators';
 import {ErrorType, RedirectType} from '../../types/ErrorType';
-import {requestResetPassword} from '../../helpers/api/user';
+import {requestResetPassword} from '../../helpers/api/user/userCall';
 import ReCaptcha from '../../components/ReCaptcha';
 
 interface RequestResetPasswordFormProps {

@@ -8,7 +8,7 @@ import {ResetPasswordObject} from '../../types/UserType';
 import {validatePassword, validateRepeatPassword} from '../../helpers/validators';
 import {ErrorType, RedirectType} from '../../types/ErrorType';
 import useForm from '../../hooks/useForm';
-import {resetPassword} from '../../helpers/api/user';
+import {resetPassword} from '../../helpers/api/user/userCall';
 import ReCaptcha from '../../components/ReCaptcha';
 
 interface ResetPasswordFormProps {

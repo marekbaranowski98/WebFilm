@@ -16,7 +16,7 @@ import {FileUploadType} from '../../types/FileType';
 import {AlertType, ErrorType} from '../../types/ErrorType';
 import ErrorMessage from '../../components/ErrorMessage';
 import Alert from '../../components/Alert';
-import {deleteUser, editUser} from '../../helpers/api/user';
+import {deleteUser, editUser} from '../../helpers/api/user/userCall';
 
 interface UserEditFormProps {
     user?: UserObject | null,

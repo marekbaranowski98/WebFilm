@@ -7,7 +7,7 @@ import {
     REGEX_PASSWORD
 } from './ConstType';
 import {Gender} from '../types/UserType';
-import {checkDataUser} from './api/user';
+import {checkDataUser} from './api/user/userCall';
 import {convertToFormData} from './api/api';
 
 export const validateLogin = (login: string): boolean => {

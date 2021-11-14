@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import {UserObject, UserRole} from '../types/UserType';
-import {getLoggedUser} from '../helpers/api/user';
+import {getLoggedUser} from '../helpers/api/user/userCall';
 import {checkExistCookie} from '../helpers/api/api';
 import {getImage} from '../helpers/api/photo';
 

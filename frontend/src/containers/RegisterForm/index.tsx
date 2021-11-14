@@ -11,7 +11,7 @@ import {
     validateLogin, validateEmail, validatePassword, validateRepeatPassword,
     validateName, validateSurname, validateGender, validateBirthDate, validateStatute, checkDataIsAvailable
 } from '../../helpers/validators';
-import {registerUser} from '../../helpers/api/user';
+import {registerUser} from '../../helpers/api/user/userCall';
 import FileInput from '../../components/FileInput';
 import ReCaptcha from '../../components/ReCaptcha';
 

@@ -1,4 +1,4 @@
-const SERVER_URL = 'http://127.0.0.1:8000/api/';
+import {SERVER_URL} from '../routes';
 
 const userURL = (): string => {
     return `${SERVER_URL}users/`;
@@ -22,14 +22,6 @@ export const validateDataUserURL = (): string => {
 
 export const registerUserURL = (): string => {
     return `${userURL()}`;
-};
-
-const photosURL = (): string => {
-    return `${SERVER_URL}photos/`;
-};
-
-export const getBlobFromBucketURL = (bucket: string, blob: string): string => {
-    return `${photosURL()}${bucket}/${blob}/`;
 };
 
 export const activeUserURL = (uuid: string): string => {

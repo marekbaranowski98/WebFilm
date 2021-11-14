@@ -5,7 +5,7 @@ import {Helmet} from 'react-helmet-async';
 import error from '../../images/error.svg';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
 import UserHeader from '../../components/UserHeader';
-import {getUser} from '../../helpers/api/user';
+import {getUser} from '../../helpers/api/user/userCall';
 import {RedirectType} from '../../types/ErrorType';
 import {getImage} from '../../helpers/api/photo';
 import {UserObject} from '../../types/UserType';
