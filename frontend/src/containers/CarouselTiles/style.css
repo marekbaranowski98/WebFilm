@@ -1,0 +1,49 @@
+.carousel-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.carousel-container > h2 {
+    margin: 0 1.5rem 1rem;
+}
+
+.carousel-container > h3 {
+    text-align: center;
+}
+
+.arrow-carousel {
+    width: 2rem;
+    height: 2rem;
+}
+
+.carousel-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.carousel-content-wrapper {
+    overflow: hidden;
+    width: 100%;
+}
+
+.carousel-content {
+    height: 17rem;
+    display: flex;
+    grid-gap: 1rem;
+    transition: all 250ms linear;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.carousel-content::-webkit-scrollbar, .carousel-content::-webkit-scrollbar {
+    display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .left-arrow, .right-arrow {
+        display: none;
+    }
+}
