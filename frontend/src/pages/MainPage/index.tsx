@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
+import {Helmet} from 'react-helmet-async';
 
 import './style.css';
 import {AlertType, ResultType} from '../../types/ErrorType';
@@ -27,6 +28,9 @@ const MainPage: React.FC<MainPageProps> = ({}) => {
 
     return (
         <div className="main-content">
+            <Helmet>
+                <title>WebFilm</title>
+            </Helmet>
             {notification && <Alert
                 icon={notification.icon}
                 message={notification.message}
