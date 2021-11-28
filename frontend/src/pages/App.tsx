@@ -23,11 +23,16 @@ import LoggedUserRoute from '../components/LoggedUserRoute';
 import UserPage from './UserPage/';
 import {UserRole} from '../types/UserType';
 import SettingsPage from './SettingsPage';
+import MoviePage from './MoviePage';
+import Search from '../components/Search';
+import useWindowsDimensions from '../hooks/useWindowsDimensions';
 
 interface App {
 }
 
 const App: React.FC<App> = ({}) => {
+    const {heightWindow, widthWindow} = useWindowsDimensions();
+
     return (
         <CurrentUserProvider>
             <HelmetProvider>
@@ -35,6 +40,7 @@ const App: React.FC<App> = ({}) => {
                 <BrowserRouter>
                     <Header/>
                     <div className="main-container">
+                        {widthWindow < 600 && <Search/>}
                         <Switch>
                             <Route exact path="/" component={MainPage}/>
                             <AnonymousUserRoute exact={true} path={'/login/'} component={LoginPage}/>

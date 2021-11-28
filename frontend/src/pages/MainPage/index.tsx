@@ -2,8 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 
 import './style.css';
-import useWindowsDimensions from '../../hooks/useWindowsDimensions';
-import Search from '../../components/Search';
 import {AlertType, ResultType} from '../../types/ErrorType';
 import Alert from '../../components/Alert';
 import {getListLatestMovies} from '../../helpers/api/movie/movieCall';
@@ -15,7 +13,6 @@ interface MainPageProps {
 }
 
 const MainPage: React.FC<MainPageProps> = ({}) => {
-    const {heightWindow, widthWindow} = useWindowsDimensions();
     const location = useLocation<ResultType>();
     const history = useHistory();
     const [notification, setNotification] = useState<AlertType>();
@@ -29,8 +26,7 @@ const MainPage: React.FC<MainPageProps> = ({}) => {
     }, []);
 
     return (
-        <>
-            {widthWindow < 600 && <Search/>}
+        <div className="main-content">
             {notification && <Alert
                 icon={notification.icon}
                 message={notification.message}
@@ -41,7 +37,7 @@ const MainPage: React.FC<MainPageProps> = ({}) => {
                     <MovieTile movie={x} key={x.id}/>
                 )}
             </CarouselTiles>
-        </>
+        </div>
     );
 };
 
