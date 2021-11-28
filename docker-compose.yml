@@ -3,6 +3,7 @@ services:
     db:
         container_name: webfilm_db
         image: mariadb:10.6.3-focal
+        stop_grace_period: 2m
         environment:
             MARIADB_ROOT_PASSWORD: NHY^7ujm
             MARIADB_DATABASE: webfilm
@@ -25,6 +26,7 @@ services:
     swagger:
         container_name: webfilm_swagger
         image: swaggerapi/swagger-ui:v3.51.2
+        stop_grace_period: 2m
         environment:
             SWAGGER_JSON: /tmp/v1.0.0.yaml
         volumes:
@@ -33,6 +35,7 @@ services:
             -   "8080:8080"
     gcs:
         container_name: webfilm_fake_gcs
+        stop_grace_period: 2m
         image: fsouza/fake-gcs-server:v1.30.1
         command: -scheme http
         volumes:
