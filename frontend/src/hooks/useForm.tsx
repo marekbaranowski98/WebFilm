@@ -34,7 +34,6 @@ const useForm = <T extends {}>({initialObject, validateObject, sendRequestToAPI,
 
     const updateValue = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | FileUploadType): void => {
         if ('file_list' in e) {
-            console.log(e.file_list);
             dispatch({
                 field: e.name,
                 value: e.file_list,

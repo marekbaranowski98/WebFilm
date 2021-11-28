@@ -165,11 +165,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
                 <label className="label-checkbox">
                     <input type="checkbox" name="accept_statute" onChange={updateValue} required/>
                     <div className="required-field label-info">
-                        Przeczytałem i akceptuje <Link
-                        className="link"
-                        to={'/statute/'}
-                        target="_blank">regulamin
-                    </Link>
+                        Przeczytałem i akceptuje
+                        <Link
+                            className="link"
+                            to={'/statute/'}
+                            target="_blank"
+                        >
+                            regulamin
+                        </Link>
                     </div>
                 </label>
                 {errors.accept_statute && <ErrorMessage message={errors.accept_statute}/>}

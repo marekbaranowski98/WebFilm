@@ -5,5 +5,5 @@ const movieURL = (): string => {
 };
 
 export const listLatestMovieURL = (): string => {
-    return `${movieURL()}latest/`
+    return `${movieURL()}latest/`;
 };

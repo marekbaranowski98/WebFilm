@@ -36,7 +36,7 @@ const MainPage: React.FC<MainPageProps> = ({}) => {
                 message={notification.message}
             />}
             <CarouselTiles sizeTileInRem={10} infiniteLoop={true}
-                           header={'Najnowsze filmy'} isError={latestMovies.isError}>
+                           header="Najnowsze filmy" isError={latestMovies.isError}>
                 {latestMovies.listMovies.map((x) =>
                     <MovieTile movie={x} key={x.id}/>
                 )}
