@@ -34,7 +34,7 @@ const LogoutPage: React.FC<LogoutPageProps> = ({}) => {
     }, [counter]);
 
     return (
-        <div className="content-container center-container">
+        <div className="main-container content-container center-container">
             {redirect && <Redirect to={{
                 pathname: '/',
             }}/>}

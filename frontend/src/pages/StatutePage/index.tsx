@@ -7,7 +7,7 @@ interface StatutePageProps {
 
 const StatutePage: React.FC<StatutePageProps> = ({}) => {
     return (
-        <main>
+        <main className="main-content">
             <Helmet>
                 <title>Regulamin - WebFilm</title>
             </Helmet>

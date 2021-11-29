@@ -56,7 +56,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     }, [login, userContext?.user]);
 
     return (
-        <article className="content-container">
+        <article className="main-content content-container">
             {url && <Redirect to={url}/>}
             <Helmet>
                 <title>{login} - profil - WebFilm</title>

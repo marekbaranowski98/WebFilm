@@ -26,7 +26,7 @@ const RequestResetPasswordPage: React.FC<RequestResetPasswordPageProps> = ({}) =
     }, []);
 
     return (
-        <div className="wrapper-form">
+        <div className="main-content wrapper-form">
             {url && <Redirect to={url}/>}
             <Helmet>
                 <title>Zapomniałem hasło - WebFilm</title>

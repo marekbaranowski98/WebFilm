@@ -26,7 +26,7 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
     }, []);
 
     return (
-        <div className="wrapper-form">
+        <div className="main-content wrapper-form">
             <Helmet>
                 <title>Zaloguj się - WebFilm</title>
             </Helmet>

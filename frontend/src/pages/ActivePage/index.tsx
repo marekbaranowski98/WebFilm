@@ -82,7 +82,7 @@ const ActivePage: React.FC<ActivePageProps> = ({}) => {
     }, [counter]);
 
     return (
-        <article className="content-container center-container">
+        <article className="main-content content-container center-container">
             {url && <Redirect to={url}/>}
             <Helmet>
                 <title>Aktywacja konta - WebFilm</title>

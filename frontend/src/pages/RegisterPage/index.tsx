@@ -9,7 +9,7 @@ interface RegisterPageProps {
 
 const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
     return (
-        <div className="wrapper-form">
+        <div className="main-content wrapper-form">
             <Helmet>
                 <title>Rejestracja - WebFilm</title>
             </Helmet>

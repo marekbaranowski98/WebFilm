@@ -63,6 +63,9 @@ a.link:hover {
 
 .main-container {
     min-height: calc(100vh - 6rem - 3rem);
+}
+
+.main-content {
     padding: 1rem;
 }
 
