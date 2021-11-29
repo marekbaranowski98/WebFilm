@@ -1,0 +1,38 @@
+.movie-panel-rating {
+    margin: 0.5rem 1rem;
+}
+
+.subpanel > h3 {
+    margin: 0.5rem 0;
+}
+
+.subpanel > div {
+    margin: 0 0.5rem;
+}
+
+.small-cross {
+    width: 1.5rem;
+    padding: 0.25rem;
+}
+
+.small-cross > .cross {
+    width: 1rem;
+    height: 1rem;
+}
+
+.movie-to-watch {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: 3rem;
+    height: 3rem;
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
+}
+
+.movie-to-watch:hover {
+    filter: invert(63%) sepia(23%) saturate(6258%) hue-rotate(190deg) brightness(104%) contrast(96%);
+    cursor: pointer;
+}
+
+.clicked-movie-to-watch {
+    filter: invert(21%) sepia(87%) saturate(1396%) hue-rotate(199deg) brightness(106%) contrast(99%);
+}

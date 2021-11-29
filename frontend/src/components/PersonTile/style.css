@@ -1,0 +1,41 @@
+.person-tile {
+    width: 8rem;
+    height: 15rem;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-background-secondary);
+    border-radius: 1rem;
+    -webkit-border-radius: 1rem;
+    -moz-border-radius: 1rem;
+    box-shadow: 0 0 0.5rem 2px #111111;
+}
+
+.person-avatar {
+    height: 10rem;
+    line-height: 10;
+}
+
+.person-avatar > img {
+    border-radius: 1rem 1rem 0 0;
+    -webkit-border-radius: 1rem 1rem 0 0;
+    -moz-border-radius: 1rem 1rem 0 0;
+    max-height: 100%;
+    width: 8rem;
+}
+
+.person-identity-tile {
+    margin: 0.5rem;
+}
+
+.person-identity-tile > p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.person-describe {
+    margin-top: 0.2rem;
+    font-size: 0.8rem;
+}
