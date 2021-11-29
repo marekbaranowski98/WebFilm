@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 import './style.css';
 import {MovieTileType} from '../../types/MovieType';
@@ -10,12 +11,12 @@ interface MovieTileProps {
 
 const MovieTile: React.FC<MovieTileProps> = ({movie}) => {
     return (
-        <div className="movie-tile">
+        <Link className="movie-tile" to={`/movie/${movie.id}`}>
             <div className="poster-movie-tile">
                 <img src={movie.posterURL.poster} alt="Plakat filmowy"/>
             </div>
             <div className="title-movie-tile">{movie.title}</div>
-        </div>
+        </Link>
     );
 };
 

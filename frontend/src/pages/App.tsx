@@ -56,6 +56,7 @@ const App: React.FC<App> = ({}) => {
                             <Route exact={true} path={'/user/:login/'} component={UserPage}/>
                             <LoggedUserRoute exact={true} path={'/settings/'} component={SettingsPage}
                                              min_user_role={UserRole.User}/>
+                            <Route exact={true} path={'/movie/:movie_id/'} component={MoviePage}/>
                         </Switch>
                     </div>
                 </BrowserRouter>
