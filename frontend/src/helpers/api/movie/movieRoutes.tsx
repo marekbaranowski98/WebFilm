@@ -7,3 +7,7 @@ const movieURL = (): string => {
 export const listLatestMovieURL = (): string => {
     return `${movieURL()}latest/`;
 };
+
+export const movieDescribeURL = (movie_id: string): string => {
+    return `${movieURL()}${movie_id}/`;
+};
