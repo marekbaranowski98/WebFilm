@@ -39,6 +39,18 @@ class Genre(models.Model):
     name = models.CharField(max_length=30, blank=False, unique=True, )
 
 
+class Person(models.Model):
+    name = models.CharField(max_length=150, blank=True, default='',)
+    surname = models.CharField(max_length=150, blank=True, default='',)
+    GENDER_CHOICES = (
+        (0, 'Nieokreślona'),
+        (1, 'Kobieta'),
+        (2, 'Mężczyzna'),
+    )
+    gender = models.IntegerField(choices=GENDER_CHOICES, default=0,)
+    gallery = models.OneToOneField(to=Gallery, on_delete=models.CASCADE)
+
+
 class Movie(models.Model):
     title = models.CharField(max_length=130, )
     original_title = models.CharField(max_length=130, default='', )
@@ -49,6 +61,8 @@ class Movie(models.Model):
         MinValueValidator(1, message='Film musi trwać min 1 min.'),
     ], )
     keywords = models.ManyToManyField(to=Keyword, )
+    cast = models.ManyToManyField(to=Person, through='Cast', related_name='FK_cast_movie', )
+    crew = models.ManyToManyField(to=Person, through='Crew', related_name='FK_crew', )
     original_language = models.ForeignKey(
         to=Language,
         null=True,
@@ -79,37 +93,25 @@ class Movie(models.Model):
         ]
 
 
-class Person(models.Model):
-    name = models.CharField(max_length=150, blank=True, default='',)
-    surname = models.CharField(max_length=150, blank=True, default='',)
-    GENDER_CHOICES = (
-        (0, 'Nieokreślona'),
-        (1, 'Kobieta'),
-        (2, 'Mężczyzna'),
-    )
-    gender = models.IntegerField(choices=GENDER_CHOICES, default=0,)
-    gallery = models.OneToOneField(to=Gallery, on_delete=models.CASCADE)
-
-
-class Crew(models.Model):
-    movie = models.ForeignKey(to=Movie, on_delete=models.CASCADE, )
-    department = models.CharField(max_length=30, )
-    job = models.CharField(max_length=80, )
-    person = models.ForeignKey(to=Person, on_delete=models.RESTRICT, )
-
-    class Meta:
-        unique_together = [
-            ['movie_id', 'department', 'job', 'person', ],
-        ]
-
-
 class Cast(models.Model):
-    movie = models.ForeignKey(to=Movie, on_delete=models.CASCADE, )
-    character = models.CharField(max_length=500, )
+    movie = models.ForeignKey(to=Movie, on_delete=models.CASCADE, related_name='FK_cast_movie', )
     person = models.ForeignKey(to=Person, on_delete=models.RESTRICT, )
+    character = models.CharField(max_length=500, )
     order = models.IntegerField(null=False, default=0, )
 
     class Meta:
         unique_together = [
             ['movie', 'character', 'person', ],
+        ]
+
+
+class Crew(models.Model):
+    movie = models.ForeignKey(to=Movie, on_delete=models.CASCADE, related_name='FK_movie', )
+    person = models.ForeignKey(to=Person, on_delete=models.RESTRICT, )
+    department = models.CharField(max_length=30, )
+    job = models.CharField(max_length=80, )
+
+    class Meta:
+        unique_together = [
+            ['movie_id', 'department', 'job', 'person', ],
         ]
