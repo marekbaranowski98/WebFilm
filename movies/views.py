@@ -63,13 +63,13 @@ class MovieAPI(generics.RetrieveAPIView):
             ).data
             for c in movie['cast']:
                 c['person']['posterURL'] = PhotoSerializer(
-                    Photo.objects.filter(gallery=c.get('person').get('gallery')), many=True,
+                    Photo.objects.filter(gallery=c.get('person').get('gallery'))[0:1], many=True,
                 ).data
 
             movie['crew'] = CrewSerializer(Crew.objects.filter(movie_id=movie.get('id'))[:20], many=True).data
             for c in movie['crew']:
                 c['person']['posterURL'] = PhotoSerializer(
-                    Photo.objects.filter(gallery=c.get('person').get('gallery')), many=True,
+                    Photo.objects.filter(gallery=c.get('person').get('gallery'))[0:1], many=True,
                 ).data
 
             return Response(data=movie, status=200)
