@@ -113,5 +113,5 @@ class Crew(models.Model):
 
     class Meta:
         unique_together = [
-            ['movie_id', 'department', 'job', 'person', ],
+            ['movie', 'department', 'job', 'person', ],
         ]
