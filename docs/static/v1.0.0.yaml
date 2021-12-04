@@ -63,6 +63,9 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error
+          content: {}
   /users/me/validator-unique/:
     post:
       tags:
@@ -208,7 +211,10 @@ paths:
                 properties:
                   info:
                     type: string
-                    example: Coś poszło nie tak.
+                    example: Coś poszło nie tak
+        500:
+          description: Internal Server Error
+          content: {}
     delete:
       tags:
         - user
@@ -259,6 +265,9 @@ paths:
                   info:
                     type: string
                     example: Coś poszło nie tak.
+        500:
+          description: Internal Server Error
+          content: {}
   /users/me/logout/:
     get:
       tags:
@@ -307,6 +316,9 @@ paths:
                     example: Użytkownik jest zalogowany.
         404:
           description: Not Found
+          content: {}
+        500:
+          description: Internal Server Error
           content: {}
   /users/me/reset-password/:
     post:
@@ -447,6 +459,9 @@ paths:
                   non_field_errors:
                     type: string
                     example: Link wygasł.
+        500:
+          description: Internal Server Error
+          content: {}
   /users/{login}/:
     get:
       tags:
@@ -472,6 +487,9 @@ paths:
           content: {}
         410:
           description: Gone
+          content: {}
+        500:
+          description: Internal Server Error
           content: {}
   /users/me/delete-avatar/:
     delete:
@@ -500,6 +518,9 @@ paths:
             application/json:
               schema:
                   $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error
+          content: {}
   /photos/{bucket}/{blob}/:
     get:
       tags:
@@ -533,7 +554,17 @@ paths:
                     type: string
                     format: byte
         404:
-          description: Not Found
+          description: Not Found - Return default image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  image:
+                    type: string
+                    format: byte
+        500:
+          description: Internal Server Error
           content: {}
 components:
   schemas:

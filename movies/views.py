@@ -36,7 +36,7 @@ class MovieLatestAPI(generics.ListAPIView):
             return Response(data=list_movies, status=200)
         except Exception as e:
             loggerDebug.debug(e)
-            return Response(status=400)
+            return Response(status=500)
 
 
 class MovieAPI(generics.RetrieveAPIView):
@@ -79,4 +79,4 @@ class MovieAPI(generics.RetrieveAPIView):
             return Response(status=410)
         except Exception as e:
             loggerDebug.debug(e)
-            return Response(400)
+            return Response(status=500)

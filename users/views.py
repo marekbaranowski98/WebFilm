@@ -53,7 +53,7 @@ class RegisterAPI(OnlyAnonymousUserMixin, generics.GenericAPIView):
             loggerDebug.debug(e)
             return Response({
                 'non_field_errors': 'Coś poszło nie tak',
-            }, status=400)
+            }, status=500)
 
 
 class LoginAPI(ObtainAuthToken, viewsets.ViewSet):
@@ -136,8 +136,11 @@ class UserDataAPI(generics.RetrieveAPIView, generics.UpdateAPIView, generics.Des
             loggerUser.info(f"User {r'{'}'id': '{self.request.user.id}', "
                             f"'email': '{self.request.user.email}'{r'}'} connect")
             return Response(self.get_serializer(u).data, status=200)
-        except:
+        except User.DoesNotExist:
             return Response(status=404)
+        except Exception as e:
+            loggerDebug.debug(e)
+            return Response(status=500)
 
     def patch(self, request: Request, *args, **kwargs) -> Response:
         """
@@ -168,6 +171,9 @@ class UserDataAPI(generics.RetrieveAPIView, generics.UpdateAPIView, generics.Des
             return Response({
                 'non_field_errors': 'Coś poszło nie tak.'
             }, status=404)
+        except Exception as e:
+            loggerDebug.debug(e)
+            return Response(status=500)
 
     def delete(self, request: Request, *args, **kwargs) -> Response:
         """
@@ -201,6 +207,9 @@ class UserDataAPI(generics.RetrieveAPIView, generics.UpdateAPIView, generics.Des
             return Response({
                 'non_field_errors': 'Coś poszło nie tak.'
             }, status=404)
+        except Exception as e:
+            loggerDebug.debug(e)
+            return Response(status=500)
 
 
 class ValidationUserDataAPI(generics.CreateAPIView):
@@ -236,14 +245,17 @@ class ActiveUserAPI(OnlyAnonymousUserMixin, generics.RetrieveUpdateAPIView):
         """
         key = str(kwargs['key'])
         try:
-            u = generics.get_object_or_404(User, active_code=key)
+            u = User.objects.get(active_code=key)
             u.active_status = 1
             u.active_code = None
             u.save()
             loggerUser.info(f'User {u.id} activate account.')
             return Response(status=204)
-        except:
+        except User.DoesNotExist:
             return Response(status=404)
+        except Exception as e:
+            loggerDebug.debug(e)
+            return Response(status=500)
 
 
 class ResetPasswordAPI(OnlyAnonymousUserMixin, generics.CreateAPIView, generics.UpdateAPIView, viewsets.ViewSet):
@@ -305,6 +317,9 @@ class ResetPasswordAPI(OnlyAnonymousUserMixin, generics.CreateAPIView, generics.
             return Response({
                 'non_field_errors': 'Podano błędny link.'
             }, status=404)
+        except Exception as e:
+            loggerDebug.debug(e)
+            return Response(status=500)
 
 
 class GetUserAPI(generics.RetrieveAPIView):
@@ -324,8 +339,11 @@ class GetUserAPI(generics.RetrieveAPIView):
             if u.active_status == 1:
                 return Response(self.get_serializer(u).data, status=200)
             return Response(status=410)
-        except:
+        except User.DoesNotExist:
             return Response(status=404)
+        except Exception as e:
+            loggerDebug.debug(e)
+            return Response(status=500)
 
 
 class DeleteAvatarUserAPI(generics.DestroyAPIView):
@@ -350,3 +368,6 @@ class DeleteAvatarUserAPI(generics.DestroyAPIView):
             return Response(LoginUserDataSerializer(u).data, status=200)
         except User.DoesNotExist:
             return Response(status=404)
+        except Exception as e:
+            loggerDebug.debug(e)
+            return Response(status=500)

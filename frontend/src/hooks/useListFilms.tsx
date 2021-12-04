@@ -19,9 +19,9 @@ const useListFilms = ({getMovieList}: useListFilmsProps) => {
                     await downloadImagesMovies(movies);
                 });
             } else {
-                throw new Error;
+                throw new Error();
             }
-        }, () => { throw new Error; }).catch(() => {
+        }, () => { throw new Error(); }).catch(() => {
             setIsError(true)
         });
     }, []);

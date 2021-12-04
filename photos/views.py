@@ -30,4 +30,4 @@ class PhotosAPI(generics.RetrieveAPIView):
             return Response({'image': image}, status=404)
         except Exception as e:
             loggerDebug.debug(e)
-            return Response(status=400)
+            return Response(status=500)

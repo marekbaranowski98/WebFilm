@@ -36,6 +36,8 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
                         tmpUser.avatar = await getImage('users', json['avatarURL']);
                         setUser(<UserHeader user={tmpUser} show_edit={true}/>);
                     });
+                } else if (response.status === 500) {
+                    throw new Error();
                 } else {
                     setUser(<UserHeader/>);
                 }
