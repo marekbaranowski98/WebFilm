@@ -1,6 +1,5 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.utils import timezone
 
 from movies.models import Movie
 from users.models import User
@@ -13,9 +12,4 @@ class Rating(models.Model):
         MinValueValidator(1, message='Najniższa dostępna ocena to 1.'),
         MaxValueValidator(10, message='Najwyższa dostępna ocena to 10.'),
     ], )
-    date = models.DateTimeField(default=timezone.now, )
-
-    class Meta:
-        unique_together = [
-            ['movie', 'user', ],
-        ]
+    date = models.DateTimeField(auto_now=True, )
