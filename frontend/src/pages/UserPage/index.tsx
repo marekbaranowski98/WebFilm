@@ -30,7 +30,7 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
             getUser(login).then((res) => {
                 let response = res as Response;
                 if (response.status === 200) {
-                    response.json().then(async  (json) => {
+                    response.json().then(async (json) => {
                         let tmpUser: UserObject = json;
 
                         tmpUser.avatar = await getImage('users', json['avatarURL']);
