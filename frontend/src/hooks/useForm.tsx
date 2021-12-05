@@ -23,6 +23,7 @@ const useForm = <T extends {}>({initialObject, validateObject, sendRequestToAPI,
         validateObject(tmpState, action.field).catch((e) => {
             errorsTMP = {
                 ...errorsTMP,
+                non_field_errors: '',
                 [(e as Error).name]: (e as Error).message
             };
             setErrors(errorsTMP);
