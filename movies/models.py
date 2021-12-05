@@ -73,7 +73,7 @@ class Movie(models.Model):
     production_companies = models.ManyToManyField(to=Company, )
     production_countries = models.ManyToManyField(to=Country, )
     budget = models.DecimalField(null=True, default=None, max_digits=14, decimal_places=2, )
-    homepage = models.URLField(max_length=500, null=True, default=True, )
+    homepage = models.URLField(max_length=500, null=True, default=None, )
     adult = models.BooleanField(default=False, )
     video = models.BooleanField(default=False, )
     overview = models.TextField(max_length=1500, default='', )

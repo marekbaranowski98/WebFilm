@@ -566,6 +566,51 @@ paths:
         500:
           description: Internal Server Error
           content: {}
+  /movies/latest/:
+    get:
+      tags:
+        - movie
+      summary: Get list max 20 latest movies 
+      operationId: latestMovies
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        500:
+          description: Internal Server Error
+          content: {}
+  /movies/{movie_id}/:
+    get:
+      tags:
+        - movie
+      summary: Get movie by id
+      operationId: getMovie
+      parameters:
+      - name: movie_id
+        in: path
+        description: Id movie
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieTile'
+        404:
+          description: Not Found
+          content: {}
+        410:
+          description: Gone
+          content: {}
+        500:
+          description: Internal Server Error
+          content: {}
 components:
   schemas:
     UserRegister:
@@ -791,6 +836,284 @@ components:
           type: string
           example: 00000000-0000-0000-0000-000000000000
           pattern: '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
+    Genre:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          minLength: 1
+          maxLength: 30
+      required:
+        - id
+        - name
+    Collection:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          minLength: 1
+          maxLength: 130
+      required:
+        - id
+        - name
+    Poster:
+      type: object
+      properties:
+        url:
+          type: string
+          example: 00000000-0000-0000-0000-000000000000
+          pattern: '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
+        order:
+          description: Kolejność zdjęc w galeri. 1 - oznacza główne zdjęcie pod profil/plakat
+          type: integer
+          format: int32
+      required:
+        - url
+        - order
+    Person:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          minLength: 1
+          maxLength: 130
+        surname:
+          type: string
+          minLength: 1
+          maxLength: 130
+        gallery:
+          type: integer
+          format: int32
+        poster_url:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Poster'
+      required:
+        - id
+        - name
+        - surname
+        - gallery
+        - poster_url
+    Cast:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        character:
+          type: string
+          minLength: 1
+          maxLength: 500
+        person:
+          type: object
+          properties:
+            schema:
+              $ref: '#/components/schemas/Person'
+      required:
+        - id
+        - character
+        - person
+    Crew:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        job:
+          type: string
+          minLength: 1
+          maxLength: 80
+        person:
+          type: object
+          properties:
+            schema:
+              $ref: '#/components/schemas/Person'
+      required:
+        - id
+        - job
+        - person
+    Keyword:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+      required:
+        - id
+        - name
+    Company:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+      required:
+        - id
+        - name
+    Country:
+      type: object
+      properties:
+        iso_3166_1:
+          type: string
+          pattern: '[A-Za-z]{2}'
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+      required:
+        - iso_3166_1
+        - name
+    Language:
+      type: object
+      properties:
+        iso_639_1:
+          type: string
+          pattern: '[A-Za-z]{2}'
+        name:
+          type: string
+          minLength: 1
+          maxLength: 30
+      required:
+        - iso_639_1
+        - name
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+          example: Example movie
+          minLength: 1
+          maxLength: 130
+        original_title:
+          type: string
+          minLength: 1
+          maxLength: 130
+        release_date: 
+          type: string
+          format: date
+          example: '2000-01-01'
+        runtime:
+          type: integer
+          format: int32
+          example: 120
+        genres: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Genre'
+        collection:
+          type: object
+          properties:
+            schema:
+              $ref: '#/components/schemas/Collection'
+        homepage:
+          type: string
+          format: uri
+          minLength: 1
+          maxLength: 500
+        overview:
+          type: string
+          minLength: 0
+          maxLength: 1500
+        tagline:
+          type: string
+          minLength: 0
+          maxLength: 500
+        cast: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Cast'
+        crew: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Crew'
+        keywords:
+          type: array
+          items:
+            $ref: '#/components/schemas/Keyword'
+        production_companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Company'
+        production_countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+        original_language:
+          type: object
+          properties:
+            schema:
+              $ref: '#/components/schemas/Language'
+        spoken_languages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Language'
+        budget:
+          type: number
+          format: double
+        revenue:
+          type: number
+          format: double
+        average_vote:
+          type: number
+          format: double
+        count_vote:
+          type: integer
+          format: int32
+        gallery:
+          type: integer
+          format: int32
+        poster_url:
+          type: array
+          items:
+            $ref: '#/components/schemas/Poster'
+      required:
+        - id
+        - title
+        - release_date
+        - runtime
+        - genres
+        - original_language
+        - poster_url
+    MovieTile:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+          example: Example movie
+          minLength: 1
+          maxLength: 130
+        poster_url:
+          type: object
+          properties:
+            schema:
+              $ref: '#/components/schemas/Poster'
+      required:
+        - id
+        - title
+        - poster_url
     Error:
       type: object
       properties:

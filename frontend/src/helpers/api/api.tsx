@@ -45,6 +45,14 @@ export const delete_api = async (url: string, body: FormData, userAuth: boolean 
     );
 };
 
+export const put = async (url: string, body: FormData, userAuth: boolean = false) => {
+    return new Promise(
+        (resolve, reject) => {
+            apiCall(url, 'PUT', body, resolve, reject, userAuth);
+        }
+    );
+};
+
 export const get = async (url: string, userAuth: boolean = false) => {
     let header: Record<string, string> = {
         'Accept': 'application/json',

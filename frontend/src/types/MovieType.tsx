@@ -18,7 +18,6 @@ interface GenreType {
 interface CollectionType {
     id: string,
     name: string,
-    gallery: number,
     poster_url: PosterType[],
 }
 
@@ -26,7 +25,6 @@ export interface PersonType {
     id: number,
     name: string,
     surname: string,
-    gallery: number,
     poster_url: PosterType[],
 }
 
