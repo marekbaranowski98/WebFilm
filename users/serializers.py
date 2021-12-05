@@ -241,13 +241,13 @@ class LoginUserDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'login', 'email', 'name', 'surname', 'gender', 'birth_date', 'avatarURL', 'role')
+        fields = ('id', 'login', 'email', 'name', 'surname', 'gender', 'birth_date', 'avatar_url', 'role')
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'login', 'name', 'surname', 'avatarURL',)
+        fields = ('id', 'login', 'name', 'surname', 'avatar_url',)
 
 
 class RequestResetPasswordSerializer(serializers.ModelSerializer):
@@ -351,11 +351,11 @@ class UserEditSerializer(serializers.ModelSerializer):
             instance.email = BaseUserManager.normalize_email(validated_data.get('email'))
         if validated_data.get('avatar'):
             file = FileManager()
-            if instance.avatarURL != default_uuid():
-                file.delete_file('users', instance.avatarURL)
+            if instance.avatar_url != default_uuid():
+                file.delete_file('users', instance.avatar_url)
             url = helpers.generate_uuid()
             file.upload_file('users', validated_data.get('avatar'), url)
-            instance.avatarURL = url
+            instance.avatar_url = url
 
         instance.save()
         return instance
@@ -412,10 +412,10 @@ class UserDeleteSerializer(serializers.ModelSerializer):
         instance.active_code = None
         instance.role_id = 1
 
-        if instance.avatarURL != default_uuid():
+        if instance.avatar_url != default_uuid():
             file = FileManager()
-            file.delete_file('users', instance.avatarURL)
-        instance.avatarURL = None
+            file.delete_file('users', instance.avatar_url)
+        instance.avatar_url = None
 
         instance.save()
         return instance

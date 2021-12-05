@@ -7,7 +7,7 @@ export interface PosterType {
 export interface MovieTileType {
     id: number,
     title: string,
-    posterURL: PosterType,
+    poster_url: PosterType,
 }
 
 interface GenreType {
@@ -19,7 +19,7 @@ interface CollectionType {
     id: string,
     name: string,
     gallery: number,
-    posterURL: PosterType[],
+    poster_url: PosterType[],
 }
 
 export interface PersonType {
@@ -27,7 +27,7 @@ export interface PersonType {
     name: string,
     surname: string,
     gallery: number,
-    posterURL: PosterType[],
+    poster_url: PosterType[],
 }
 
 interface CastType {

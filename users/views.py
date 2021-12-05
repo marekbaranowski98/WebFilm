@@ -360,10 +360,10 @@ class DeleteAvatarUserAPI(generics.DestroyAPIView):
         """
         try:
             u = User.objects.get(id=request.user.id)
-            if request.user.avatarURL is not default_uuid():
+            if request.user.avatar_url is not default_uuid():
                 file = FileManager()
-                file.delete_file('users', u.avatarURL)
-                u.avatarURL = default_uuid()
+                file.delete_file('users', u.avatar_url)
+                u.avatar_url = default_uuid()
                 u.save()
             return Response(LoginUserDataSerializer(u).data, status=200)
         except User.DoesNotExist:

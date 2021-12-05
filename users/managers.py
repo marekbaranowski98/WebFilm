@@ -35,7 +35,7 @@ class UserManager(BaseUserManager):
             surname=surname,
             birth_date=birth_date,
             gender=gender,
-            avatarURL=avatar,
+            avatar_url=avatar,
             active_code=active_code,
             **extra_fields
         )

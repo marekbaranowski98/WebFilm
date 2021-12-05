@@ -12,7 +12,7 @@ const PersonTile: React.FC<PersonTileProps> = ({person, describe}) => {
     return (
         <div className="person-tile">
             <div className="person-avatar">
-                <img src={person.posterURL[0].poster} alt={['Zdjęcie', person.name, person.surname].join(' ')} />
+                <img src={person.poster_url[0].poster} alt={['Zdjęcie', person.name, person.surname].join(' ')} />
             </div>
             <div className="person-identity-tile">
                 <p className="person-name">{person.name} {person.surname}</p>

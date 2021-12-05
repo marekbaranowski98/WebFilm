@@ -54,7 +54,7 @@ export const CurrentUserProvider: React.FC<CurrentUserProviderProps> = ({childre
     const updateUser = (u: any): void => {
         let tmpUser: UserObject = u;
         tmpUser.birth_date = new Date(u['birth_date']);
-        getImage('users', u['avatarURL']).then((image) => {
+        getImage('users', u['avatar_url']).then((image) => {
             tmpUser.avatar = image;
             setUser(tmpUser);
         }, () => setUser(tmpUser));

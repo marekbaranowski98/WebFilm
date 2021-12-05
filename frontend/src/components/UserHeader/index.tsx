@@ -108,7 +108,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({user, show_edit}) => {
                                 <img src={user.avatar} className="user-avatar" alt="Avatar użytkownika"/>
                                 <img src={camera} className="options-avatar" alt="Zmień avatar"/>
                             </label>
-                            {user.avatarURL !== DEFAULT_UUID &&
+                            {user.avatar_url !== DEFAULT_UUID &&
                                 <div className="button remove-image-button clear-avatar" onClick={removeAvatar}>
                                     <div className="cross"/>
                                 </div>

@@ -44,7 +44,7 @@ class User(AbstractBaseUser):
     )
     gender = models.IntegerField(choices=GENDER_CHOICES, default=0,)
     birth_date = models.DateField(null=True, auto_now_add=False,)
-    avatarURL = models.CharField(
+    avatar_url = models.CharField(
         max_length=36,
         null=True,
         default=default_uuid(),
@@ -91,7 +91,7 @@ class User(AbstractBaseUser):
             'surname': self.surname,
             'gender': self.gender,
             'birth_date': self.birth_date.strftime('%Y-%m-%d'),
-            'avatarURL': self.avatarURL,
+            'avatar_url': self.avatar_url,
         }.__str__()
 
 

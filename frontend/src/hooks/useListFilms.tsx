@@ -30,7 +30,7 @@ const useListFilms = ({getMovieList}: useListFilmsProps) => {
         const tmpListMovies: MovieTileType[] = [];
 
         for (let movie of movies) {
-            movie.posterURL.poster = await getImage('movies', movie.posterURL.url);
+            movie.poster_url.poster = await getImage('movies', movie.poster_url.url);
             tmpListMovies.push(movie);
         }
 

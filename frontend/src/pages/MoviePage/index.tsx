@@ -45,7 +45,7 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                     setMovie(tmpMovie);
 
                     const tmpGallery: PosterType[] = [];
-                    for (let tmp of tmpMovie.posterURL) {
+                    for (let tmp of tmpMovie.poster_url) {
                         tmp.poster = await getImage('movies', tmp.url);
                         if (tmp.url !== DEFAULT_UUID) {
                             tmpGallery.push(tmp);
@@ -56,7 +56,7 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                     setGalleryMovie(tmpGallery);
 
                     for (let tmpCast of tmpMovie.cast) {
-                        for (let tmpPoster of tmpCast.person.posterURL) {
+                        for (let tmpPoster of tmpCast.person.poster_url) {
                             tmpPoster.poster = await getImage('people', tmpPoster.url);
                         }
                     }
@@ -64,7 +64,7 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                     setMovie(tmpMovie);
 
                     for (let tmpCrew of tmpMovie.crew) {
-                        for (let tmpPoster of tmpCrew.person.posterURL) {
+                        for (let tmpPoster of tmpCrew.person.poster_url) {
                             tmpPoster.poster = await getImage('people', tmpPoster.url);
                         }
                     }
@@ -107,9 +107,9 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                     </Helmet>
                     <header className="header-movie" style={{
                         backgroundImage:
-                            movie.posterURL[1]?.url !== DEFAULT_UUID ? `url(${movie.posterURL[1]?.poster})` : '',
+                            movie.poster_url[1]?.url !== DEFAULT_UUID ? `url(${movie.poster_url[1]?.poster})` : '',
                     }}>
-                        <img src={movie.posterURL[0]?.poster}/>
+                        <img src={movie.poster_url[0]?.poster}/>
                         <div className="short-movie-info">
                             <h2 className="title-movie">{movie.title}</h2>
                             <div className="movie-info-line">

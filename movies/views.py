@@ -31,7 +31,7 @@ class MovieLatestAPI(generics.ListAPIView):
             ).order_by('-release_date')[:20], many=True).data
 
             for movie in list_movies:
-                movie['posterURL'] = PhotoSerializer(Photo.objects.get(gallery=movie.get('gallery'), order=1)).data
+                movie['poster_url'] = PhotoSerializer(Photo.objects.get(gallery=movie.get('gallery'), order=1)).data
 
             return Response(data=list_movies, status=200)
         except Exception as e:
@@ -56,19 +56,19 @@ class MovieAPI(generics.RetrieveAPIView):
                 raise PermissionDenied()
             movie = self.get_serializer(m).data
 
-            movie['posterURL'] = PhotoSerializer(Photo.objects.filter(gallery=movie.get('gallery')), many=True, ).data
+            movie['poster_url'] = PhotoSerializer(Photo.objects.filter(gallery=movie.get('gallery')), many=True, ).data
 
             movie['cast'] = CastSerializer(
                 Cast.objects.filter(movie_id=movie.get('id')).order_by('order')[:20], many=True
             ).data
             for c in movie['cast']:
-                c['person']['posterURL'] = PhotoSerializer(
+                c['person']['poster_url'] = PhotoSerializer(
                     Photo.objects.filter(gallery=c.get('person').get('gallery'))[0:1], many=True,
                 ).data
 
             movie['crew'] = CrewSerializer(Crew.objects.filter(movie_id=movie.get('id'))[:20], many=True).data
             for c in movie['crew']:
-                c['person']['posterURL'] = PhotoSerializer(
+                c['person']['poster_url'] = PhotoSerializer(
                     Photo.objects.filter(gallery=c.get('person').get('gallery'))[0:1], many=True,
                 ).data
 

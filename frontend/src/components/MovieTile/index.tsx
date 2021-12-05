@@ -13,7 +13,7 @@ const MovieTile: React.FC<MovieTileProps> = ({movie}) => {
     return (
         <Link className="movie-tile" to={`/movie/${movie.id}`}>
             <div className="poster-movie-tile">
-                <img src={movie.posterURL.poster} alt="Plakat filmowy"/>
+                <img src={movie.poster_url.poster} alt="Plakat filmowy"/>
             </div>
             <div className="title-movie-tile">{movie.title}</div>
         </Link>
