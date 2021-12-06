@@ -1,7 +1,7 @@
 import logging
 
 from rest_framework import generics
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import NotAuthenticated, PermissionDenied
 from rest_framework.response import Response
 from rest_framework.request import Request
 
@@ -9,6 +9,7 @@ from photos.serializers import PhotoSerializer
 from photos.models import Photo
 from .models import Movie, MovieStatus, Cast, Crew
 from .serializers import ListMovieSerializer, MovieSerializer, CastSerializer, CrewSerializer
+from .permissions import MovieIsVisibility
 
 loggerDebug = logging.getLogger('debug')
 
@@ -27,7 +28,7 @@ class MovieLatestAPI(generics.ListAPIView):
         """
         try:
             list_movies = self.get_serializer(Movie.objects.filter(
-                status=MovieStatus.objects.get(name='Released')
+                status=MovieStatus.objects.get(name='Released'), visibility=True,
             ).order_by('-release_date')[:20], many=True).data
 
             for movie in list_movies:
@@ -41,6 +42,7 @@ class MovieLatestAPI(generics.ListAPIView):
 
 class MovieAPI(generics.RetrieveAPIView):
     serializer_class = MovieSerializer
+    permission_classes = [MovieIsVisibility, ]
 
     def get(self, request: Request, *args, **kwargs) -> Response:
         """
@@ -51,9 +53,8 @@ class MovieAPI(generics.RetrieveAPIView):
         :return Response
         """
         try:
-            m = Movie.objects.get(pk=kwargs.get('movie_id'))
-            if m.visibility is False:
-                raise PermissionDenied()
+            m = Movie.objects.get(pk=self.kwargs.get('movie_id'))
+            self.check_object_permissions(self.request, m)
             movie = self.get_serializer(m).data
 
             movie['poster_url'] = PhotoSerializer(Photo.objects.filter(gallery=movie.get('gallery')), many=True, ).data
@@ -75,8 +76,8 @@ class MovieAPI(generics.RetrieveAPIView):
             return Response(data=movie, status=200)
         except Movie.DoesNotExist:
             return Response(status=404)
-        except PermissionDenied:
-            return Response(status=410)
+        except (NotAuthenticated, PermissionDenied):
+            return Response(data={'detail': 'Dane nie są już dostępne.'}, status=410)
         except Exception as e:
             loggerDebug.debug(e)
             return Response(status=500)
