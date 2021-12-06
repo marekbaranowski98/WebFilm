@@ -15,5 +15,6 @@ urlpatterns = [
     path('api/users/', include('users.urls')),
     path('api/photos/', include('photos.urls')),
     path('api/movies/', include('movies.urls')),
+    path('api/evaluations/', include('evaluations.urls')),
     path('', include('frontend.urls')),
 ]
