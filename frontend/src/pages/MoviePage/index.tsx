@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Helmet} from 'react-helmet-async';
-import {Link, useParams} from 'react-router-dom';
+import {Link, useHistory, useLocation, useParams} from 'react-router-dom';
 import ReactCountryFlag from 'react-country-flag';
 
 import './style.css';
 import error from '../../images/error.svg';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
-import {MovieType, PosterType} from '../../types/MovieType';
+import {MovieType, PosterType, RatingType} from '../../types/MovieType';
 import {getMovieDescribe} from '../../helpers/api/movie/movieCall';
 import {getImage} from '../../helpers/api/photo';
 import {convertMinuteToHourMinute} from '../../helpers/calc';
@@ -15,9 +15,10 @@ import ListTiles from '../../containers/ListTiles';
 import PersonTile from '../../components/PersonTile';
 import {DEFAULT_UUID} from '../../helpers/ConstType'
 import PhotoTile from '../../components/PhotoTile';
-import {AlertType} from '../../types/ErrorType';
+import {AlertType, ResultType} from '../../types/ErrorType';
 import Alert from '../../components/Alert';
 import {UserRole} from '../../types/UserType';
+import {getUserRatingForMovie} from '../../helpers/api/evaluations/evaluationsCall';
 
 interface MoviePageProps {
 }
@@ -29,10 +30,19 @@ interface MoviePageParam {
 const MoviePage: React.FC<MoviePageProps> = () => {
     const {movie_id} = useParams<MoviePageParam>();
     const userContext = useContext(CurrentUserContext);
+    const location = useLocation<ResultType>();
+    const history = useHistory();
     const [movie, setMovie] = useState<MovieType>();
-    const [userIsLogged, setUserIsLogged] = useState<boolean>(false);
+    const [ratingPanel, setRatingPanel] = useState<React.ReactNode>()
     const [notification, setNotification] = useState<AlertType>()
     const [galleryMovie, setGalleryMovie] = useState<PosterType[]>([]);
+
+    useEffect(() => {
+        if (location.state?.alertMessage) {
+            setNotification(location.state?.alertMessage);
+            history.replace({pathname: location.pathname, state: undefined});
+        }
+    }, []);
 
     useEffect(() => {
         getMovieDescribe(movie_id).then((res) => {
@@ -85,23 +95,43 @@ const MoviePage: React.FC<MoviePageProps> = () => {
     }, [movie_id]);
 
     useEffect(() => {
-        userContext?.checkIsUserLogged().then((r) => {
-            if (r > UserRole.AnonymousUser) {
-                setUserIsLogged(true);
-            }else {
-                throw new Error();
-            }
-        }, () => {
-            throw new Error();
-        }).catch(() =>
-            setUserIsLogged(false)
-        );
-    }, [userContext]);
+        if (movie) {
+            userContext?.checkIsUserLogged().then((r) => {
+                if (r > UserRole.AnonymousUser) {
+                    getUserRatingForMovie(movie.id).then((r) => {
+                        let response = r as Response;
+                        if (response.status === 200) {
+                            response.json().then((res) => {
+                                let tmpRating = res as RatingType;
+                                if (tmpRating.estimate) {
+                                    setRatingPanel(
+                                        <RatingPanel
+                                            movie={movie.id}
+                                            rating_movie={0}
+                                            rating_estimate={tmpRating.estimate}
+                                        />
+                                    )
+                                }else {
+                                    setRatingPanel(
+                                        <RatingPanel
+                                            movie={movie.id}
+                                            rating_movie={tmpRating.rating}
+                                        />
+                                    )
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    }, [userContext, movie]);
 
     return (
         <>
             {movie ?
                 <>
+                    {notification && <Alert icon={notification.icon} message={notification.message}/>}
                     <Helmet>
                         <title>{movie.title} - WebFilm</title>
                     </Helmet>
@@ -173,7 +203,7 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                                 </>
                                 }
                             </div>
-                            {userIsLogged && <RatingPanel/>}
+                            {ratingPanel}
                         </div>
                         {movie.overview &&
                         <div>

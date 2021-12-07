@@ -82,6 +82,19 @@ export interface MovieType {
     revenue: number,
     average_vote: number,
     count_vote: number,
-    gallery: number,
-    posterURL: PosterType[],
+    poster_url: PosterType[],
+}
+
+export interface RatingType {
+    rating: number,
+    estimate: number,
+}
+
+export interface UserRatingType {
+    movie: number,
+    rating: number,
+}
+
+export interface UserRatingIdentityType {
+    movie: number,
 }
