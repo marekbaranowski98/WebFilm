@@ -19,6 +19,7 @@ class RatingUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
         fields = ('rating', 'user', 'movie', )
+        validators = []
 
     def create(self, validated_data):
         """
@@ -57,3 +58,4 @@ class DeleteRatingUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
         fields = ('user', 'movie', )
+        validators = []

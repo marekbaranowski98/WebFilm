@@ -13,3 +13,8 @@ class Rating(models.Model):
         MaxValueValidator(10, message='Najwyższa dostępna ocena to 10.'),
     ], )
     date = models.DateTimeField(auto_now=True, )
+
+    class Meta:
+        unique_together = [
+            ['movie', 'user', ],
+        ]
