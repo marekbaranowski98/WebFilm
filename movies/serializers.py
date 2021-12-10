@@ -4,9 +4,11 @@ from .models import Movie, Genre, Cast, Crew, Person, Keyword, Company, Country,
 
 
 class ListMovieSerializer(serializers.ModelSerializer):
+    wr = serializers.CharField(required=False, read_only=True,)
+
     class Meta:
         model = Movie
-        fields = ('id', 'title', 'gallery')
+        fields = ('id', 'title', 'gallery', 'wr')
 
 
 class GenreSerializer(serializers.ModelSerializer):

@@ -90,7 +90,7 @@ const MoviePage: React.FC<MoviePageProps> = () => {
             setNotification({
                 icon: error,
                 message: 'Nie znaleziono szukanego filmu',
-            })
+            });
         });
     }, [movie_id]);
 

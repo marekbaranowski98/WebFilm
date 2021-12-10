@@ -1,17 +1,20 @@
 import React, {useEffect, useState} from 'react';
+
+import error from '../images/error.svg';
 import {MovieTileType} from '../types/MovieType';
 import {getImage} from '../helpers/api/photo';
+import {AlertType} from '../types/ErrorType';
 
 interface useListFilmsProps {
-    getMovieList: () => Promise<unknown>,
+    getMoviesList: () => Promise<unknown>,
 }
 
-const useListFilms = ({getMovieList}: useListFilmsProps) => {
+const useListFilms = ({getMoviesList}: useListFilmsProps) => {
     const [listMovies, setListMovies] = useState<MovieTileType[]>([]);
-    const [isError, setIsError] = useState(false);
+    const [notification, setNotification] = useState<AlertType | null>(null);
 
     useEffect(() => {
-        getMovieList().then((res) => {
+        getMoviesList().then((res) => {
             let r = res as Response;
             if (r.status === 200) {
                 r.json().then(async (movies) => {
@@ -22,7 +25,10 @@ const useListFilms = ({getMovieList}: useListFilmsProps) => {
                 throw new Error();
             }
         }, () => { throw new Error(); }).catch(() => {
-            setIsError(true)
+            setNotification({
+                icon: error,
+                message: 'Nie znaleziono filmów.',
+            });
         });
     }, []);
 
@@ -37,7 +43,7 @@ const useListFilms = ({getMovieList}: useListFilmsProps) => {
         setListMovies(tmpListMovies);
     };
 
-    return { listMovies, isError };
+    return { listMovies, notification };
 };
 
 export default useListFilms;

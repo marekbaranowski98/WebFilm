@@ -566,6 +566,63 @@ paths:
         500:
           description: Internal Server Error
           content: {}
+  /movies/:
+    get:
+      tags:
+        - movie
+      summary: Get list max 20 top weighted rating movies 
+      operationId: topMovies
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieTile'
+        404:
+          description: Not Found
+          content: {}
+        500:
+          description: Internal Server Error
+          content: {}
+  /movies/{name}/{value}/:
+    get:
+      tags:
+        - movie
+      summary: Get list max 20 top weighted rating filtred movies by key
+      operationId: topKeyMovies
+      parameters:
+      - name: name
+        in: path
+        description: Movie key you are looking for
+        required: true
+        schema:
+          type: string
+          example: genres
+      - name: value
+        in: path
+        description: Value of the movie key you are looking for
+        required: true
+        schema:
+          type: string
+          example: Action
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieTile'
+        404:
+          description: Not Found
+          content: {}
+        500:
+          description: Internal Server Error
+          content: {}
   /movies/latest/:
     get:
       tags:

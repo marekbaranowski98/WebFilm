@@ -5,7 +5,7 @@ import {Helmet} from 'react-helmet-async';
 import './style.css';
 import {AlertType, ResultType} from '../../types/ErrorType';
 import Alert from '../../components/Alert';
-import {getListLatestMovies} from '../../helpers/api/movie/movieCall';
+import {getListLatestMovies, getTopMovies, getTopMoviesByName} from '../../helpers/api/movie/movieCall';
 import MovieTile from '../../components/MovieTile';
 import CarouselTiles from '../../containers/CarouselTiles';
 import useListFilms from '../../hooks/useListFilms';
@@ -17,7 +17,11 @@ const MainPage: React.FC<MainPageProps> = ({}) => {
     const location = useLocation<ResultType>();
     const history = useHistory();
     const [notification, setNotification] = useState<AlertType>();
-    const latestMovies = useListFilms({getMovieList: getListLatestMovies});
+    const latestMovies = useListFilms({getMoviesList: getListLatestMovies});
+    const topAllMovies = useListFilms({getMoviesList: getTopMovies});
+    const topCountryMovies = useListFilms(
+        {getMoviesList: () => {return getTopMoviesByName('countries', 'PL');}}
+    );
 
     useEffect(() => {
         if (location.state?.alertMessage) {
@@ -36,8 +40,20 @@ const MainPage: React.FC<MainPageProps> = ({}) => {
                 message={notification.message}
             />}
             <CarouselTiles sizeTileInRem={10} infiniteLoop={true}
-                           header="Najnowsze filmy" isError={latestMovies.isError}>
+                           header="Najnowsze filmy" notification={latestMovies.notification}>
                 {latestMovies.listMovies.map((x) =>
+                    <MovieTile movie={x} key={x.id}/>
+                )}
+            </CarouselTiles>
+            <CarouselTiles sizeTileInRem={10} infiniteLoop={true}
+                           header="Najlepsze filmy" notification={topAllMovies.notification}>
+                {topAllMovies.listMovies.map((x) =>
+                    <MovieTile movie={x} key={x.id}/>
+                )}
+            </CarouselTiles>
+            <CarouselTiles sizeTileInRem={10} infiniteLoop={true}
+                           header="Polskie filmy" notification={topCountryMovies.notification}>
+                {topCountryMovies.listMovies.map((x) =>
                     <MovieTile movie={x} key={x.id}/>
                 )}
             </CarouselTiles>
