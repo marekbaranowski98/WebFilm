@@ -19,3 +19,7 @@ export const topMoviesURL = (): string => {
 export const topMoviesByNameURL = (name: string, value: string): string => {
     return `${movieURL()}${name}/${value}/`;
 };
+
+export const premiereMoviesURL = (): string => {
+    return `${movieURL()}premiere/`;
+};

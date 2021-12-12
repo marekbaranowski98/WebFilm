@@ -103,6 +103,30 @@ class MovieListAPI(generics.ListAPIView, viewsets.ViewSet):
             loggerDebug.debug(e)
             return Response(status=500)
 
+    def get_list_premiere(self, request: Request, *args, **kwargs) -> Response:
+        """
+        Get list of upcoming movies with status In Production, Planned or Post Production
+
+        :param request Request
+        :param args:
+        :param kwargs:
+        :return Response
+        """
+        try:
+            list_movies = self.get_serializer(Movie.objects.filter(
+                status__in=MovieStatus.objects.filter(name__in=['In Production', 'Planned', 'Post Production', ]),
+                # release_date__gt=datetime.date.today(),
+                visibility=True, release_date__isnull=False,
+            ).order_by('release_date')[:20], many=True).data
+            self.__build_list_image(list_movies)
+
+            return Response(data=list_movies, status=200)
+        except Movie.DoesNotExist:
+            return Response(status=404)
+        except Exception as e:
+            loggerDebug.debug(e)
+            return Response(status=500)
+
 
 class MovieAPI(generics.RetrieveAPIView):
     serializer_class = MovieSerializer

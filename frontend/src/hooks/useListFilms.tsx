@@ -18,8 +18,15 @@ const useListFilms = ({getMoviesList}: useListFilmsProps) => {
             let r = res as Response;
             if (r.status === 200) {
                 r.json().then(async (movies) => {
-                    setListMovies(movies);
-                    await downloadImagesMovies(movies);
+                    const tmpMovies = [];
+
+                    for (let m of movies) {
+                        let tmpMovie = m;
+                        tmpMovie.release_date = new Date(tmpMovie.release_date);
+                        tmpMovies.push(tmpMovie)
+                    }
+                    setListMovies(tmpMovies);
+                    await downloadImagesMovies(tmpMovies);
                 });
             } else {
                 throw new Error();

@@ -7,18 +7,18 @@ import './style.css';
 import error from '../../images/error.svg';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
 import {MovieType, PosterType, RatingType} from '../../types/MovieType';
+import {AlertType, ResultType} from '../../types/ErrorType';
+import {UserRole} from '../../types/UserType';
 import {getMovieDescribe} from '../../helpers/api/movie/movieCall';
 import {getImage} from '../../helpers/api/photo';
 import {convertMinuteToHourMinute} from '../../helpers/calc';
-import RatingPanel from '../../components/RatingPanel';
-import ListTiles from '../../containers/ListTiles';
-import PersonTile from '../../components/PersonTile';
 import {DEFAULT_UUID} from '../../helpers/ConstType'
-import PhotoTile from '../../components/PhotoTile';
-import {AlertType, ResultType} from '../../types/ErrorType';
-import Alert from '../../components/Alert';
-import {UserRole} from '../../types/UserType';
 import {getUserRatingForMovie} from '../../helpers/api/evaluations/evaluationsCall';
+import RatingPanel from '../../components/RatingPanel';
+import PersonTile from '../../components/PersonTile';
+import PhotoTile from '../../components/PhotoTile';
+import Alert from '../../components/Alert';
+import ListTiles from '../../containers/ListTiles';
 
 interface MoviePageProps {
 }

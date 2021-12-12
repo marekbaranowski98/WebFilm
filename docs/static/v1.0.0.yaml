@@ -641,6 +641,27 @@ paths:
         500:
           description: Internal Server Error
           content: {}
+  /movies/premiere/:
+    get:
+      tags:
+        - movie
+      summary: Get list max 20 premiere movies 
+      operationId: premiereMovies
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieTile'
+        404:
+          description: Not Found
+          content: {}
+        500:
+          description: Internal Server Error
+          content: {}
   /movies/{movie_id}/:
     get:
       tags:

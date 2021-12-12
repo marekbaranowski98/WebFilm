@@ -1,5 +1,5 @@
 import {get} from '../api';
-import {listLatestMovieURL, movieDescribeURL, topMoviesByNameURL, topMoviesURL} from './movieRoutes';
+import {listLatestMovieURL, movieDescribeURL, premiereMoviesURL, topMoviesByNameURL, topMoviesURL} from './movieRoutes';
 
 export const getListLatestMovies = async () => {
     return get(listLatestMovieURL(), false);
@@ -15,4 +15,8 @@ export const getTopMovies = async () => {
 
 export const getTopMoviesByName = async (name: string, value: string) => {
     return get(topMoviesByNameURL(name, value));
+};
+
+export const getPremiereMovies = async () => {
+    return get(premiereMoviesURL());
 };

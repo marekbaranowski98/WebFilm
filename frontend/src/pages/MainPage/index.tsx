@@ -4,9 +4,15 @@ import {Helmet} from 'react-helmet-async';
 
 import './style.css';
 import {AlertType, ResultType} from '../../types/ErrorType';
+import {MovieTileType} from '../../types/MovieType';
 import Alert from '../../components/Alert';
-import {getListLatestMovies, getTopMovies, getTopMoviesByName} from '../../helpers/api/movie/movieCall';
 import MovieTile from '../../components/MovieTile';
+import {
+    getListLatestMovies,
+    getPremiereMovies,
+    getTopMovies,
+    getTopMoviesByName
+} from '../../helpers/api/movie/movieCall';
 import CarouselTiles from '../../containers/CarouselTiles';
 import useListFilms from '../../hooks/useListFilms';
 
@@ -17,11 +23,21 @@ const MainPage: React.FC<MainPageProps> = ({}) => {
     const location = useLocation<ResultType>();
     const history = useHistory();
     const [notification, setNotification] = useState<AlertType>();
-    const latestMovies = useListFilms({getMoviesList: getListLatestMovies});
-    const topAllMovies = useListFilms({getMoviesList: getTopMovies});
-    const topCountryMovies = useListFilms(
-        {getMoviesList: () => {return getTopMoviesByName('countries', 'PL');}}
-    );
+    const carouselListMovies: {
+        list: { listMovies: MovieTileType[], notification: AlertType | null }, header: string,
+    }[] = [
+        {list: useListFilms({getMoviesList: getListLatestMovies,},), header: 'Najnowsze filmy',},
+        {list: useListFilms({getMoviesList: getTopMovies,},), header: 'Najlepsze filmy',},
+        {
+            list: useListFilms({
+                getMoviesList: () => {
+                    return getTopMoviesByName('countries', 'PL');
+                }
+            }),
+            header: 'Polskie filmy',
+        },
+        {list: useListFilms({getMoviesList: getPremiereMovies,},), header: 'Nadchodzące premiery',},
+    ];
 
     useEffect(() => {
         if (location.state?.alertMessage) {
@@ -39,24 +55,15 @@ const MainPage: React.FC<MainPageProps> = ({}) => {
                 icon={notification.icon}
                 message={notification.message}
             />}
-            <CarouselTiles sizeTileInRem={10} infiniteLoop={true}
-                           header="Najnowsze filmy" notification={latestMovies.notification}>
-                {latestMovies.listMovies.map((x) =>
-                    <MovieTile movie={x} key={x.id}/>
-                )}
-            </CarouselTiles>
-            <CarouselTiles sizeTileInRem={10} infiniteLoop={true}
-                           header="Najlepsze filmy" notification={topAllMovies.notification}>
-                {topAllMovies.listMovies.map((x) =>
-                    <MovieTile movie={x} key={x.id}/>
-                )}
-            </CarouselTiles>
-            <CarouselTiles sizeTileInRem={10} infiniteLoop={true}
-                           header="Polskie filmy" notification={topCountryMovies.notification}>
-                {topCountryMovies.listMovies.map((x) =>
-                    <MovieTile movie={x} key={x.id}/>
-                )}
-            </CarouselTiles>
+            {carouselListMovies.map(
+                (movies, index) =>
+                    <CarouselTiles sizeTileInRem={10} infiniteLoop={true} key={index}
+                                   header={movies.header} notification={movies.list.notification}>
+                        {movies.list.listMovies.map(x =>
+                            <MovieTile movie={x} key={x.id}/>
+                        )}
+                    </CarouselTiles>
+            )}
         </div>
     );
 };
