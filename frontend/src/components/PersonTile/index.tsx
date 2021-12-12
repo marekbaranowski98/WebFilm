@@ -16,7 +16,7 @@ const PersonTile: React.FC<PersonTileProps> = ({person, describe}) => {
             </div>
             <div className="person-identity-tile">
                 <p className="person-name">{person.name} {person.surname}</p>
-                <p className="person-describe">{describe}</p>
+                <p className="describe-tile">{describe}</p>
             </div>
         </div>
     );

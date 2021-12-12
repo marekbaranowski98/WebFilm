@@ -7,6 +7,7 @@ export interface PosterType {
 export interface MovieTileType {
     id: number,
     title: string,
+    release_date: Date,
     poster_url: PosterType,
 }
 

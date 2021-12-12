@@ -15,7 +15,8 @@ const MovieTile: React.FC<MovieTileProps> = ({movie}) => {
             <div className="poster-movie-tile">
                 <img src={movie.poster_url.poster} alt="Plakat filmowy"/>
             </div>
-            <div className="title-movie-tile">{movie.title}</div>
+            <p className="title-movie-tile">{movie.title}</p>
+            <p className="describe-tile">{movie.release_date && movie.release_date.toLocaleDateString()}</p>
         </Link>
     );
 };

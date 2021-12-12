@@ -31,7 +31,7 @@
 }
 
 .carousel-content {
-    height: 17rem;
+    height: 18rem;
     display: flex;
     grid-gap: 1rem;
     transition: all 250ms linear;

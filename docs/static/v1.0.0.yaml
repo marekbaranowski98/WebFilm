@@ -1327,6 +1327,10 @@ components:
           example: Example movie
           minLength: 1
           maxLength: 130
+        release_date:
+          type: string
+          format: date
+          example: '2000-01-01'
         gallery:
           type: integer
           format: int32
