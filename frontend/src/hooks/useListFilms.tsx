@@ -31,7 +31,7 @@ const useListFilms = ({getMoviesList}: useListFilmsProps) => {
             } else {
                 throw new Error();
             }
-        }, () => { throw new Error(); }).catch(() => {
+        }, () => { throw new Error(); }).catch((e) => {
             setNotification({
                 icon: error,
                 message: 'Nie znaleziono filmów.',

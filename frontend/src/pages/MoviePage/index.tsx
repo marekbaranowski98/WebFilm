@@ -110,20 +110,29 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                                             rating_movie={0}
                                             rating_estimate={tmpRating.estimate}
                                         />
-                                    )
+                                    );
                                 }else {
                                     setRatingPanel(
                                         <RatingPanel
                                             movie={movie.id}
                                             rating_movie={tmpRating.rating}
                                         />
-                                    )
+                                    );
                                 }
                             });
                         }
+                    }, (e) => {
+                        throw new Error();
+                    }).catch((e) => {
+                        setRatingPanel(
+                            <RatingPanel
+                                movie={movie.id}
+                                rating_movie={0}
+                            />
+                        );
                     });
                 }
-            });
+            }).catch(() => {});
         }
     }, [userContext, movie]);
 
