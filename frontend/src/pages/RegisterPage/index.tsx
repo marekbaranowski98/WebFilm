@@ -1,8 +1,8 @@
 import React from 'react';
 import {Helmet} from 'react-helmet-async';
 
-import RegisterForm from '../../containers/RegisterForm';
 import ReCaptchaProvider from '../../context/ReCaptchaContext';
+import RegisterForm from '../../containers/RegisterForm';
 
 interface RegisterPageProps {
 }

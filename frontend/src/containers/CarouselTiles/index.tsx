@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 
 import './style.css';
+import {AlertType} from '../../types/ErrorType';
 import {convertRemToPx} from '../../helpers/calc'
 import useWindowsDimensions from '../../hooks/useWindowsDimensions';
 import Alert from '../../components/Alert';
-import {AlertType} from '../../types/ErrorType';
 
 interface CarouselTilesProps {
     children: React.ReactNode[],

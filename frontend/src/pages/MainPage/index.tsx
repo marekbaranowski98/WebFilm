@@ -5,16 +5,16 @@ import {Helmet} from 'react-helmet-async';
 import './style.css';
 import {AlertType, ResultType} from '../../types/ErrorType';
 import {MovieTileType} from '../../types/MovieType';
-import Alert from '../../components/Alert';
-import MovieTile from '../../components/MovieTile';
 import {
     getListLatestMovies,
     getPremiereMovies,
     getTopMovies,
     getTopMoviesByName
 } from '../../helpers/api/movie/movieCall';
-import CarouselTiles from '../../containers/CarouselTiles';
 import useListFilms from '../../hooks/useListFilms';
+import Alert from '../../components/Alert';
+import MovieTile from '../../components/MovieTile';
+import CarouselTiles from '../../containers/CarouselTiles';
 
 interface MainPageProps {
 }

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Redirect, useParams} from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
+import {Redirect, useParams} from 'react-router-dom';
 
 import error from '../../images/error.svg';
 import {CurrentUserContext} from '../../context/CurrentUserContext';

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Link, Redirect, useParams} from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
+import {Link, Redirect, useParams} from 'react-router-dom';
 
 import check from '../../images/check.svg';
 import error from '../../images/error.svg';

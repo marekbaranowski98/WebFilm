@@ -6,7 +6,6 @@ import check from '../../images/check.svg';
 import error from '../../images/error.svg';
 import info from '../../images/info.svg';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
-import useForm from '../../hooks/useForm';
 import {AlertType, ErrorType, RedirectType} from '../../types/ErrorType';
 import {FileUploadType} from '../../types/FileType';
 import {
@@ -16,6 +15,7 @@ import {
     validatePassword,
     validateRepeatPassword, validateSurname
 } from '../../helpers/validators';
+import useForm from '../../hooks/useForm';
 
 interface SettingOptionProps {
     generateForm: (

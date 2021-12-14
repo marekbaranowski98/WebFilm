@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Redirect, useParams} from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
+import {Redirect, useParams} from 'react-router-dom';
 
 import error from '../../images/error.svg';
-import ResetPasswordForm from '../../containers/ResetPasswordForm';
-import {validateUUID} from '../../helpers/validators';
-import {RedirectType} from '../../types/ErrorType';
 import ReCaptchaProvider from '../../context/ReCaptchaContext';
+import {RedirectType} from '../../types/ErrorType';
+import {validateUUID} from '../../helpers/validators';
+import ResetPasswordForm from '../../containers/ResetPasswordForm';
 
 interface ResetPasswordPageProps {
 }

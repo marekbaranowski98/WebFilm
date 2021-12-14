@@ -1,31 +1,31 @@
 import React from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {HelmetProvider} from 'react-helmet-async';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
 import '../style/app.css';
 import '../style/shape.css';
 import '../style/input.css';
 import '../style/form.css';
 import {CurrentUserProvider} from '../context/CurrentUserContext';
+import {UserRole} from '../types/UserType';
+import useWindowsDimensions from '../hooks/useWindowsDimensions';
 import SEO from '../components/SEO';
+import Search from '../components/Search';
+import AnonymousUserRoute from '../components/AnonymousUserRoute';
+import Footer from '../components/Footer';
+import LoggedUserRoute from '../components/LoggedUserRoute';
 import Header from '../containers/Header';
 import MainPage from './MainPage';
 import LoginPage from './LoginPage';
 import LogoutPage from './LogoutPage';
 import RegisterPage from './RegisterPage';
 import StatutePage from './StatutePage';
-import Footer from '../components/Footer';
 import ActivePage from './ActivePage';
 import RequestResetPasswordPage from './RequestResetPasswordPage';
 import ResetPasswordPage from './ResetPasswordPage';
-import AnonymousUserRoute from '../components/AnonymousUserRoute';
-import LoggedUserRoute from '../components/LoggedUserRoute';
 import UserPage from './UserPage/';
-import {UserRole} from '../types/UserType';
 import SettingsPage from './SettingsPage';
 import MoviePage from './MoviePage';
-import Search from '../components/Search';
-import useWindowsDimensions from '../hooks/useWindowsDimensions';
 
 interface App {
 }
