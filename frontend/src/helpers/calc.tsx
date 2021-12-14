@@ -5,3 +5,7 @@ export const convertRemToPx = (rem: number): number => {
 export const convertMinuteToHourMinute = (minute: number): string => {
     return `${Math.floor(minute / 60)}h ${minute % 60}m`
 };
+
+export const getPropertiesFromObject = (object: any, properties: string): any => {
+    return object[properties];
+};

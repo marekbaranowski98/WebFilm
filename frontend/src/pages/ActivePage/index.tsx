@@ -4,9 +4,10 @@ import {Helmet} from 'react-helmet-async';
 
 import check from '../../images/check.svg';
 import error from '../../images/error.svg';
+import {RedirectType} from '../../types/ErrorType';
 import {validateUUID} from '../../helpers/validators';
 import {activeUser} from '../../helpers/api/user/userCall';
-import {RedirectType} from '../../types/ErrorType';
+import useCancelledPromise from '../../hooks/useCancelledPromise';
 
 interface ActivePageProps {
 }
@@ -20,10 +21,11 @@ const ActivePage: React.FC<ActivePageProps> = ({}) => {
     const [counter, setCounter] = useState(10);
     const [intervalID, setIntervalID] = useState<NodeJS.Timer>();
     const [url, setURL] = useState<RedirectType>();
+    const {promise, cancelPromise} = useCancelledPromise();
 
     useEffect(() => {
         if (validateUUID(key)) {
-            activeUser(key).then((r) => {
+            promise(activeUser(key)).then((r) => {
                 let response = r as Response;
                 if (response.status === 204) {
                     setURL({
@@ -68,6 +70,10 @@ const ActivePage: React.FC<ActivePageProps> = ({}) => {
                 },
             });
         }
+
+        return () => {
+            cancelPromise();
+        };
     }, []);
 
     useEffect(() => {

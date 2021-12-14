@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 
-import ErrorMessage from '../../components/ErrorMessage';
-import useForm from '../../hooks/useForm';
 import {SendEmailResetPasswordEmail} from '../../types/UserType';
-import {validateEmail} from '../../helpers/validators';
 import {ErrorType, RedirectType} from '../../types/ErrorType';
+import {validateEmail} from '../../helpers/validators';
 import {requestResetPassword} from '../../helpers/api/user/userCall';
+import useForm from '../../hooks/useForm';
+import useCancelledPromise from '../../hooks/useCancelledPromise';
+import ErrorMessage from '../../components/ErrorMessage';
 import ReCaptcha from '../../components/ReCaptcha';
 
 interface RequestResetPasswordFormProps {
@@ -16,6 +17,14 @@ interface RequestResetPasswordFormProps {
 const RequestResetPasswordForm: React.FC<RequestResetPasswordFormProps> = ({setSendResetLink}) => {
     const [url, setURL] = useState<RedirectType>();
     const [token, setToken] = useState<string>();
+    const {promise, cancelPromise} = useCancelledPromise();
+
+    useEffect(() => {
+        return () => {
+            setSendResetLink(true);
+            cancelPromise();
+        };
+    }, []);
 
     const validateFormRequestResetPassword = async (
         {email}: SendEmailResetPasswordEmail,
@@ -33,7 +42,7 @@ const RequestResetPasswordForm: React.FC<RequestResetPasswordFormProps> = ({setS
         if (token != null) {
             form.recaptcha = token;
         }
-        requestResetPassword(form).then((r) => {
+        promise(requestResetPassword(form)).then((r) => {
             let response = (r as Response);
             if (response.status === 200) {
                 setSendResetLink(true);

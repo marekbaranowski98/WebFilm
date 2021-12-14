@@ -37,6 +37,8 @@ export const CurrentUserProvider: React.FC<CurrentUserProviderProps> = ({childre
                         }
                     }, (e) => {
                         reject(UserRole.AnonymousUser);
+                    }).catch((e) => {
+                        reject(UserRole.AnonymousUser);
                     });
                 } else {
                     reject(UserRole.AnonymousUser);

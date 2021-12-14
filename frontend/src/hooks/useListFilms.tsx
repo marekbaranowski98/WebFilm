@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 
 import error from '../images/error.svg';
 import {MovieTileType} from '../types/MovieType';
-import {getImage} from '../helpers/api/photo';
 import {AlertType} from '../types/ErrorType';
+import {getImage} from '../helpers/api/photo';
+import useCancelledPromise from './useCancelledPromise';
 
 interface useListFilmsProps {
     getMoviesList: () => Promise<unknown>,
@@ -12,9 +13,10 @@ interface useListFilmsProps {
 const useListFilms = ({getMoviesList}: useListFilmsProps) => {
     const [listMovies, setListMovies] = useState<MovieTileType[]>([]);
     const [notification, setNotification] = useState<AlertType | null>(null);
+    const {promise, cancelPromise} = useCancelledPromise();
 
     useEffect(() => {
-        getMoviesList().then((res) => {
+        promise(getMoviesList()).then((res) => {
             let r = res as Response;
             if (r.status === 200) {
                 r.json().then(async (movies) => {
@@ -37,6 +39,10 @@ const useListFilms = ({getMoviesList}: useListFilmsProps) => {
                 message: 'Nie znaleziono filmów.',
             });
         });
+
+        return () => {
+            cancelPromise();
+        };
     }, []);
 
    const downloadImagesMovies = async (movies: MovieTileType[]) => {

@@ -1,14 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 
 import './style.css';
+import {CurrentUserContext} from '../../context/CurrentUserContext';
 import {UserLoginForm} from '../../types/UserType';
 import {ErrorType} from '../../types/ErrorType';
 import {validateEmail} from '../../helpers/validators';
 import {loginUser} from '../../helpers/api/user/userCall';
-import ErrorMessage from '../../components/ErrorMessage';
-import {CurrentUserContext} from '../../context/CurrentUserContext';
 import useForm from '../../hooks/useForm';
+import useCancelledPromise from '../../hooks/useCancelledPromise';
+import ErrorMessage from '../../components/ErrorMessage';
 import ReCaptcha from '../../components/ReCaptcha';
 
 interface LoginFormProps {
@@ -18,12 +19,20 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
     const [redirect, setRedirect] = useState<boolean>(false);
     const [token, setToken] = useState<string>();
     const userContext = React.useContext(CurrentUserContext);
+    const {promise, cancelPromise} = useCancelledPromise();
+
+    useEffect(() => {
+        return () => {
+            cancelPromise();
+        };
+    }, []);
 
     const sendRequestAuthToAPI = (form: UserLoginForm, setErrors: (errors: ErrorType) => void): void => {
         if (token != null) {
             form.recaptcha = token;
         }
-        loginUser(form).then((resolve) => {
+
+        promise(loginUser(form)).then((resolve) => {
             let res = (resolve as Response);
             if (res.status !== 200) {
                 res.json().then(allErrors => {

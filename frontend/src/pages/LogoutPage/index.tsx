@@ -5,6 +5,7 @@ import {Helmet} from 'react-helmet-async';
 import './style.css';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
 import {getLogoutUser} from '../../helpers/api/user/userCall';
+import useCancelledPromise from '../../hooks/useCancelledPromise';
 
 interface LogoutPageProps {
 }
@@ -14,12 +15,17 @@ const LogoutPage: React.FC<LogoutPageProps> = ({}) => {
     const [counter, setCounter] = useState(10);
     const [intervalID, setIntervalID] = useState<NodeJS.Timer>();
     const [redirect, setRedirect] = useState(false);
+    const {promise, cancelPromise} = useCancelledPromise();
 
     useEffect(() => {
-        getLogoutUser().then((r) => {
+        promise(getLogoutUser()).then((r) => {
             userContext?.logoutUser();
             setRedirect(true);
         }, (e) => setRedirect(true));
+
+        return () => {
+            cancelPromise();
+        };
     }, []);
 
     useEffect(() => {

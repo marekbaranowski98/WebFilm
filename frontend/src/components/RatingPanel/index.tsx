@@ -4,10 +4,10 @@ import {Redirect} from 'react-router-dom';
 import './style.css';
 import tv from '../../images/tv.svg';
 import error from '../../images/error.svg';
-import {putUserRatingForMovie, deleteUserRatingForMovie} from '../../helpers/api/evaluations/evaluationsCall';
 import {RatingType, UserRatingIdentityType, UserRatingType} from '../../types/MovieType';
 import {RedirectType} from '../../types/ErrorType';
-
+import {putUserRatingForMovie, deleteUserRatingForMovie} from '../../helpers/api/evaluations/evaluationsCall';
+import useCancelledPromise from '../../hooks/useCancelledPromise';
 
 interface RatingPanelProps {
     movie: number,
@@ -22,6 +22,13 @@ const RatingPanel: React.FC<RatingPanelProps> = ({movie, rating_movie, rating_es
     const [tmpRating, setTmpRating] = useState(0);
     const [movieToWatch, setMovieToWatch] = useState(false);
     const [url, setURL] = useState<RedirectType>();
+    const {promise, cancelPromise} = useCancelledPromise();
+
+    useEffect(() => {
+        return () => {
+            cancelPromise();
+        };
+    }, []);
 
     useEffect(() => {
         setTmpRating(rating);
@@ -37,7 +44,7 @@ const RatingPanel: React.FC<RatingPanelProps> = ({movie, rating_movie, rating_es
                 movie: movie,
                 rating: r,
             }
-            putUserRatingForMovie(tmpRating).then((r) => {
+            promise(putUserRatingForMovie(tmpRating)).then((r) => {
                 let response = r as Response;
 
                 if (response.status === 204) {
@@ -82,7 +89,7 @@ const RatingPanel: React.FC<RatingPanelProps> = ({movie, rating_movie, rating_es
             let tmpRating: UserRatingIdentityType = {
                 movie: movie,
             }
-            deleteUserRatingForMovie(tmpRating).then((r) => {
+            promise(deleteUserRatingForMovie(tmpRating)).then((r) => {
                 let response = r as Response;
 
                 if (response.status === 200) {

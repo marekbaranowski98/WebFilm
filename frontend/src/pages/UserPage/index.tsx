@@ -4,11 +4,12 @@ import {Helmet} from 'react-helmet-async';
 
 import error from '../../images/error.svg';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
-import UserHeader from '../../components/UserHeader';
-import {getUser} from '../../helpers/api/user/userCall';
 import {RedirectType} from '../../types/ErrorType';
-import {getImage} from '../../helpers/api/photo';
 import {UserObject} from '../../types/UserType';
+import {getImage} from '../../helpers/api/photo';
+import {getUser} from '../../helpers/api/user/userCall';
+import useCancelledPromise from '../../hooks/useCancelledPromise';
+import UserHeader from '../../components/UserHeader';
 
 interface UserPageProps {
 }
@@ -22,12 +23,13 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     const userContext = useContext(CurrentUserContext);
     const [user, setUser] = useState<React.ReactNode>();
     const [url, setURL] = useState<RedirectType>();
+    const {promise, cancelPromise} = useCancelledPromise();
 
     useEffect(() => {
         if (login === userContext?.user?.login) {
             setUser(<UserHeader user={userContext.user} show_edit={true} />);
         } else {
-            getUser(login).then((res) => {
+            promise(getUser(login)).then((res) => {
                 let response = res as Response;
                 if (response.status === 200) {
                     response.json().then(async (json) => {
@@ -55,6 +57,10 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
                 });
             });
         }
+
+        return () => {
+            cancelPromise();
+        };
     }, [login, userContext?.user]);
 
     return (

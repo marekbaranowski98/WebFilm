@@ -11,9 +11,10 @@ import {AlertType, ResultType} from '../../types/ErrorType';
 import {UserRole} from '../../types/UserType';
 import {getMovieDescribe} from '../../helpers/api/movie/movieCall';
 import {getImage} from '../../helpers/api/photo';
-import {convertMinuteToHourMinute} from '../../helpers/calc';
+import {convertMinuteToHourMinute, getPropertiesFromObject} from '../../helpers/calc';
 import {DEFAULT_UUID} from '../../helpers/ConstType'
 import {getUserRatingForMovie} from '../../helpers/api/evaluations/evaluationsCall';
+import useCancelledPromise from '../../hooks/useCancelledPromise';
 import RatingPanel from '../../components/RatingPanel';
 import PersonTile from '../../components/PersonTile';
 import PhotoTile from '../../components/PhotoTile';
@@ -36,16 +37,21 @@ const MoviePage: React.FC<MoviePageProps> = () => {
     const [ratingPanel, setRatingPanel] = useState<React.ReactNode>()
     const [notification, setNotification] = useState<AlertType>()
     const [galleryMovie, setGalleryMovie] = useState<PosterType[]>([]);
+    const {promise, cancelPromise} = useCancelledPromise();
 
     useEffect(() => {
         if (location.state?.alertMessage) {
             setNotification(location.state?.alertMessage);
             history.replace({pathname: location.pathname, state: undefined});
         }
+
+        return () => {
+            cancelPromise();
+        };
     }, []);
 
     useEffect(() => {
-        getMovieDescribe(movie_id).then((res) => {
+        promise(getMovieDescribe(movie_id)).then((res) => {
             let response = res as Response;
 
             if (response.status === 200) {
@@ -65,21 +71,10 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                     setMovie(tmpMovie);
                     setGalleryMovie(tmpGallery);
 
-                    for (let tmpCast of tmpMovie.cast) {
-                        for (let tmpPoster of tmpCast.person.poster_url) {
-                            tmpPoster.poster = await getImage('people', tmpPoster.url);
-                        }
-                    }
-                    setMovie(undefined);
-                    setMovie(tmpMovie);
+                    await updatePoster(tmpMovie, 'cast', 'people');
+                    await updatePoster(tmpMovie, 'crew', 'people');
 
-                    for (let tmpCrew of tmpMovie.crew) {
-                        for (let tmpPoster of tmpCrew.person.poster_url) {
-                            tmpPoster.poster = await getImage('people', tmpPoster.url);
-                        }
-                    }
-                    setMovie(undefined);
-                    setMovie(tmpMovie);
+                    getRating(tmpMovie);
                 });
             } else {
                 throw new Error();
@@ -94,47 +89,58 @@ const MoviePage: React.FC<MoviePageProps> = () => {
         });
     }, [movie_id]);
 
-    useEffect(() => {
-        if (movie) {
-            userContext?.checkIsUserLogged().then((r) => {
-                if (r > UserRole.AnonymousUser) {
-                    getUserRatingForMovie(movie.id).then((r) => {
-                        let response = r as Response;
-                        if (response.status === 200) {
-                            response.json().then((res) => {
-                                let tmpRating = res as RatingType;
-                                if (tmpRating.estimate) {
-                                    setRatingPanel(
-                                        <RatingPanel
-                                            movie={movie.id}
-                                            rating_movie={0}
-                                            rating_estimate={tmpRating.estimate}
-                                        />
-                                    );
-                                }else {
-                                    setRatingPanel(
-                                        <RatingPanel
-                                            movie={movie.id}
-                                            rating_movie={tmpRating.rating}
-                                        />
-                                    );
-                                }
-                            });
-                        }
-                    }, (e) => {
-                        throw new Error();
-                    }).catch((e) => {
-                        setRatingPanel(
-                            <RatingPanel
-                                movie={movie.id}
-                                rating_movie={0}
-                            />
-                        );
-                    });
-                }
-            }).catch(() => {});
+    const updatePoster = async (movie: MovieType, name: string, bucketName: string) => {
+        for (let x of getPropertiesFromObject(movie, name)) {
+            for (let tmpPoster of x.person.poster_url) {
+                tmpPoster.poster = await getImage(bucketName, tmpPoster.url);
+            }
         }
-    }, [userContext, movie]);
+
+        setMovie(undefined);
+        setMovie(movie);
+    }
+
+    const getRating = (movie: MovieType): void => {
+        userContext?.checkIsUserLogged().then((r) => {
+            if (r > UserRole.AnonymousUser) {
+                promise(getUserRatingForMovie(movie.id)).then((r) => {
+                    let response = r as Response;
+                    if (response.status === 200) {
+                        response.json().then((res) => {
+                            let tmpRating = res as RatingType;
+                            if (tmpRating.estimate) {
+                                setRatingPanel(
+                                    <RatingPanel
+                                        movie={movie.id}
+                                        rating_movie={0}
+                                        rating_estimate={tmpRating.estimate}
+                                    />
+                                );
+                            } else {
+                                setRatingPanel(
+                                    <RatingPanel
+                                        movie={movie.id}
+                                        rating_movie={tmpRating.rating}
+                                    />
+                                );
+                            }
+                        });
+                    }
+                }, (e) => {
+                    throw new Error(e);
+                }).catch((e) => {
+                    setRatingPanel(
+                        <RatingPanel
+                            movie={movie.id}
+                            rating_movie={-1}
+                        />
+                    );
+                });
+            }
+        }).catch(() => {
+
+        });
+    };
 
     return (
         <>
@@ -278,43 +284,43 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                                                 }}
                                             />
                                         </span>
-                                    )}
-                                </div>
-                            </>
+                                        )}
+                                    </div>
+                                </>
                             }
                             {movie.production_companies.length > 0 &&
-                            <>
-                                <div>Producenci:</div>
-                                <div className="list-info-movie">
-                                    {movie.production_companies.map(company =>
-                                        <span className="element-movie-list" key={company.id}>
+                                <>
+                                    <div>Producenci:</div>
+                                    <div className="list-info-movie">
+                                        {movie.production_companies.map(company =>
+                                                <span className="element-movie-list" key={company.id}>
                                             {company.name}
                                         </span>
-                                    )}
-                                </div>
-                            </>
+                                        )}
+                                    </div>
+                                </>
                             }
                             <div>Budżet:</div>
                             <div>{movie.budget > 0 ? <>{movie.budget} $</> : '-'}</div>
                             <div>Przychody:</div>
                             <div>{movie.revenue > 0 ? <>{movie.revenue} $</> : '-'}</div>
                             {movie.homepage &&
-                            <>
-                                <div>Strona domowa:</div>
-                                <Link to={{pathname: movie.homepage}} target="_blank">Kliknij tutaj</Link>
-                            </>
+                                <>
+                                    <div>Strona domowa:</div>
+                                    <Link to={{pathname: movie.homepage}} target="_blank">Kliknij tutaj</Link>
+                                </>
                             }
                             {movie.keywords.length > 0 &&
-                            <>
-                                <div>Słowa kluczowe:</div>
-                                <div className="list-info-movie">
-                                    {movie.keywords.map(keyword =>
-                                        <span className="element-movie-list" key={keyword.id}>
+                                <>
+                                    <div>Słowa kluczowe:</div>
+                                    <div className="list-info-movie">
+                                        {movie.keywords.map(keyword =>
+                                                <span className="element-movie-list" key={keyword.id}>
                                             {keyword.name}
                                         </span>
-                                    )}
-                                </div>
-                            </>
+                                        )}
+                                    </div>
+                                </>
                             }
                         </div>
                     </article>

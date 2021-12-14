@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import './style.css';
 import trash from '../../images/trash.svg';
@@ -11,12 +11,13 @@ import {
     UserGenderForm,
     UserEmailForm, UserNickForm, ResetPasswordObject, UserDeleteForm
 } from '../../types/UserType';
-import SettingOption from '../../components/SettingOption';
 import {FileUploadType} from '../../types/FileType';
 import {AlertType, ErrorType} from '../../types/ErrorType';
+import {deleteUser, editUser} from '../../helpers/api/user/userCall';
+import useCancelledPromise from '../../hooks/useCancelledPromise';
+import SettingOption from '../../components/SettingOption';
 import ErrorMessage from '../../components/ErrorMessage';
 import Alert from '../../components/Alert';
-import {deleteUser, editUser} from '../../helpers/api/user/userCall';
 
 interface UserEditFormProps {
     user?: UserObject | null,
@@ -24,12 +25,22 @@ interface UserEditFormProps {
 
 const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
     const [notification, setNotification] = useState<AlertType>();
+    const {promise, cancelPromise} = useCancelledPromise();
+
+    useEffect(() => {
+        return () => {
+            cancelPromise();
+        };
+    }, []);
+
     const editRequestAPI = (form: object): Promise<any> => {
-        return editUser(form);
-    }
+        return promise(editUser(form));
+    };
+
     const deleteRequestAPI = (form: object): Promise<any> => {
-        return deleteUser(form as UserDeleteForm);
-    }
+        return promise(deleteUser(form as UserDeleteForm));
+    };
+
     const changeNameSurname = (
         update: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | FileUploadType) => void,
         errors: ErrorType,
