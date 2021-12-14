@@ -164,10 +164,10 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                             </div>
                             <div className="movie-info-line">
                                 {movie.average_vote &&
-                                <>
-                                    <div className="star icon-star"/>
-                                    <span>{movie.average_vote}</span>
-                                </>
+                                    <>
+                                        <div className="star icon-star"/>
+                                        <span>{movie.average_vote}</span>
+                                    </>
                                 }
                                 {movie.count_vote && <span>{movie.count_vote} ocen</span>}
                             </div>
@@ -178,28 +178,28 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                         <div className="movie-primary-info-rating">
                             <div className="settings-grid">
                                 {movie.genres &&
-                                <>
-                                    <div>Gatunki:</div>
-                                    <div>{movie.genres.map(g =>
-                                        <span
-                                            className="element-movie-list element-list-describe-movie"
-                                            key={g.id}
-                                        >
+                                    <>
+                                        <div>Gatunki:</div>
+                                        <div>{movie.genres.map(g =>
+                                                <span
+                                                    className="element-movie-list element-list-describe-movie"
+                                                    key={g.id}
+                                                >
                                             {g.name}
                                         </span>
-                                    )}</div>
-                                </>
+                                        )}</div>
+                                    </>
                                 }
                                 {movie.release_date &&
-                                <>
-                                    <div>Premiera:</div>
-                                    <div>{movie.release_date.toLocaleDateString()}</div>
-                                </>
+                                    <>
+                                        <div>Premiera:</div>
+                                        <div>{movie.release_date.toLocaleDateString()}</div>
+                                    </>
                                 }
                                 {movie.production_countries.length > 0 &&
-                                <>
-                                    <div>Produkcja:</div>
-                                    <div>
+                                    <>
+                                        <div>Produkcja:</div>
+                                        <div>
                                         <span
                                             className="element-movie-list element-list-describe-movie"
                                         >
@@ -208,74 +208,74 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                                                 style={{fontSize: '2rem', lineHeight: '2rem',}}
                                             />
                                         </span>
-                                    </div>
-                                </>
+                                        </div>
+                                    </>
                                 }
                                 {movie.runtime &&
-                                <>
-                                    <div>Czas trwania:</div>
-                                    <div>{convertMinuteToHourMinute(movie.runtime)}</div>
-                                </>
+                                    <>
+                                        <div>Czas trwania:</div>
+                                        <div>{convertMinuteToHourMinute(movie.runtime)}</div>
+                                    </>
                                 }
                             </div>
                             {ratingPanel}
                         </div>
                         {movie.overview &&
-                        <div>
-                            <h3>Opis</h3>
-                            <div className="movie-overview">{movie.overview}</div>
-                        </div>
+                            <div>
+                                <h3>Opis</h3>
+                                <div className="movie-overview">{movie.overview}</div>
+                            </div>
                         }
                         {movie.cast.length > 0 &&
-                        <ListTiles header="Obsada filmu">
-                            {movie.cast.map(c =>
-                                <PersonTile key={c.id} person={c.person} describe={c.character}/>
-                            )}
-                        </ListTiles>
+                            <ListTiles header="Obsada filmu">
+                                {movie.cast.map(c =>
+                                    <PersonTile key={c.id} person={c.person} describe={c.character}/>
+                                )}
+                            </ListTiles>
                         }
                         {movie.crew.length > 0 &&
-                        <ListTiles header="Twórcy filmu">
-                            {movie.crew.map(c =>
-                                <PersonTile key={c.id} person={c.person} describe={c.job}/>
-                            )}
-                        </ListTiles>
+                            <ListTiles header="Twórcy filmu">
+                                {movie.crew.map(c =>
+                                    <PersonTile key={c.id} person={c.person} describe={c.job}/>
+                                )}
+                            </ListTiles>
                         }
                         {galleryMovie?.length > 0 &&
-                        <ListTiles header="Galeria zdjęć">
-                            {galleryMovie.map(p =>
-                                <PhotoTile key={p.url} poster={p.poster}/>
-                            )}
-                        </ListTiles>
+                            <ListTiles header="Galeria zdjęć">
+                                {galleryMovie.map(p =>
+                                    <PhotoTile key={p.url} poster={p.poster}/>
+                                )}
+                            </ListTiles>
                         }
                         <h2>Dodatkowe informacje</h2>
                         <div className="settings-grid">
                             {movie.original_language &&
-                            <>
-                                <div>Oryginalny język:</div>
-                                <div>{movie.original_language.name}</div>
-                            </>
+                                <>
+                                    <div>Oryginalny język:</div>
+                                    <div>{movie.original_language.name}</div>
+                                </>
                             }
                             {movie.spoken_languages &&
-                            <>
-                                <div>Języki:</div>
-                                <div className="list-info-movie">
-                                    {movie.spoken_languages.map(language =>
-                                        <span className="element-movie-list" key={language.iso_639_1}>
+                                <>
+                                    <div>Języki:</div>
+                                    <div className="list-info-movie">
+                                        {movie.spoken_languages.map(language =>
+                                                <span className="element-movie-list" key={language.iso_639_1}>
                                             {language.iso_639_1}
                                         </span>
-                                    )}
-                                </div>
-                            </>
+                                        )}
+                                    </div>
+                                </>
                             }
                             {movie.production_countries.length > 0 &&
-                            <>
-                                <div>Kraje:</div>
-                                <div>
-                                    {movie.production_countries.map(country =>
-                                        <span
-                                            className="element-movie-list"
-                                            key={country.iso_3166_1}
-                                        >
+                                <>
+                                    <div>Kraje:</div>
+                                    <div>
+                                        {movie.production_countries.map(country =>
+                                                <span
+                                                    className="element-movie-list"
+                                                    key={country.iso_3166_1}
+                                                >
                                             <ReactCountryFlag
                                                 countryCode={country.iso_3166_1}
                                                 style={{

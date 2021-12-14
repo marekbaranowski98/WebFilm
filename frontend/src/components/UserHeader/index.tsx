@@ -66,7 +66,8 @@ const UserHeader: React.FC<UserHeaderProps> = ({user, show_edit}) => {
                 });
             });
         }
-    }
+    };
+
     const removeAvatar = (): void => {
         promise(deleteAvatar()).then((r) => {
             let response = (r as Response);

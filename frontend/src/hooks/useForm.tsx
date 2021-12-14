@@ -11,6 +11,7 @@ interface useFormProps<T> {
 
 const useForm = <T extends {}>({initialObject, validateObject, sendRequestToAPI,}: useFormProps<T>) => {
     const [errors, setErrors] = useState<ErrorType>({});
+
     const validate = (state: T, action: { field: string, value: any }): T => {
         let errorsTMP: ErrorType = errors;
         let tmpState: T;

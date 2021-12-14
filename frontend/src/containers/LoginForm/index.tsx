@@ -49,9 +49,10 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
         }, (e) => {
             setErrors({
                 non_field_errors: e.message
-            })
+            });
         });
     };
+
     const validateFormLogin = async (
         {email}: UserLoginForm,
         nameValidate?: string,
@@ -63,6 +64,7 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
                 return true;
         }
     };
+
     const {updateValue, submitHandler, errors} = useForm<UserLoginForm>({
         initialObject: {
             email: '',

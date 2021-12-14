@@ -91,7 +91,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({uuid}) => {
                 'non_field_errors': 'Serwis niedostępny',
             });
         });
-    }
+    };
 
     const {updateValue, submitHandler, errors} = useForm<ResetPasswordObject>({
         initialObject: {
@@ -102,6 +102,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({uuid}) => {
         validateObject: validateFormRequestResetPassword,
         sendRequestToAPI: sendRequestAuthToAPI,
     });
+
     return (
         <form onSubmit={submitHandler}>
             <ReCaptcha setToken={setToken}/>

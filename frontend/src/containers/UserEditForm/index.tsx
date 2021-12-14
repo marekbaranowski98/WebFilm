@@ -72,6 +72,7 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
             </>
         );
     };
+
     const changeBirthDate = (
         update: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | FileUploadType) => void,
         errors: ErrorType,
@@ -92,6 +93,7 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
             </div>
         );
     };
+
     const changeGender = (
         update: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | FileUploadType) => void,
         errors: ErrorType,
@@ -189,6 +191,7 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
             </>
         );
     };
+
     const changeLogin = (
         update: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | FileUploadType) => void,
         errors: ErrorType,
@@ -221,6 +224,7 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
             </>
         );
     };
+
     const changePassword = (
         update: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | FileUploadType) => void,
         errors: ErrorType,
@@ -263,6 +267,7 @@ const UserEditForm: React.FC<UserEditFormProps> = ({user}) => {
             </>
         );
     };
+
     const deleteForm = (
         update: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | FileUploadType) => void,
         errors: ErrorType,

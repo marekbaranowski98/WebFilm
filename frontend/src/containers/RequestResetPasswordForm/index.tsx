@@ -68,7 +68,7 @@ const RequestResetPasswordForm: React.FC<RequestResetPasswordFormProps> = ({setS
                 'non_field_errors': 'Serwis niedostępny',
             });
         });
-    }
+    };
 
     const {updateValue, submitHandler, errors} = useForm<SendEmailResetPasswordEmail>({
         initialObject: {

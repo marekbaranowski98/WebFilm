@@ -27,22 +27,26 @@ interface SettingOptionProps {
     typeForm: object,
     setAlert: (alert: AlertType) => void,
     icon: string,
-    sendRequestToAPI: (
-        form: object,
-    ) => Promise<any>,
+    sendRequestToAPI: (form: object,) => Promise<any>,
     nameOKButton: string,
 }
 
-const SettingOption: React.FC<SettingOptionProps> = ({generateForm, label, value, typeForm, setAlert, icon, sendRequestToAPI, nameOKButton}) => {
+const SettingOption: React.FC<SettingOptionProps> = ({
+                                                         generateForm, label, value, typeForm, setAlert,
+                                                         icon, sendRequestToAPI, nameOKButton
+                                                     }) => {
     const userContext = useContext(CurrentUserContext);
     const [url, setURL] = useState<RedirectType>();
     const [form, setForm] = useState<boolean>();
+
     const closeForm = (): void => {
-        setForm(undefined)
+        setForm(undefined);
     };
+
     const openForm = (): void => {
         setForm(true);
     };
+
     const validateObject = async (
         obj: any,
         nameValidate: string,
@@ -67,7 +71,8 @@ const SettingOption: React.FC<SettingOptionProps> = ({generateForm, label, value
             default:
                 return true;
         }
-    }
+    };
+
     const sendRequest = (form: object, setErrors: (errors: ErrorType) => void): void => {
         sendRequestToAPI(form).then((r) => {
             let response = (r as Response);
@@ -89,7 +94,7 @@ const SettingOption: React.FC<SettingOptionProps> = ({generateForm, label, value
                         },
                     },
                 });
-            }else if (response.status === 401 || response.status === 404) {
+            } else if (response.status === 401 || response.status === 404) {
                 setURL({
                     pathname: '/',
                     state: {
@@ -107,7 +112,7 @@ const SettingOption: React.FC<SettingOptionProps> = ({generateForm, label, value
                     }
                     setErrors(e);
                 });
-            }  else {
+            } else {
                 throw new Error();
             }
         }, (e) => {
@@ -119,11 +124,12 @@ const SettingOption: React.FC<SettingOptionProps> = ({generateForm, label, value
         });
     };
 
-    const {updateValue, submitHandler, errors, setErrors} = useForm<typeof typeForm>({
-        initialObject: {},
-        validateObject: validateObject,
-        sendRequestToAPI: sendRequest,
-    });
+    const {updateValue, submitHandler, errors} =
+        useForm<typeof typeForm>({
+            initialObject: {},
+            validateObject: validateObject,
+            sendRequestToAPI: sendRequest,
+        });
 
     return (
         <>
