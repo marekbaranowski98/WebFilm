@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'frontend',
     'users',
     'photos',
+    'movies',
+    'evaluations',
 ]
 
 MIDDLEWARE = [
@@ -95,7 +97,7 @@ DATABASES = {
         'USER': env.str('USER_DATABASE'),
         'PASSWORD': env.str('PASSWORD'),
         'HOST': env.str('HOST'),
-        'PORT': env.str('PORT')
+        'PORT': env.str('PORT'),
     }
 }
 
@@ -159,6 +161,7 @@ CORS_ALLOW_METHODS = [
     'GET',
     'POST',
     'PATCH',
+    'PUT',
     'DELETE',
 ]
 
@@ -209,6 +212,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': 'debug.log',
+            'formatter': 'verbose',
         },
         'userAction': {
             'level': 'INFO',

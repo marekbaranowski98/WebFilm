@@ -15,13 +15,13 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({}) => {
     const checkIsSmallScreen = (): boolean => {
-        return width < 1024;
+        return widthWindow < 1024;
     };
 
     const wrapperMenuRef = useRef<HTMLDivElement>(null);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [loggedUserRole, setLoggedUserRole] = useState<UserRole>(UserRole.AnonymousUser);
-    const { height, width } = useWindowsDimensions();
+    const { heightWindow, widthWindow } = useWindowsDimensions();
     const userContext = React.useContext(CurrentUserContext);
     const menuName: { id: number, title: string, visibility: boolean, link: string,
             children: { id: number, element: string, link: string, }[] }[] = [

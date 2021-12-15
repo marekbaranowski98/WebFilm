@@ -1,14 +1,15 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Redirect, useParams} from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
+import {Redirect, useParams} from 'react-router-dom';
 
 import error from '../../images/error.svg';
 import {CurrentUserContext} from '../../context/CurrentUserContext';
-import UserHeader from '../../components/UserHeader';
-import {getUser} from '../../helpers/api/user';
 import {RedirectType} from '../../types/ErrorType';
-import {getImage} from '../../helpers/api/photo';
 import {UserObject} from '../../types/UserType';
+import {getImage} from '../../helpers/api/photo';
+import {getUser} from '../../helpers/api/user/userCall';
+import useCancelledPromise from '../../hooks/useCancelledPromise';
+import UserHeader from '../../components/UserHeader';
 
 interface UserPageProps {
 }
@@ -22,20 +23,23 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
     const userContext = useContext(CurrentUserContext);
     const [user, setUser] = useState<React.ReactNode>();
     const [url, setURL] = useState<RedirectType>();
+    const {promise, cancelPromise} = useCancelledPromise();
 
     useEffect(() => {
         if (login === userContext?.user?.login) {
             setUser(<UserHeader user={userContext.user} show_edit={true} />);
         } else {
-            getUser(login).then((res) => {
+            promise(getUser(login)).then((res) => {
                 let response = res as Response;
                 if (response.status === 200) {
-                    response.json().then(async  (json) => {
+                    response.json().then(async (json) => {
                         let tmpUser: UserObject = json;
 
-                        tmpUser.avatar = await getImage('users', json['avatarURL']);
+                        tmpUser.avatar = await getImage('users', json['avatar_url']);
                         setUser(<UserHeader user={tmpUser} show_edit={true}/>);
                     });
+                } else if (response.status === 500) {
+                    throw new Error();
                 } else {
                     setUser(<UserHeader/>);
                 }
@@ -53,10 +57,14 @@ const UserPage: React.FC<UserPageProps> = ({}) => {
                 });
             });
         }
+
+        return () => {
+            cancelPromise();
+        };
     }, [login, userContext?.user]);
 
     return (
-        <article className="content-container">
+        <article className="main-content content-container">
             {url && <Redirect to={url}/>}
             <Helmet>
                 <title>{login} - profil - WebFilm</title>

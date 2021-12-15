@@ -11,6 +11,7 @@ interface useFormProps<T> {
 
 const useForm = <T extends {}>({initialObject, validateObject, sendRequestToAPI,}: useFormProps<T>) => {
     const [errors, setErrors] = useState<ErrorType>({});
+
     const validate = (state: T, action: { field: string, value: any }): T => {
         let errorsTMP: ErrorType = errors;
         let tmpState: T;
@@ -23,6 +24,7 @@ const useForm = <T extends {}>({initialObject, validateObject, sendRequestToAPI,
         validateObject(tmpState, action.field).catch((e) => {
             errorsTMP = {
                 ...errorsTMP,
+                non_field_errors: '',
                 [(e as Error).name]: (e as Error).message
             };
             setErrors(errorsTMP);
@@ -34,7 +36,6 @@ const useForm = <T extends {}>({initialObject, validateObject, sendRequestToAPI,
 
     const updateValue = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | FileUploadType): void => {
         if ('file_list' in e) {
-            console.log(e.file_list);
             dispatch({
                 field: e.name,
                 value: e.file_list,

@@ -1,0 +1,41 @@
+.movie-tile {
+    min-width: 10rem;
+    max-width: 10rem;
+}
+
+.poster-movie-tile {
+    width: 100%;
+    height: 15rem;
+    background-color: #2F3841;
+    position: relative;
+    -webkit-border-radius: 1rem;
+    -moz-border-radius: 1rem;
+    border-radius: 1rem;
+    margin: 0.5% 1%;
+    display: inline-block;
+}
+
+.poster-movie-tile > img {
+    min-width: 6rem;
+    max-width: 100%;
+    max-height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    will-change: transform;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -webkit-border-radius: 1rem;
+    -moz-border-radius: 1rem;
+    border-radius: 1rem;
+    transform: translate(-50%, -50%);
+}
+
+.title-movie-tile {
+    width: calc(10rem - 1.5%);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 1.5%;
+    display: inline-block;
+}

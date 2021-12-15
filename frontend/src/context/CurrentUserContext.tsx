@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import {UserObject, UserRole} from '../types/UserType';
-import {getLoggedUser} from '../helpers/api/user';
+import {getLoggedUser} from '../helpers/api/user/userCall';
 import {checkExistCookie} from '../helpers/api/api';
 import {getImage} from '../helpers/api/photo';
 
@@ -37,6 +37,8 @@ export const CurrentUserProvider: React.FC<CurrentUserProviderProps> = ({childre
                         }
                     }, (e) => {
                         reject(UserRole.AnonymousUser);
+                    }).catch((e) => {
+                        reject(UserRole.AnonymousUser);
                     });
                 } else {
                     reject(UserRole.AnonymousUser);
@@ -54,7 +56,7 @@ export const CurrentUserProvider: React.FC<CurrentUserProviderProps> = ({childre
     const updateUser = (u: any): void => {
         let tmpUser: UserObject = u;
         tmpUser.birth_date = new Date(u['birth_date']);
-        getImage('users', u['avatarURL']).then((image) => {
+        getImage('users', u['avatar_url']).then((image) => {
             tmpUser.avatar = image;
             setUser(tmpUser);
         }, () => setUser(tmpUser));

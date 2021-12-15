@@ -10,11 +10,17 @@
     display: grid;
     grid-template-columns: 1fr 2fr;
     margin: 0.5rem 1rem;
+    grid-gap: 0 1rem;
 }
 
 .settings-grid > div {
     display: flex;
     align-items: center;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.settings-grid > .grid-form {
     margin-bottom: 1rem;
 }
 

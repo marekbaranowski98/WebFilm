@@ -1,15 +1,16 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 
 import check from '../../images/check.svg';
 import error from '../../images/error.svg';
-import ErrorMessage from '../../components/ErrorMessage';
 import {ResetPasswordObject} from '../../types/UserType';
-import {validatePassword, validateRepeatPassword} from '../../helpers/validators';
 import {ErrorType, RedirectType} from '../../types/ErrorType';
+import {validatePassword, validateRepeatPassword} from '../../helpers/validators';
+import {resetPassword} from '../../helpers/api/user/userCall';
 import useForm from '../../hooks/useForm';
-import {resetPassword} from '../../helpers/api/user';
+import useCancelledPromise from '../../hooks/useCancelledPromise';
 import ReCaptcha from '../../components/ReCaptcha';
+import ErrorMessage from '../../components/ErrorMessage';
 
 interface ResetPasswordFormProps {
     uuid: string,
@@ -18,6 +19,13 @@ interface ResetPasswordFormProps {
 const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({uuid}) => {
     const [redirect, setRedirect] = useState<RedirectType>();
     const [token, setToken] = useState<string>();
+    const {promise, cancelPromise} = useCancelledPromise();
+
+    useEffect(() => {
+        return () => {
+            cancelPromise();
+        };
+    }, []);
 
     const validateFormRequestResetPassword = async (
         {password, repeat_password}: ResetPasswordObject,
@@ -37,7 +45,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({uuid}) => {
         if (token != null) {
             form.recaptcha = token;
         }
-        resetPassword(uuid, form).then((r) => {
+        promise(resetPassword(uuid, form)).then((r) => {
             let response = (r as Response);
             if (response.status === 204) {
                 setRedirect({
@@ -83,7 +91,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({uuid}) => {
                 'non_field_errors': 'Serwis niedostępny',
             });
         });
-    }
+    };
 
     const {updateValue, submitHandler, errors} = useForm<ResetPasswordObject>({
         initialObject: {
@@ -94,6 +102,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({uuid}) => {
         validateObject: validateFormRequestResetPassword,
         sendRequestToAPI: sendRequestAuthToAPI,
     });
+
     return (
         <form onSubmit={submitHandler}>
             <ReCaptcha setToken={setToken}/>

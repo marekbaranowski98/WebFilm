@@ -7,7 +7,7 @@ import {
     REGEX_PASSWORD
 } from './ConstType';
 import {Gender} from '../types/UserType';
-import {checkDataUser} from './api/user';
+import {checkDataUser} from './api/user/userCall';
 import {convertToFormData} from './api/api';
 
 export const validateLogin = (login: string): boolean => {
@@ -48,9 +48,10 @@ export const validateEmail = (email?: string): boolean => {
     }
 };
 
-export const checkDataIsAvailable = (key: string, value: string, isLogged: boolean) => {
+export const checkDataIsAvailable = (key: string, value: string, isLogged: boolean,
+                                     promise: ((p: Promise<any | void>) => Promise<any | void>) | null = null)   => {
     let data = convertToFormData({'key': key, 'value': value});
-    return checkDataUser(data, isLogged).then(async (r) => {
+    return (promise ? promise(checkDataUser(data, isLogged)) : checkDataUser(data, isLogged)).then(async (r) => {
         let response = r as Response;
         if(response.status === 204) {
             return true;

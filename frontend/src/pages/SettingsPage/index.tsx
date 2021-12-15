@@ -12,7 +12,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({}) => {
     const userContext = useContext(CurrentUserContext);
 
     return (
-        <article className="content-container">
+        <article className="main-content content-container">
             <Helmet>
                 <title>Ustawienia - WebFilm</title>
             </Helmet>

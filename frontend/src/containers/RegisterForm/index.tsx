@@ -1,19 +1,20 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 
 import './style.css';
 import check from '../../images/check.svg';
-import ErrorMessage from '../../components/ErrorMessage';
-import useForm from '../../hooks/useForm';
 import {Gender, UserRegisterForm} from '../../types/UserType';
 import {ErrorType, RedirectType} from '../../types/ErrorType';
 import {
     validateLogin, validateEmail, validatePassword, validateRepeatPassword,
     validateName, validateSurname, validateGender, validateBirthDate, validateStatute, checkDataIsAvailable
 } from '../../helpers/validators';
-import {registerUser} from '../../helpers/api/user';
+import {registerUser} from '../../helpers/api/user/userCall';
+import useForm from '../../hooks/useForm';
+import useCancelledPromise from '../../hooks/useCancelledPromise';
 import FileInput from '../../components/FileInput';
 import ReCaptcha from '../../components/ReCaptcha';
+import ErrorMessage from '../../components/ErrorMessage';
 
 interface RegisterFormProps {
 }
@@ -21,12 +22,20 @@ interface RegisterFormProps {
 const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
     const [url, setURL] = useState<RedirectType>();
     const [token, setToken] = useState<string>();
+    const {promise, cancelPromise} = useCancelledPromise();
+
+    useEffect(() => {
+        return () => {
+            cancelPromise();
+        };
+    }, []);
 
     const sendRequestAuthToAPI = (form: UserRegisterForm, setErrors: (errors: ErrorType) => void): void => {
         if (token != null) {
             form.recaptcha = token;
         }
-        registerUser(form).then((r) => {
+
+        promise(registerUser(form)).then((r) => {
             let response = (r as Response);
             if (response.status === 201) {
                 setURL({
@@ -61,15 +70,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
             });
         });
     };
+
     const validateFormRegister = async (
         {login, email, password, repeat_password, name, surname, gender, birth_date, accept_statute}: UserRegisterForm,
         nameValidate?: string,
     ) => {
         switch (nameValidate) {
             case 'login':
-                return validateLogin(login) && checkDataIsAvailable('login', login, false);
+                return validateLogin(login) && checkDataIsAvailable('login', login, false, promise);
             case 'email':
-                return validateEmail(email) && checkDataIsAvailable('email', email, false);
+                return validateEmail(email) && checkDataIsAvailable('email', email, false, promise);
             case 'password':
                 return validatePassword(password);
             case 'repeat_password':
@@ -89,19 +99,20 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
         }
     };
 
-    const {updateValue, submitHandler, errors, setErrors} = useForm<UserRegisterForm>({
-        initialObject: {
-            login: '',
-            email: '',
-            password: '',
-            repeat_password: '',
-            birth_date: new Date().toISOString().split('T')[0],
-            accept_statute: false,
-            recaptcha: '',
-        },
-        validateObject: validateFormRegister,
-        sendRequestToAPI: sendRequestAuthToAPI,
-    });
+    const {updateValue, submitHandler, errors, setErrors} =
+        useForm<UserRegisterForm>({
+            initialObject: {
+                login: '',
+                email: '',
+                password: '',
+                repeat_password: '',
+                birth_date: new Date().toISOString().split('T')[0],
+                accept_statute: false,
+                recaptcha: '',
+            },
+            validateObject: validateFormRegister,
+            sendRequestToAPI: sendRequestAuthToAPI,
+        });
 
     return (
         <form onSubmit={submitHandler}>
@@ -165,11 +176,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
                 <label className="label-checkbox">
                     <input type="checkbox" name="accept_statute" onChange={updateValue} required/>
                     <div className="required-field label-info">
-                        Przeczytałem i akceptuje <Link
-                        className="link"
-                        to={'/statute/'}
-                        target="_blank">regulamin
-                    </Link>
+                        Przeczytałem i akceptuje
+                        <Link
+                            className="link"
+                            to={'/statute/'}
+                            target="_blank"
+                        >
+                            regulamin
+                        </Link>
                     </div>
                 </label>
                 {errors.accept_statute && <ErrorMessage message={errors.accept_statute}/>}

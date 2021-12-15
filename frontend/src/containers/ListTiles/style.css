@@ -1,0 +1,13 @@
+.list-tiles {
+    display: flex;
+    overflow: scroll;
+    flex-wrap: nowrap;
+    grid-gap: 0 1.25rem;
+    padding-bottom: 0.5rem;
+    margin: 0.5rem 0.5rem 0;
+}
+
+.list-tiles > h3 {
+    width: 100%;
+    text-align: center;
+}

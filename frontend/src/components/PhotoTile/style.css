@@ -1,0 +1,7 @@
+.photo-tile {
+    height: 10rem;
+}
+
+.photo-tile > img {
+    height: 100%;
+}

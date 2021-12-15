@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
+import {useHistory, useLocation} from 'react-router-dom';
 
+import {AlertType, ResultType} from '../../types/ErrorType';
+import ReCaptchaProvider from '../../context/ReCaptchaContext';
+import SignInPerks from '../../components/SignInPerks';
+import Alert from '../../components/Alert';
 import LoginForm from '../../containers/LoginForm';
 import LoginOptions from '../../containers/LoginOptions';
-import SignInPerks from '../../components/SignInPerks';
-import {AlertType, ResultType} from '../../types/ErrorType';
-import Alert from '../../components/Alert';
-import ReCaptchaProvider from '../../context/ReCaptchaContext';
 
 interface LoginPageProps {
 }
@@ -26,7 +26,7 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
     }, []);
 
     return (
-        <div className="wrapper-form">
+        <div className="main-content wrapper-form">
             <Helmet>
                 <title>Zaloguj się - WebFilm</title>
             </Helmet>

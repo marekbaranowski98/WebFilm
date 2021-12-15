@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
 
-const getWindowDimensions = (): {width: number, height: number} => {
-    const {innerWidth: width, innerHeight: height} = window;
+const getWindowDimensions = (): {widthWindow: number, heightWindow: number} => {
+    const {innerWidth: widthWindow, innerHeight: heightWindow} = window;
     return {
-        width,
-        height,
+        widthWindow,
+        heightWindow,
     };
 };
 
 const useWindowsDimensions = () => {
-    const [windowDimensions, setWindowDimensions] = useState<{width: number, height: number}>(getWindowDimensions);
+    const [windowDimensions, setWindowDimensions] = useState<{widthWindow: number, heightWindow: number}>(getWindowDimensions);
 
     useEffect(() => {
         const handleResize = () => {

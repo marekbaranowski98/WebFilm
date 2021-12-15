@@ -1,4 +1,4 @@
-import {post, get, patch, convertToFormData, delete_api} from './api';
+import {post, get, patch, convertToFormData, delete_api} from '../api';
 import {
     loginURL,
     loggedUserURL,
@@ -7,14 +7,14 @@ import {
     registerUserURL,
     activeUserURL,
     requestResetPasswordURL, resetPasswordURL, userLoginURL, editUserURL, userClearAvatarURL, deleteUserURL
-} from './routes';
+} from './userRoutes';
 import {
     ResetPasswordObject,
     SendEmailResetPasswordEmail,
     UserDeleteForm,
     UserLoginForm,
     UserRegisterForm
-} from '../../types/UserType';
+} from '../../../types/UserType';
 
 export const loginUser = async (data: UserLoginForm) => {
     return post(loginURL(), convertToFormData(data));

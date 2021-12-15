@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useLocation, useHistory, Redirect} from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
+import {Link, useLocation, useHistory, Redirect} from 'react-router-dom';
 
 import './style.css';
-import RequestResetPasswordForm from '../../containers/RequestResetPasswordForm';
+import ReCaptchaProvider from '../../context/ReCaptchaContext';
 import {AlertType, RedirectType, ResultType} from '../../types/ErrorType';
 import Alert from '../../components/Alert';
-import ReCaptchaProvider from '../../context/ReCaptchaContext';
+import RequestResetPasswordForm from '../../containers/RequestResetPasswordForm';
 
 interface RequestResetPasswordPageProps {
 }
@@ -26,7 +26,7 @@ const RequestResetPasswordPage: React.FC<RequestResetPasswordPageProps> = ({}) =
     }, []);
 
     return (
-        <div className="wrapper-form">
+        <div className="main-content wrapper-form">
             {url && <Redirect to={url}/>}
             <Helmet>
                 <title>Zapomniałem hasło - WebFilm</title>

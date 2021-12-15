@@ -63,6 +63,9 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error
+          content: {}
   /users/me/validator-unique/:
     post:
       tags:
@@ -208,7 +211,10 @@ paths:
                 properties:
                   info:
                     type: string
-                    example: Coś poszło nie tak.
+                    example: Coś poszło nie tak
+        500:
+          description: Internal Server Error
+          content: {}
     delete:
       tags:
         - user
@@ -259,6 +265,9 @@ paths:
                   info:
                     type: string
                     example: Coś poszło nie tak.
+        500:
+          description: Internal Server Error
+          content: {}
   /users/me/logout/:
     get:
       tags:
@@ -307,6 +316,9 @@ paths:
                     example: Użytkownik jest zalogowany.
         404:
           description: Not Found
+          content: {}
+        500:
+          description: Internal Server Error
           content: {}
   /users/me/reset-password/:
     post:
@@ -447,6 +459,9 @@ paths:
                   non_field_errors:
                     type: string
                     example: Link wygasł.
+        500:
+          description: Internal Server Error
+          content: {}
   /users/{login}/:
     get:
       tags:
@@ -472,6 +487,9 @@ paths:
           content: {}
         410:
           description: Gone
+          content: {}
+        500:
+          description: Internal Server Error
           content: {}
   /users/me/delete-avatar/:
     delete:
@@ -500,6 +518,9 @@ paths:
             application/json:
               schema:
                   $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error
+          content: {}
   /photos/{bucket}/{blob}/:
     get:
       tags:
@@ -533,7 +554,314 @@ paths:
                     type: string
                     format: byte
         404:
+          description: Not Found - Return default image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  image:
+                    type: string
+                    format: byte
+        500:
+          description: Internal Server Error
+          content: {}
+  /movies/:
+    get:
+      tags:
+        - movie
+      summary: Get list max 20 top weighted rating movies 
+      operationId: topMovies
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieTile'
+        404:
           description: Not Found
+          content: {}
+        500:
+          description: Internal Server Error
+          content: {}
+  /movies/{name}/{value}/:
+    get:
+      tags:
+        - movie
+      summary: Get list max 20 top weighted rating filtred movies by key
+      operationId: topKeyMovies
+      parameters:
+      - name: name
+        in: path
+        description: Movie key you are looking for
+        required: true
+        schema:
+          type: string
+          example: genres
+      - name: value
+        in: path
+        description: Value of the movie key you are looking for
+        required: true
+        schema:
+          type: string
+          example: Action
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieTile'
+        404:
+          description: Not Found
+          content: {}
+        500:
+          description: Internal Server Error
+          content: {}
+  /movies/latest/:
+    get:
+      tags:
+        - movie
+      summary: Get list max 20 latest movies 
+      operationId: latestMovies
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieTile'
+        500:
+          description: Internal Server Error
+          content: {}
+  /movies/premiere/:
+    get:
+      tags:
+        - movie
+      summary: Get list max 20 premiere movies 
+      operationId: premiereMovies
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieTile'
+        404:
+          description: Not Found
+          content: {}
+        500:
+          description: Internal Server Error
+          content: {}
+  /movies/{movie_id}/:
+    get:
+      tags:
+        - movie
+      summary: Get movie by id
+      operationId: getMovie
+      parameters:
+      - name: movie_id
+        in: path
+        description: Id movie
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        404:
+          description: Not Found
+          content: {}
+        410:
+          description: Gone
+          content: {}
+        500:
+          description: Internal Server Error
+          content: {}
+  /evaluations/:
+    put:
+      tags:
+        - evaluation
+      summary: Create or update rating user
+      operationId: updateRatingMovie
+      requestBody:
+        description: Movie id and rating data
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                movie:
+                  type: integer
+                  format: int32
+                  description: id movie
+                rating:
+                  type: integer
+                  format: int32
+                  description: User rating in scale 1...10
+                  minimum: 1
+                  maximum: 10
+              required:
+                - movie
+                - rating
+      security:
+        - bearerAuth: []
+      responses:
+        204:
+          description: No content
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  info:
+                    type: string
+                    example: Użytkownik nie jest zalogowany.
+        404:
+          description: Not Found
+          content: {}
+        410:
+          description: Gone
+          content: {}
+    delete:
+      tags:
+        - evaluation
+      summary: Delete rating user
+      operationId: deleteRatingMovie
+      requestBody:
+        description: Movie id data
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                movie:
+                  type: integer
+                  format: int32
+                  description: movie id
+              required:
+                - movie
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  estimate:
+                    type: number
+                    format: double
+                    description: Estimate user rating in scale 1...10
+                    minimum: 1
+                    maximum: 10
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  info:
+                    type: string
+                    example: Użytkownik nie jest zalogowany.
+        404:
+          description: Not Found
+          content: {}
+        410:
+          description: Gone
+          content: {}
+        500:
+          description: Internal Server Error
+          content: {}
+  /evaluations/movie/{movie_id}/:
+    get:
+      tags:
+        - evaluation
+      summary: Get evaluation user by movie
+      operationId: getEvaluaion
+      parameters:
+      - name: movie_id
+        in: path
+        description: Id movie
+        required: true
+        schema:
+          type: integer
+          format: int32
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rating:
+                    type: integer
+                    format: int32
+                    description: User rating in scale 1...10
+                    minimum: 1
+                    maximum: 10
+                  estimate:
+                    type: number
+                    format: double
+                    description: Estimate user rating in scale 1...10
+                    minimum: 1
+                    maximum: 10
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  info:
+                    type: string
+                    example: Użytkownik nie jest zalogowany.
+        500:
+          description: Internal Server Error
           content: {}
 components:
   schemas:
@@ -702,7 +1030,7 @@ components:
           type: string
           format: date
           example: '2000-01-01'
-        avatarURL:
+        avatar_url:
           type: string
           example: 00000000-0000-0000-0000-000000000000
           pattern: '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
@@ -756,10 +1084,283 @@ components:
           type: string
           example: Smith
           maxLength: 150
-        avatarURL:
+        avatar_url:
           type: string
           example: 00000000-0000-0000-0000-000000000000
           pattern: '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
+    Genre:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          minLength: 1
+          maxLength: 30
+      required:
+        - id
+        - name
+    Collection:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          minLength: 1
+          maxLength: 130
+        gallery:
+          type: integer
+          format: int32
+      required:
+        - id
+        - name
+    Poster:
+      type: object
+      properties:
+        url:
+          type: string
+          example: 00000000-0000-0000-0000-000000000000
+          pattern: '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
+        order:
+          description: Kolejność zdjęc w galeri. 1 - oznacza główne zdjęcie pod profil/plakat
+          type: integer
+          format: int32
+      required:
+        - url
+        - order
+    Person:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          minLength: 1
+          maxLength: 130
+        surname:
+          type: string
+          minLength: 1
+          maxLength: 130
+        gallery:
+          type: integer
+          format: int32
+        poster_url:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Poster'
+      required:
+        - id
+        - name
+        - surname
+        - gallery
+        - poster_url
+    Cast:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        character:
+          type: string
+          minLength: 1
+          maxLength: 500
+        person:
+          $ref: '#/components/schemas/Person'
+      required:
+        - id
+        - character
+        - person
+    Crew:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        job:
+          type: string
+          minLength: 1
+          maxLength: 80
+        person::
+          $ref: '#/components/schemas/Person'
+      required:
+        - id
+        - job
+        - person
+    Keyword:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+      required:
+        - id
+        - name
+    Company:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+      required:
+        - id
+        - name
+    Country:
+      type: object
+      properties:
+        iso_3166_1:
+          type: string
+          pattern: '[A-Za-z]{2}'
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+      required:
+        - iso_3166_1
+        - name
+    Language:
+      type: object
+      properties:
+        iso_639_1:
+          type: string
+          pattern: '[A-Za-z]{2}'
+        name:
+          type: string
+          minLength: 1
+          maxLength: 30
+      required:
+        - iso_639_1
+        - name
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+          example: Example movie
+          minLength: 1
+          maxLength: 130
+        original_title:
+          type: string
+          minLength: 1
+          maxLength: 130
+        release_date: 
+          type: string
+          format: date
+          example: '2000-01-01'
+        runtime:
+          type: integer
+          format: int32
+          example: 120
+        genres: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Genre'
+        collection:
+          $ref: '#/components/schemas/Collection'
+        homepage:
+          type: string
+          format: uri
+          minLength: 1
+          maxLength: 500
+        overview:
+          type: string
+          minLength: 0
+          maxLength: 1500
+        tagline:
+          type: string
+          minLength: 0
+          maxLength: 500
+        cast: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Cast'
+        crew: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Crew'
+        keywords:
+          type: array
+          items:
+            $ref: '#/components/schemas/Keyword'
+        production_companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Company'
+        production_countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+        original_language:
+          $ref: '#/components/schemas/Language'
+        spoken_languages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Language'
+        budget:
+          type: number
+          format: double
+        revenue:
+          type: number
+          format: double
+        average_vote:
+          type: number
+          format: double
+        count_vote:
+          type: integer
+          format: int32
+        gallery:
+          type: integer
+          format: int32
+        poster_url:
+          type: array
+          items:
+            $ref: '#/components/schemas/Poster'
+      required:
+        - id
+        - title
+        - release_date
+        - runtime
+        - genres
+        - original_language
+        - poster_url
+    MovieTile:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+          example: Example movie
+          minLength: 1
+          maxLength: 130
+        release_date:
+          type: string
+          format: date
+          example: '2000-01-01'
+        gallery:
+          type: integer
+          format: int32
+        poster_url:
+          $ref: '#/components/schemas/Poster'
+      required:
+        - id
+        - title
+        - poster_url
     Error:
       type: object
       properties:

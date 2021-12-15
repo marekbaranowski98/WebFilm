@@ -1,33 +1,38 @@
 import React from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {HelmetProvider} from 'react-helmet-async';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
 import '../style/app.css';
 import '../style/shape.css';
 import '../style/input.css';
 import '../style/form.css';
 import {CurrentUserProvider} from '../context/CurrentUserContext';
+import {UserRole} from '../types/UserType';
+import useWindowsDimensions from '../hooks/useWindowsDimensions';
 import SEO from '../components/SEO';
+import Search from '../components/Search';
+import AnonymousUserRoute from '../components/AnonymousUserRoute';
+import Footer from '../components/Footer';
+import LoggedUserRoute from '../components/LoggedUserRoute';
 import Header from '../containers/Header';
-import MainContent from '../containers/MainContent';
+import MainPage from './MainPage';
 import LoginPage from './LoginPage';
 import LogoutPage from './LogoutPage';
 import RegisterPage from './RegisterPage';
 import StatutePage from './StatutePage';
-import Footer from '../components/Footer';
 import ActivePage from './ActivePage';
 import RequestResetPasswordPage from './RequestResetPasswordPage';
 import ResetPasswordPage from './ResetPasswordPage';
-import AnonymousUserRoute from '../components/AnonymousUserRoute';
-import LoggedUserRoute from '../components/LoggedUserRoute';
 import UserPage from './UserPage/';
-import {UserRole} from '../types/UserType';
 import SettingsPage from './SettingsPage';
+import MoviePage from './MoviePage';
 
 interface App {
 }
 
 const App: React.FC<App> = ({}) => {
+    const {heightWindow, widthWindow} = useWindowsDimensions();
+
     return (
         <CurrentUserProvider>
             <HelmetProvider>
@@ -35,8 +40,9 @@ const App: React.FC<App> = ({}) => {
                 <BrowserRouter>
                     <Header/>
                     <div className="main-container">
+                        {widthWindow < 600 && <Search/>}
                         <Switch>
-                            <Route exact path="/" component={MainContent}/>
+                            <Route exact path="/" component={MainPage}/>
                             <AnonymousUserRoute exact={true} path={'/login/'} component={LoginPage}/>
                             <LoggedUserRoute exact={true} path={'/logout/'} component={LogoutPage}
                                              min_user_role={UserRole.User}/>
@@ -50,6 +56,7 @@ const App: React.FC<App> = ({}) => {
                             <Route exact={true} path={'/user/:login/'} component={UserPage}/>
                             <LoggedUserRoute exact={true} path={'/settings/'} component={SettingsPage}
                                              min_user_role={UserRole.User}/>
+                            <Route exact={true} path={'/movie/:movie_id/'} component={MoviePage}/>
                         </Switch>
                     </div>
                 </BrowserRouter>

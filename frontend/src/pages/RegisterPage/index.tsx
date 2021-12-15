@@ -1,15 +1,15 @@
 import React from 'react';
 import {Helmet} from 'react-helmet-async';
 
-import RegisterForm from '../../containers/RegisterForm';
 import ReCaptchaProvider from '../../context/ReCaptchaContext';
+import RegisterForm from '../../containers/RegisterForm';
 
 interface RegisterPageProps {
 }
 
 const RegisterPage: React.FC<RegisterPageProps> = ({}) => {
     return (
-        <div className="wrapper-form">
+        <div className="main-content wrapper-form">
             <Helmet>
                 <title>Rejestracja - WebFilm</title>
             </Helmet>
