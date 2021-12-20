@@ -13,6 +13,7 @@ import os
 import environ
 
 from pathlib import Path
+from surprise import dump
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -257,3 +258,6 @@ DRF_RECAPTCHA_TESTING = env.bool('DEBUG')
 
 # CSP
 # TODO add csp
+
+# SVD Model
+predictions, algorithm = dump.load(env.str('SVD_MODEL_PATH'))

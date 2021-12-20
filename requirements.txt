@@ -16,6 +16,7 @@ google-crc32c==1.2.0
 google-resumable-media==2.0.3
 googleapis-common-protos==1.53.0
 idna==3.2
+joblib==1.1.0
 mysqlclient==2.0.3
 numpy==1.21.4
 Pillow==8.3.2
@@ -25,6 +26,9 @@ pyasn1-modules==0.2.8
 pytz==2021.1
 requests==2.26.0
 rsa==4.7.2
+scikit-surprise==1.1.1
+scipy==1.7.3
 six==1.16.0
 sqlparse==0.4.1
+surprise==0.1
 urllib3==1.26.7

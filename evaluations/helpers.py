@@ -1,6 +1,7 @@
 import numpy as np
 
 from django.db.models import Avg
+from WebFilm.settings import algorithm
 
 
 def weighted_rating(queryset_movie, percentile=0.85):
@@ -12,3 +13,7 @@ def weighted_rating(queryset_movie, percentile=0.85):
         movie.wr = movie.average_vote * movie.count_vote / tmp + mean_movie * min_count / tmp
 
     return movies
+
+
+def estimate_rating_user(movie_id, user_id):
+    return algorithm.predict(uid=user_id, iid=movie_id).est
