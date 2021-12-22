@@ -102,7 +102,7 @@ class LoginAPI(ObtainAuthToken, viewsets.ViewSet):
             return response
         else:
             if request.data.get('email'):
-                loggerUser.info(f'Attempting to log in to the user  email {request.data["email"]}')
+                loggerUser.info(f'Attempting to log in to the user email {request.data["email"]}')
             response = Response({
                 'errors': serializer.errors
             })

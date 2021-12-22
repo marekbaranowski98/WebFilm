@@ -11,6 +11,7 @@ from .serializers import RatingUserSerializer, DeleteRatingUserSerializer
 from .models import Rating
 from .helpers import estimate_rating_user
 
+loggerEvaluation = logging.getLogger(__name__)
 loggerDebug = logging.getLogger('debug')
 
 
@@ -53,6 +54,10 @@ class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
             rating = self.get_serializer(data=request.data, context={'request': request}, )
             if rating.is_valid():
                 self.check_object_permissions(self.request, rating.validated_data['movie'])
+                loggerEvaluation.info(
+                    f'User {rating.validated_data["user"].id} rated movie {rating.validated_data["movie"].id} '
+                    f'it {rating.validated_data["rating"]}.'
+                )
                 rating.save()
                 return Response(status=204)
             else:
@@ -76,7 +81,9 @@ class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
             if rating.is_valid():
                 rating = Rating.objects.get(**rating.validated_data)
                 rating.delete()
-
+                loggerEvaluation.info(
+                    f'User {rating.user.id} deleted rating movie {rating.movie.id}.'
+                )
                 return Response(data={
                     'estimate': estimate_rating_user(user_id=request.user.id, movie_id=kwargs.get('movie_id')),
                 }, status=200)

@@ -220,11 +220,22 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': 'user.log',
             'formatter': 'verbose',
-        }
+        },
+        'evaluationAction': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'evaluations.log',
+            'formatter': 'verbose',
+        },
     },
     'loggers': {
         'users': {
             'handlers': ['userAction'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'evaluations': {
+            'handlers': ['evaluationAction'],
             'level': 'INFO',
             'propagate': True,
         },
