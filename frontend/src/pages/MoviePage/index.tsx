@@ -163,13 +163,13 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                                 {movie.collection && <span>{movie.collection.name}</span>}
                             </div>
                             <div className="movie-info-line">
-                                {movie.average_vote &&
+                                {movie.average_vote != null &&
                                     <>
                                         <div className="star icon-star"/>
                                         <span>{movie.average_vote}</span>
                                     </>
                                 }
-                                {movie.count_vote && <span>{movie.count_vote} ocen</span>}
+                                {movie.count_vote != null && <span>{movie.count_vote} ocen</span>}
                             </div>
                         </div>
                     </header>

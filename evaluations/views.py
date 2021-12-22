@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from movies.permissions import MovieIsVisibility
 from .serializers import RatingUserSerializer, DeleteRatingUserSerializer
 from .models import Rating
+from .helpers import estimate_rating_user
 
 loggerDebug = logging.getLogger('debug')
 
@@ -32,7 +33,9 @@ class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
 
             return Response(data=self.get_serializer(r).data, status=200)
         except Rating.DoesNotExist:
-            return Response(data={'estimate': 7.88}, status=200)
+            return Response(data={
+                'estimate': estimate_rating_user(user_id=request.user.id, movie_id=kwargs.get('movie_id')),
+            }, status=200)
         except (NotAuthenticated, PermissionDenied):
             return Response(data={'detail': 'Dane nie są już dostępne.'}, status=410)
         except Exception as e:
@@ -74,7 +77,9 @@ class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
                 rating = Rating.objects.get(**rating.validated_data)
                 rating.delete()
 
-                return Response(data={'estimate': 7.88}, status=200)
+                return Response(data={
+                    'estimate': estimate_rating_user(user_id=request.user.id, movie_id=kwargs.get('movie_id')),
+                }, status=200)
             else:
                 return Response(rating.errors, status=400)
         except Rating.DoesNotExist:
