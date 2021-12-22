@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
 
 import error from '../images/error.svg';
 import {MovieTileType} from '../types/MovieType';
-import {AlertType} from '../types/ErrorType';
 import {getImage} from '../helpers/api/photo';
 import useCancelledPromise from './useCancelledPromise';
+import Alert from '../components/Alert';
 
 interface useListFilmsProps {
     getMoviesList: () => Promise<unknown>,
@@ -12,7 +13,7 @@ interface useListFilmsProps {
 
 const useListFilms = ({getMoviesList}: useListFilmsProps) => {
     const [listMovies, setListMovies] = useState<MovieTileType[]>([]);
-    const [notification, setNotification] = useState<AlertType | null>(null);
+    const [notificationNode, setNotificationNodeNode] = useState<React.ReactNode>(null);
     const {promise, cancelPromise} = useCancelledPromise();
 
     useEffect(() => {
@@ -34,10 +35,9 @@ const useListFilms = ({getMoviesList}: useListFilmsProps) => {
                 throw new Error();
             }
         }, () => { throw new Error(); }).catch((e) => {
-            setNotification({
-                icon: error,
-                message: 'Nie znaleziono filmów.',
-            });
+            setNotificationNodeNode(
+                <Alert icon={error} message="Nie znaleziono filmów." />
+            );
         });
 
         return () => {
@@ -56,7 +56,7 @@ const useListFilms = ({getMoviesList}: useListFilmsProps) => {
         setListMovies(tmpListMovies);
     };
 
-    return { listMovies, notification };
+    return { listMovies, notificationNode };
 };
 
 export default useListFilms;
