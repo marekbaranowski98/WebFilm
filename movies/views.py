@@ -1,7 +1,7 @@
 import logging
 import operator
 
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, permissions
 from rest_framework.exceptions import NotAuthenticated, PermissionDenied
 from rest_framework.response import Response
 from rest_framework.request import Request
@@ -11,13 +11,22 @@ from photos.models import Photo
 from .models import Movie, MovieStatus, Cast, Crew, Genre
 from .serializers import ListMovieSerializer, MovieSerializer, CastSerializer, CrewSerializer
 from .permissions import MovieIsVisibility
-from evaluations.helpers import weighted_rating
+from evaluations.models import Rating
+from evaluations.helpers import weighted_rating, build_list_recommendation_to_user
 
 loggerDebug = logging.getLogger('debug')
 
 
 class MovieListAPI(generics.ListAPIView, viewsets.ViewSet):
     serializer_class = ListMovieSerializer
+
+    def get_permissions(self):
+        if self.action == 'get_list_recommendation_by_user':
+            self.permission_classes = [permissions.IsAuthenticated, MovieIsVisibility, ]
+        else:
+            self.permission_classes = [MovieIsVisibility, ]
+
+        return super(MovieListAPI, self).get_permissions()
 
     def __build_list_image(self, list_movies: ListMovieSerializer):
         for movie in list_movies:
@@ -121,6 +130,36 @@ class MovieListAPI(generics.ListAPIView, viewsets.ViewSet):
             self.__build_list_image(list_movies)
 
             return Response(data=list_movies, status=200)
+        except Movie.DoesNotExist:
+            return Response(status=404)
+        except Exception as e:
+            loggerDebug.debug(e)
+            return Response(status=500)
+
+    def get_list_recommendation_by_user(self, request: Request, *args, **kwargs) -> Response:
+        """
+        Get list top movies for logged user
+
+        :param request: Request
+        :param args:
+        :param kwargs:
+        :return: Response
+        """
+        try:
+            if Rating.objects.filter(user_id=request.user.id).count() < 10:
+                raise ValueError
+
+            queryset = Movie.objects.filter(visibility=True).all()
+
+            list_movies = self.get_serializer(sorted(
+                build_list_recommendation_to_user(queryset, request.user.id),
+                key=operator.attrgetter('est'), reverse=True
+            )[:20], many=True).data
+            self.__build_list_image(list_movies)
+
+            return Response(data=list_movies, status=200)
+        except ValueError:
+            return Response(data={'error': 'Oceń minimum 10 filmów.'}, status=403)
         except Movie.DoesNotExist:
             return Response(status=404)
         except Exception as e:

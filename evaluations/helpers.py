@@ -15,5 +15,13 @@ def weighted_rating(queryset_movie, percentile=0.85):
     return movies
 
 
+def build_list_recommendation_to_user(queryset_movie, user_id):
+    movies = queryset_movie.all()
+    for movie in movies:
+        movie.est = estimate_rating_user(movie_id=movie.id, user_id=user_id)
+
+    return movies
+
+
 def estimate_rating_user(movie_id, user_id):
     return algorithm.predict(uid=user_id, iid=movie_id).est

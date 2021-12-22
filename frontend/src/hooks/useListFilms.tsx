@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import error from '../images/error.svg';
+import info from '../images/info.svg';
 import {MovieTileType} from '../types/MovieType';
 import {getImage} from '../helpers/api/photo';
 import useCancelledPromise from './useCancelledPromise';
@@ -31,6 +32,20 @@ const useListFilms = ({getMoviesList}: useListFilmsProps) => {
                     setListMovies(tmpMovies);
                     await downloadImagesMovies(tmpMovies);
                 });
+            } else if (r.status === 401) {
+                setNotificationNodeNode(
+                    <div className="carousel-error-container">
+                        <Alert icon={info} message="Należy założyć konto w serwisie." />
+                        <div className="container-login-button carousel-button-container">
+                            <Link className="button" to={'/login/'}>Zaloguj się</Link>
+                            <Link className="button" to={'/register/'}>Zarejestruj się</Link>
+                        </div>
+                    </div>
+                );
+            } else if (r.status === 403) {
+                setNotificationNodeNode(
+                    <Alert icon={info} message="Oceń minimum 10 filmów." />
+                );
             } else {
                 throw new Error();
             }

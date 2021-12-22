@@ -8,6 +8,7 @@ import {MovieTileType} from '../../types/MovieType';
 import {
     getListLatestMovies,
     getPremiereMovies,
+    getRecommendationMovies,
     getTopMovies,
     getTopMoviesByName
 } from '../../helpers/api/movie/movieCall';
@@ -37,6 +38,10 @@ const MainPage: React.FC<MainPageProps> = ({}) => {
             header: 'Polskie filmy',
         },
         {list: useListFilms({getMoviesList: getPremiereMovies,},), header: 'Nadchodzące premiery',},
+        {
+            list: useListFilms({getMoviesList: getRecommendationMovies,},),
+            header: 'Rekomendacje dla ciebie',
+        },
     ];
 
     useEffect(() => {
