@@ -16,6 +16,9 @@ class MovieStatus(models.Model):
     class Meta:
         db_table = 'movies_movie_status'
 
+    def __str__(self):
+        return self.name
+
 
 class Language(models.Model):
     iso_639_1 = models.CharField(max_length=2, primary_key=True, )

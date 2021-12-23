@@ -1372,6 +1372,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Poster'
+        status:
+          type: string
+          example: Released
+          description: Status movie
+          enum:
+          - In Production
+          - Released
+          - Rumored
+          - Planned
+          - Unknown
       required:
         - id
         - title

@@ -34,8 +34,9 @@ const MoviePage: React.FC<MoviePageProps> = () => {
     const location = useLocation<ResultType>();
     const history = useHistory();
     const [movie, setMovie] = useState<MovieType>();
-    const [ratingPanel, setRatingPanel] = useState<React.ReactNode>()
-    const [notification, setNotification] = useState<AlertType>()
+    const listStatusMovieToRatings = ['Released'];
+    const [ratingPanel, setRatingPanel] = useState<React.ReactNode>();
+    const [notification, setNotification] = useState<AlertType>();
     const [galleryMovie, setGalleryMovie] = useState<PosterType[]>([]);
     const {promise, cancelPromise} = useCancelledPromise();
 
@@ -74,7 +75,9 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                     await updatePoster(tmpMovie, 'cast', 'people');
                     await updatePoster(tmpMovie, 'crew', 'people');
 
-                    getRating(tmpMovie);
+                    if (listStatusMovieToRatings.includes(tmpMovie.status)) {
+                        getRating(tmpMovie);
+                    }
                 });
             } else {
                 throw new Error();

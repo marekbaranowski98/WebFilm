@@ -6,7 +6,7 @@ from rest_framework.exceptions import NotAuthenticated, PermissionDenied
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from movies.permissions import MovieIsVisibility
+from movies.permissions import MovieIsVisibility, MoviePossibleRating
 from .serializers import RatingUserSerializer, DeleteRatingUserSerializer
 from .models import Rating
 from .helpers import estimate_rating_user
@@ -17,7 +17,7 @@ loggerDebug = logging.getLogger('debug')
 
 class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
     serializer_class = RatingUserSerializer
-    permission_classes = [permissions.IsAuthenticated, MovieIsVisibility, ]
+    permission_classes = [permissions.IsAuthenticated, MovieIsVisibility, MoviePossibleRating, ]
 
     def get(self, request: Request, *args, **kwargs) -> Response:
         """
@@ -38,7 +38,7 @@ class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
                 'estimate': estimate_rating_user(user_id=request.user.id, movie_id=kwargs.get('movie_id')),
             }, status=200)
         except (NotAuthenticated, PermissionDenied):
-            return Response(data={'detail': 'Dane nie są już dostępne.'}, status=410)
+            return Response(data={'detail': 'Film nie jest dostępny.'}, status=410)
         except Exception as e:
             return Response(status=500)
 
@@ -61,9 +61,9 @@ class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
                 rating.save()
                 return Response(status=204)
             else:
-                return Response(rating.errors, status=400)
+                return Response({'errors': rating.errors}, status=400)
         except (NotAuthenticated, PermissionDenied):
-            return Response(data={'detail': 'Film nie są już dostępny.'}, status=410)
+            return Response(data={'detail': 'Film nie jest dostępny.'}, status=410)
         except Exception as e:
             loggerDebug.debug(e)
             return Response(status=500)
@@ -88,7 +88,7 @@ class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
                     'estimate': estimate_rating_user(user_id=request.user.id, movie_id=kwargs.get('movie_id')),
                 }, status=200)
             else:
-                return Response(rating.errors, status=400)
+                return Response({'errors': rating.errors}, status=400)
         except Rating.DoesNotExist:
             return Response(status=404)
         except Exception as e:

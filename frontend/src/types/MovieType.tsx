@@ -83,6 +83,7 @@ export interface MovieType {
     revenue: number,
     average_vote: number,
     count_vote: number,
+    status: string,
     poster_url: PosterType[],
 }
 
