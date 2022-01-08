@@ -169,7 +169,7 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                                 {movie.average_vote != null &&
                                     <>
                                         <div className="star icon-star"/>
-                                        <span>{movie.average_vote}</span>
+                                        <span>{movie.average_vote.toFixed(2)}</span>
                                     </>
                                 }
                                 {movie.count_vote != null && <span>{movie.count_vote} ocen</span>}
