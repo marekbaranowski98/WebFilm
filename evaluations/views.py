@@ -35,7 +35,7 @@ class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
             return Response(data=self.get_serializer(r).data, status=200)
         except Rating.DoesNotExist:
             return Response(data={
-                'estimate': estimate_rating_user(user_id=request.user.id, movie_id=kwargs.get('movie_id')),
+                'estimate': estimate_rating_user(user_id=str(request.user.id), movie_id=kwargs.get('movie_id')),
             }, status=200)
         except (NotAuthenticated, PermissionDenied):
             return Response(data={'detail': 'Film nie jest dostępny.'}, status=410)
