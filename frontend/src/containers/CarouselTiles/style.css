@@ -43,6 +43,16 @@
     display: none;
 }
 
+.carousel-error-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.carousel-button-container {
+    margin: 1% 2rem;
+}
+
+
 @media (hover: none) and (pointer: coarse) {
     .left-arrow, .right-arrow {
         display: none;

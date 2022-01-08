@@ -16,6 +16,9 @@ class MovieStatus(models.Model):
     class Meta:
         db_table = 'movies_movie_status'
 
+    def __str__(self):
+        return self.name
+
 
 class Language(models.Model):
     iso_639_1 = models.CharField(max_length=2, primary_key=True, )
@@ -82,8 +85,8 @@ class Movie(models.Model):
     gallery = models.OneToOneField(to=Gallery, on_delete=models.CASCADE)
     status = models.ForeignKey(to=MovieStatus, default=1, on_delete=models.RESTRICT, )
     revenue = models.DecimalField(null=True, default=None, max_digits=14, decimal_places=2, )
-    average_vote = models.FloatField(default=0, )
-    count_vote = models.IntegerField(default=0, )
+    average_vote = models.FloatField(null=True, default=None, )
+    count_vote = models.IntegerField(null=True, default=None, )
     author = models.ForeignKey(to=User, null=True, default=None, on_delete=models.SET_DEFAULT, )
     visibility = models.BooleanField(default=True, )
 

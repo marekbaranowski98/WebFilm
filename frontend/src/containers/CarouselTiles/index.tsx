@@ -1,20 +1,19 @@
 import React, {useEffect, useRef, useState} from 'react';
 
 import './style.css';
-import {AlertType} from '../../types/ErrorType';
 import {convertRemToPx} from '../../helpers/calc'
 import useWindowsDimensions from '../../hooks/useWindowsDimensions';
-import Alert from '../../components/Alert';
 
 interface CarouselTilesProps {
     children: React.ReactNode[],
     header: string,
     sizeTileInRem: number,
     infiniteLoop: boolean,
-    notification: AlertType | null,
+    notificationNode: React.ReactNode,
 }
 
-const CarouselTiles: React.FC<CarouselTilesProps> = ({children,  header, sizeTileInRem, infiniteLoop, notification}) => {
+const CarouselTiles: React.FC<CarouselTilesProps> = ({children,  header, sizeTileInRem, infiniteLoop, notificationNode
+}) => {
     const contentDiv = useRef<HTMLDivElement>(null);
 
     const [countShowElements, setCountShowElements] = useState(0);
@@ -149,7 +148,7 @@ const CarouselTiles: React.FC<CarouselTilesProps> = ({children,  header, sizeTil
                     <div className="arrow expend-button arrow-right arrow-carousel" onClick={next}/>
                     }
                 </div>
-                : notification ? <Alert message={notification.message} icon={notification.icon} /> : <h3>...</h3>
+                : notificationNode ? notificationNode : <h3>...</h3>
             }
         </div>
     );

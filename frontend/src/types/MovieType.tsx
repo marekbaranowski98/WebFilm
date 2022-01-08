@@ -83,6 +83,7 @@ export interface MovieType {
     revenue: number,
     average_vote: number,
     count_vote: number,
+    status: string,
     poster_url: PosterType[],
 }
 
@@ -98,4 +99,8 @@ export interface UserRatingType {
 
 export interface UserRatingIdentityType {
     movie: number,
+}
+
+export interface MovieSearch {
+    search: string,
 }

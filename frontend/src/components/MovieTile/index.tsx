@@ -8,7 +8,6 @@ interface MovieTileProps {
     movie: MovieTileType
 }
 
-
 const MovieTile: React.FC<MovieTileProps> = ({movie}) => {
     return (
         <Link className="movie-tile" to={`/movie/${movie.id}`}>

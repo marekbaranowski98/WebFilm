@@ -8,6 +8,7 @@ import {MovieTileType} from '../../types/MovieType';
 import {
     getListLatestMovies,
     getPremiereMovies,
+    getRecommendationMovies,
     getTopMovies,
     getTopMoviesByName
 } from '../../helpers/api/movie/movieCall';
@@ -24,7 +25,7 @@ const MainPage: React.FC<MainPageProps> = ({}) => {
     const history = useHistory();
     const [notification, setNotification] = useState<AlertType>();
     const carouselListMovies: {
-        list: { listMovies: MovieTileType[], notification: AlertType | null }, header: string,
+        list: { listMovies: MovieTileType[], notificationNode: React.ReactNode }, header: string,
     }[] = [
         {list: useListFilms({getMoviesList: getListLatestMovies,},), header: 'Najnowsze filmy',},
         {list: useListFilms({getMoviesList: getTopMovies,},), header: 'Najlepsze filmy',},
@@ -37,6 +38,10 @@ const MainPage: React.FC<MainPageProps> = ({}) => {
             header: 'Polskie filmy',
         },
         {list: useListFilms({getMoviesList: getPremiereMovies,},), header: 'Nadchodzące premiery',},
+        {
+            list: useListFilms({getMoviesList: getRecommendationMovies,},),
+            header: 'Rekomendacje dla ciebie',
+        },
     ];
 
     useEffect(() => {
@@ -58,7 +63,7 @@ const MainPage: React.FC<MainPageProps> = ({}) => {
             {carouselListMovies.map(
                 (movies, index) =>
                     <CarouselTiles sizeTileInRem={10} infiniteLoop={true} key={index}
-                                   header={movies.header} notification={movies.list.notification}>
+                                   header={movies.header} notificationNode={movies.list.notificationNode}>
                         {movies.list.listMovies.map(x =>
                             <MovieTile movie={x} key={x.id}/>
                         )}

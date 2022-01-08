@@ -6,16 +6,18 @@ from rest_framework.exceptions import NotAuthenticated, PermissionDenied
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from movies.permissions import MovieIsVisibility
+from movies.permissions import MovieIsVisibility, MoviePossibleRating
 from .serializers import RatingUserSerializer, DeleteRatingUserSerializer
 from .models import Rating
+from .helpers import estimate_rating_user
 
+loggerEvaluation = logging.getLogger(__name__)
 loggerDebug = logging.getLogger('debug')
 
 
 class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
     serializer_class = RatingUserSerializer
-    permission_classes = [permissions.IsAuthenticated, MovieIsVisibility, ]
+    permission_classes = [permissions.IsAuthenticated, MovieIsVisibility, MoviePossibleRating, ]
 
     def get(self, request: Request, *args, **kwargs) -> Response:
         """
@@ -32,9 +34,11 @@ class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
 
             return Response(data=self.get_serializer(r).data, status=200)
         except Rating.DoesNotExist:
-            return Response(data={'estimate': 7.88}, status=200)
+            return Response(data={
+                'estimate': estimate_rating_user(user_id=str(request.user.id), movie_id=kwargs.get('movie_id')),
+            }, status=200)
         except (NotAuthenticated, PermissionDenied):
-            return Response(data={'detail': 'Dane nie są już dostępne.'}, status=410)
+            return Response(data={'detail': 'Film nie jest dostępny.'}, status=410)
         except Exception as e:
             return Response(status=500)
 
@@ -50,12 +54,16 @@ class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
             rating = self.get_serializer(data=request.data, context={'request': request}, )
             if rating.is_valid():
                 self.check_object_permissions(self.request, rating.validated_data['movie'])
+                loggerEvaluation.info(
+                    f'User {rating.validated_data["user"].id} rated movie {rating.validated_data["movie"].id} '
+                    f'it {rating.validated_data["rating"]}.'
+                )
                 rating.save()
                 return Response(status=204)
             else:
-                return Response(rating.errors, status=400)
+                return Response({'errors': rating.errors}, status=400)
         except (NotAuthenticated, PermissionDenied):
-            return Response(data={'detail': 'Film nie są już dostępny.'}, status=410)
+            return Response(data={'detail': 'Film nie jest dostępny.'}, status=410)
         except Exception as e:
             loggerDebug.debug(e)
             return Response(status=500)
@@ -73,10 +81,14 @@ class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
             if rating.is_valid():
                 rating = Rating.objects.get(**rating.validated_data)
                 rating.delete()
-
-                return Response(data={'estimate': 7.88}, status=200)
+                loggerEvaluation.info(
+                    f'User {rating.user.id} deleted rating movie {rating.movie.id}.'
+                )
+                return Response(data={
+                    'estimate': estimate_rating_user(user_id=request.user.id, movie_id=kwargs.get('movie_id')),
+                }, status=200)
             else:
-                return Response(rating.errors, status=400)
+                return Response({'errors': rating.errors}, status=400)
         except Rating.DoesNotExist:
             return Response(status=404)
         except Exception as e:

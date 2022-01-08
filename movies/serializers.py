@@ -8,7 +8,7 @@ class ListMovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ('id', 'title', 'release_date', 'gallery', 'wr')
+        fields = ('id', 'title', 'release_date', 'gallery', 'wr', )
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -20,7 +20,7 @@ class GenreSerializer(serializers.ModelSerializer):
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
-        fields = ('id', 'name', 'surname', 'gallery')
+        fields = ('id', 'name', 'surname', 'gallery', )
 
 
 class CastSerializer(serializers.ModelSerializer):
@@ -28,7 +28,7 @@ class CastSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cast
-        fields = ('id', 'character', 'person')
+        fields = ('id', 'character', 'person', )
 
 
 class CrewSerializer(serializers.ModelSerializer):
@@ -36,7 +36,7 @@ class CrewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Crew
-        fields = ('id', 'job', 'person')
+        fields = ('id', 'job', 'person', )
 
 
 class KeywordSerializer(serializers.ModelSerializer):
@@ -77,6 +77,7 @@ class MovieSerializer(serializers.ModelSerializer):
     production_countries = CountrySerializer(many=True)
     original_language = LanguageSerializer()
     spoken_languages = LanguageSerializer(many=True)
+    status = serializers.StringRelatedField()
 
     class Meta:
         model = Movie
@@ -84,5 +85,5 @@ class MovieSerializer(serializers.ModelSerializer):
             'id',
             'title', 'original_title', 'release_date', 'runtime', 'genres', 'collection', 'homepage', 'overview',
             'tagline', 'cast', 'crew', 'keywords', 'production_companies', 'production_countries', 'original_language',
-            'spoken_languages', 'budget', 'revenue', 'average_vote', 'count_vote', 'gallery'
+            'spoken_languages', 'budget', 'revenue', 'average_vote', 'count_vote', 'gallery', 'status',
         )
