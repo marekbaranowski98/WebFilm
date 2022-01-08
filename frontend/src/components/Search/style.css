@@ -1,5 +1,11 @@
-.container-search {
+.container-panel-search {
+    display: flex;
+    flex-direction: column;
+    position: relative;
     width: 100%;
+}
+
+.container-search {
     height: 2.5rem;
     display: flex;
 }
@@ -40,6 +46,16 @@
     width: 0.35em;
     height: 0.08em;
     transform: rotate(45deg);
+}
+
+.container-list-search {
+    position: absolute;
+    top: 2.5rem;
+    left: 1rem;
+    z-index: 2;
+    max-height: 50vh;
+    overflow: auto;
+    width: calc(100% - 3rem);
 }
 
 @media screen and (max-width: 600px) {

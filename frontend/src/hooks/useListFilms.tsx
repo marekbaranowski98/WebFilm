@@ -9,7 +9,7 @@ import useCancelledPromise from './useCancelledPromise';
 import Alert from '../components/Alert';
 
 interface useListFilmsProps {
-    getMoviesList: () => Promise<unknown>,
+    getMoviesList: (search: string | null) => Promise<unknown>,
 }
 
 const useListFilms = ({getMoviesList}: useListFilmsProps) => {
@@ -18,7 +18,7 @@ const useListFilms = ({getMoviesList}: useListFilmsProps) => {
     const {promise, cancelPromise} = useCancelledPromise();
 
     useEffect(() => {
-        promise(getMoviesList()).then((res) => {
+        promise(getMoviesList(null)).then((res) => {
             let r = res as Response;
             if (r.status === 200) {
                 r.json().then(async (movies) => {

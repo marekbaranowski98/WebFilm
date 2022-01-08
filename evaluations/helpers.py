@@ -1,10 +1,15 @@
 import numpy as np
 
 from django.db.models import Avg
+
+from .models import Movie
 from WebFilm.settings import algorithm
 
 
 def weighted_rating(queryset_movie, percentile=0.85):
+    queryset_movie = queryset_movie.filter(average_vote__isnull=False).all()
+    if len(queryset_movie) == 0:
+        raise Movie.DoesNotExist
     min_count = np.quantile(queryset_movie.values_list('count_vote', flat=True), percentile)
     mean_movie = queryset_movie.aggregate(Avg('average_vote'))['average_vote__avg']
     movies = queryset_movie.all()

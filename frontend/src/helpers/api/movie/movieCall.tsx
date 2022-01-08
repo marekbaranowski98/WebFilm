@@ -16,8 +16,8 @@ export const getMovieDescribe = async (movie_id: string) => {
     return get(movieDescribeURL(movie_id), false);
 };
 
-export const getTopMovies = async () => {
-    return get(topMoviesURL());
+export const getTopMovies = async (search: string | null) => {
+    return get(topMoviesURL(search));
 };
 
 export const getTopMoviesByName = async (name: string, value: string) => {

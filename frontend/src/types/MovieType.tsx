@@ -100,3 +100,7 @@ export interface UserRatingType {
 export interface UserRatingIdentityType {
     movie: number,
 }
+
+export interface MovieSearch {
+    search: string,
+}

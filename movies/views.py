@@ -5,6 +5,7 @@ from rest_framework import generics, viewsets, permissions
 from rest_framework.exceptions import NotAuthenticated, PermissionDenied
 from rest_framework.response import Response
 from rest_framework.request import Request
+from rest_framework import filters
 
 from photos.serializers import PhotoSerializer
 from photos.models import Photo
@@ -19,6 +20,9 @@ loggerDebug = logging.getLogger('debug')
 
 class MovieListAPI(generics.ListAPIView, viewsets.ViewSet):
     serializer_class = ListMovieSerializer
+    queryset = Movie.objects.all()
+    filter_backends = [filters.SearchFilter, ]
+    search_fields = ['title', ]
 
     def get_permissions(self):
         if self.action == 'get_list_recommendation_by_user':
@@ -44,7 +48,7 @@ class MovieListAPI(generics.ListAPIView, viewsets.ViewSet):
         :return Response
         """
         try:
-            list_movies = self.get_serializer(Movie.objects.filter(
+            list_movies = self.get_serializer(self.filter_queryset(self.get_queryset()).filter(
                 status=MovieStatus.objects.get(name='Released'), visibility=True,
             ).order_by('-release_date')[:20], many=True).data
             self.__build_list_image(list_movies)
@@ -64,10 +68,10 @@ class MovieListAPI(generics.ListAPIView, viewsets.ViewSet):
         :return:
         """
         try:
-            queryset = Movie.objects.filter(visibility=True).all()
+            q = self.filter_queryset(self.get_queryset()).filter(visibility=True).all()
 
             list_movies = self.get_serializer(sorted(
-                weighted_rating(queryset, 0.95), key=operator.attrgetter('wr'), reverse=True
+                weighted_rating(q, 0.95), key=operator.attrgetter('wr'), reverse=True
             )[:20], many=True).data
             self.__build_list_image(list_movies)
 
@@ -95,13 +99,13 @@ class MovieListAPI(generics.ListAPIView, viewsets.ViewSet):
             else:
                 raise Movie.DoesNotExist
 
-            queryset = Movie.objects.filter(
+            q = self.filter_queryset(self.get_queryset()).filter(
                 **filter_movie,
                 visibility=True
             ).all()
 
             list_movies = self.get_serializer(sorted(
-                weighted_rating(queryset, 0.8), key=operator.attrgetter('wr'), reverse=True
+                weighted_rating(q, 0.8), key=operator.attrgetter('wr'), reverse=True
             )[:20], many=True).data
             self.__build_list_image(list_movies)
 
@@ -122,7 +126,7 @@ class MovieListAPI(generics.ListAPIView, viewsets.ViewSet):
         :return Response
         """
         try:
-            list_movies = self.get_serializer(Movie.objects.filter(
+            list_movies = self.get_serializer(self.filter_queryset(self.get_queryset()).filter(
                 status__in=MovieStatus.objects.filter(name__in=['In Production', 'Planned', 'Post Production', ]),
                 # release_date__gt=datetime.date.today(),
                 visibility=True, release_date__isnull=False,
@@ -149,10 +153,10 @@ class MovieListAPI(generics.ListAPIView, viewsets.ViewSet):
             if Rating.objects.filter(user_id=request.user.id).count() < 10:
                 raise ValueError
 
-            queryset = Movie.objects.filter(visibility=True).all()
+            q = self.filter_queryset(self.get_queryset()).filter(visibility=True).all()
 
             list_movies = self.get_serializer(sorted(
-                build_list_recommendation_to_user(queryset, request.user.id),
+                build_list_recommendation_to_user(q, request.user.id),
                 key=operator.attrgetter('est'), reverse=True
             )[:20], many=True).data
             self.__build_list_image(list_movies)
