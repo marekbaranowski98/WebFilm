@@ -119,11 +119,18 @@ const MoviePage: React.FC<MoviePageProps> = () => {
                                         rating_estimate={tmpRating.estimate}
                                     />
                                 );
-                            } else {
+                            } else if (tmpRating.rating) {
                                 setRatingPanel(
                                     <RatingPanel
                                         movie={movie.id}
                                         rating_movie={tmpRating.rating}
+                                    />
+                                );
+                            } else {
+                                setRatingPanel(
+                                    <RatingPanel
+                                        movie={movie.id}
+                                        rating_movie={0}
                                     />
                                 );
                             }
