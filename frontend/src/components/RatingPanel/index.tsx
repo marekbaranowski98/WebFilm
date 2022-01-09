@@ -121,7 +121,9 @@ const RatingPanel: React.FC<RatingPanelProps> = ({movie, rating_movie, rating_es
     return (
         <div className="movie-panel-rating">
             {url && <Redirect to={url}/>}
-            {estimate ? <h4>Na {Math.round(estimate * 10)}% w twoim guście</h4> : <h4>Twoja ocena: {rating}/10</h4>}
+            {estimate ? <h4>Na {Math.round(estimate * 10)}% w twoim guście</h4> :
+                rating === 0 ? <h4>Oceń najpierw 10 filmów</h4> : <h4>Twoja ocena: {rating}/10</h4>
+            }
             <div className="subpanel">
                 <h3 className="container-login-button">
                     <div>Oceń</div>

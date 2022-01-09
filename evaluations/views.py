@@ -34,9 +34,13 @@ class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
 
             return Response(data=self.get_serializer(r).data, status=200)
         except Rating.DoesNotExist:
-            return Response(data={
-                'estimate': estimate_rating_user(user_id=str(request.user.id), movie_id=kwargs.get('movie_id')),
-            }, status=200)
+            data = {}
+            if Rating.objects.filter(user_id=request.user.id).all().count() >= 10:
+                data['estimate'] = estimate_rating_user(
+                    user_id=str(request.user.id),
+                    movie_id=str(kwargs.get('movie_id'))
+                )
+            return Response(data=data, status=200)
         except (NotAuthenticated, PermissionDenied):
             return Response(data={'detail': 'Film nie jest dostępny.'}, status=410)
         except Exception as e:
@@ -84,9 +88,13 @@ class RatingUserAPI(generics.RetrieveAPIView, viewsets.ViewSet):
                 loggerEvaluation.info(
                     f'User {rating.user.id} deleted rating movie {rating.movie.id}.'
                 )
-                return Response(data={
-                    'estimate': estimate_rating_user(user_id=request.user.id, movie_id=kwargs.get('movie_id')),
-                }, status=200)
+                data = {}
+                if Rating.objects.filter(user_id=request.user.id).all().count() >= 10:
+                    data['estimate'] = estimate_rating_user(
+                        user_id=str(request.user.id),
+                        movie_id=str(kwargs.get('movie_id')),
+                    )
+                return Response(data=data, status=200)
             else:
                 return Response({'errors': rating.errors}, status=400)
         except Rating.DoesNotExist:
