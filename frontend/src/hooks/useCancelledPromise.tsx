@@ -18,6 +18,6 @@ const useCancelledPromise = () => {
     };
 
     return {promise: wrappedPromise, cancelPromise};
-}
+};
 
 export default useCancelledPromise;

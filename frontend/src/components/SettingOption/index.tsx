@@ -80,7 +80,7 @@ const SettingOption: React.FC<SettingOptionProps> = ({
                 response.json().then((u => userContext?.updateUser(u)));
                 setAlert({
                     icon: check,
-                    message: `${label} zostało zmienione.`,
+                    message: `Pole: ${label} - zostało zmienione.`,
                 });
                 closeForm();
             } else if (response.status === 204) {

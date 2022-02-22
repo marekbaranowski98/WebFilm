@@ -39,8 +39,8 @@ const Menu: React.FC<MenuProps> = ({}) => {
             link: '/register/',
             children: [],
         },
-        { id: 3, title: 'Najnowsze filmy', visibility: true, link: '#', children: [], },
-        { id: 4, title: 'Przeglądaj filmy', visibility: true, link: '#', children: [], },
+        { id: 3, title: 'Najnowsze filmy', visibility: true, link: '/', children: [], },
+        { id: 4, title: 'Przeglądaj filmy', visibility: true, link: '/', children: [], },
         { id: 5, title: 'Ranking filmów', visibility: true, link: '#', children: [], },
         {
             id: 6,

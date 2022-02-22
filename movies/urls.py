@@ -13,7 +13,7 @@ from .views import MovieListAPI, MovieAPI
 
 urlpatterns = [
     path('latest/', MovieListAPI.as_view({'get': 'get_latest', }), name='get_list_latest_movie'),
-    path('premiere/', MovieListAPI.as_view({'get': 'get_list_premiere', })),
+    path('premiere/', MovieListAPI.as_view({'get': 'get_list_premiere', }), name='get_list_premiere_movie'),
     path('<int:movie_id>/', MovieAPI.as_view(), name='get_movie_by_id'),
     path('', MovieListAPI.as_view({'get': 'get_list_top', }), name='get_list_top_all_movie'),
     path('<str:name>/<str:value>/', MovieListAPI.as_view({'get': 'get_list_top_name', }), name='get_list_top_by_name'),
