@@ -68,7 +68,9 @@ class MovieListAPI(generics.ListAPIView, viewsets.ViewSet):
         :return:
         """
         try:
-            q = self.filter_queryset(self.get_queryset()).filter(visibility=True).all()
+            q = self.filter_queryset(self.get_queryset()).filter(
+                status=MovieStatus.objects.get(name='Released'), visibility=True
+            ).all()
 
             list_movies = self.get_serializer(sorted(
                 weighted_rating(q, 0.95), key=operator.attrgetter('wr'), reverse=True
