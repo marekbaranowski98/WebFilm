@@ -21,7 +21,7 @@ const Menu: React.FC<MenuProps> = ({}) => {
     const wrapperMenuRef = useRef<HTMLDivElement>(null);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [loggedUserRole, setLoggedUserRole] = useState<UserRole>(UserRole.AnonymousUser);
-    const { heightWindow, widthWindow } = useWindowsDimensions();
+    const { widthWindow } = useWindowsDimensions();
     const userContext = React.useContext(CurrentUserContext);
     const menuName: { id: number, title: string, visibility: boolean, link: string,
             children: { id: number, element: string, link: string, }[] }[] = [
