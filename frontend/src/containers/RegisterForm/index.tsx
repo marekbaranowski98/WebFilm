@@ -160,7 +160,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
                 {errors.gender && <ErrorMessage message={errors.gender}/>}
             </div>
             <div className="input-field">
-                <div>Data urodzenia</div>
+                <div className="required-field">Data urodzenia</div>
                 <input
                     type="date"
                     name="birth_date"
